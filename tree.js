@@ -5,12 +5,13 @@
 (function () {
 
   // ── Константы ─────────────────────────────────────────────
-  const NODE_W   = 110;   // ширина карточки
-  const NODE_H   = 150;   // высота карточки (с текстом)
-  const PAIR_GAP = 20;    // зазор между супругами в паре
-  const H_GAP    = 40;    // горизонтальный зазор между группами
-  const GEN_H    = 300;   // высота поколения (между центрами)
-  const PHOTO_R  = 32;    // радиус фото (половина диаметра 64px)
+  const IS_MOBILE = window.innerWidth < 640;
+  const NODE_W   = IS_MOBILE ? 92  : 110;
+  const NODE_H   = IS_MOBILE ? 120 : 150;
+  const PAIR_GAP = IS_MOBILE ? 14  : 20;
+  const H_GAP    = IS_MOBILE ? 28  : 40;
+  const GEN_H    = IS_MOBILE ? 220 : 300;
+  const PHOTO_R  = IS_MOBILE ? 26  : 32;
 
   // ── Состояние ─────────────────────────────────────────────
   let transform = { x: 0, y: 0, k: 1 };
@@ -327,8 +328,10 @@
       div.appendChild(card);
 
       div.addEventListener('click', (e) => { if (!e.ctrlKey && !e.metaKey) openPanel(id); });
-      div.addEventListener('mouseenter', () => { if (!panelOpen) applyFocus(id); });
-      div.addEventListener('mouseleave', () => { if (!panelOpen) clearFocus(); });
+      if (!IS_MOBILE) {
+        div.addEventListener('mouseenter', () => { if (!panelOpen) applyFocus(id); });
+        div.addEventListener('mouseleave', () => { if (!panelOpen) clearFocus(); });
+      }
       nodesLayer.appendChild(div);
     }
   }
@@ -671,6 +674,26 @@
 
     const vpW = viewport.clientWidth;
     const vpH = viewport.clientHeight;
+
+    // Mobile: центрируем на главном персонаже вместо fit-all
+    if (IS_MOBILE) {
+      const mainEntry = Object.entries(positions).find(([id]) => PEOPLE[id] && PEOPLE[id].isMain);
+      if (mainEntry) {
+        const [, mainPos] = mainEntry;
+        const mk = 0.85;
+        const mtx = vpW / 2 - mainPos.x * mk;
+        const mty = vpH * 0.35 - mainPos.y * mk;
+        d3.select(viewport).call(zoom.transform, d3.zoomIdentity.translate(mtx, mty).scale(mk));
+        viewport.addEventListener('dblclick', (e) => {
+          if (e.target === viewport || e.target === svg || e.target.tagName === 'path') {
+            d3.select(viewport).transition().duration(400)
+              .call(zoom.transform, d3.zoomIdentity.translate(mtx, mty).scale(mk));
+          }
+        });
+        return;
+      }
+    }
+
     const treeW = maxX - minX;
     const treeH = maxY - minY;
 
@@ -1013,8 +1036,11 @@
 
   // ── Дни рождения: полный список (dropdown) ────────────────
   function initBirthday() {
-    const btn = document.getElementById('btn-birthday');
-    if (!btn) return;
+    const btns = [
+      document.getElementById('btn-birthday'),
+      document.getElementById('btn-birthday-mb')
+    ].filter(Boolean);
+    if (btns.length === 0) return;
 
     const MONTHS_RU = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
     const today = new Date();
@@ -1084,27 +1110,29 @@
 
     document.body.appendChild(dropdown);
 
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const rect = btn.getBoundingClientRect();
-      if (window.innerWidth <= 640) {
-        dropdown.style.bottom = (window.innerHeight - rect.top + 6) + 'px';
-        dropdown.style.top    = 'auto';
-        dropdown.style.left   = '8px';
-        dropdown.style.right  = '8px';
-        dropdown.style.width  = 'auto';
-      } else {
-        dropdown.style.top    = (rect.bottom + 6) + 'px';
-        dropdown.style.bottom = 'auto';
-        dropdown.style.right  = (window.innerWidth - rect.right) + 'px';
-        dropdown.style.left   = 'auto';
-        dropdown.style.width  = '290px';
-      }
-      dropdown.classList.toggle('open');
+    btns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const rect = btn.getBoundingClientRect();
+        if (window.innerWidth <= 640) {
+          dropdown.style.bottom = (window.innerHeight - rect.top + 6) + 'px';
+          dropdown.style.top    = 'auto';
+          dropdown.style.left   = '8px';
+          dropdown.style.right  = '8px';
+          dropdown.style.width  = 'auto';
+        } else {
+          dropdown.style.top    = (rect.bottom + 6) + 'px';
+          dropdown.style.bottom = 'auto';
+          dropdown.style.right  = (window.innerWidth - rect.right) + 'px';
+          dropdown.style.left   = 'auto';
+          dropdown.style.width  = '290px';
+        }
+        dropdown.classList.toggle('open');
+      });
     });
 
     document.addEventListener('click', (e) => {
-      if (!dropdown.contains(e.target) && e.target !== btn) {
+      if (!dropdown.contains(e.target) && !btns.includes(e.target)) {
         dropdown.classList.remove('open');
       }
     });
@@ -1112,16 +1140,30 @@
 
   // ── Кнопки тулбара ────────────────────────────────────────
   function initToolbar() {
-    // PNG
     document.getElementById('btn-png').addEventListener('click', downloadPNG);
 
-    // Поделиться
-    document.getElementById('btn-share').addEventListener('click', () => {
+    const shareHandler = () => {
       navigator.clipboard.writeText(window.location.href)
         .then(() => showToast('Ссылка скопирована!'))
         .catch(() => showToast('Не удалось скопировать'));
-    });
+    };
+    document.getElementById('btn-share').addEventListener('click', shareHandler);
 
+    // Mobile bottom bar
+    const mbPng = document.getElementById('btn-png-mb');
+    if (mbPng) mbPng.addEventListener('click', downloadPNG);
+
+    const mbShare = document.getElementById('btn-share-mb');
+    if (mbShare) mbShare.addEventListener('click', shareHandler);
+
+    const mbEdit = document.getElementById('btn-edit-mb');
+    if (mbEdit) mbEdit.addEventListener('click', () => showToast('Перетаскивание узлов — ПК (Ctrl+клик)'));
+
+    const mbReset = document.getElementById('btn-reset-mb');
+    if (mbReset) mbReset.addEventListener('click', () => {
+      localStorage.removeItem('ft-positions');
+      location.reload();
+    });
   }
 
   function downloadPNG() {
