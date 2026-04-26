@@ -1103,9 +1103,19 @@
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const rect = btn.getBoundingClientRect();
-      dropdown.style.top   = (rect.bottom + 6) + 'px';
-      dropdown.style.right = (window.innerWidth - rect.right) + 'px';
-      dropdown.style.left  = 'auto';
+      if (window.innerWidth <= 640) {
+        dropdown.style.bottom = (window.innerHeight - rect.top + 6) + 'px';
+        dropdown.style.top    = 'auto';
+        dropdown.style.left   = '8px';
+        dropdown.style.right  = '8px';
+        dropdown.style.width  = 'auto';
+      } else {
+        dropdown.style.top    = (rect.bottom + 6) + 'px';
+        dropdown.style.bottom = 'auto';
+        dropdown.style.right  = (window.innerWidth - rect.right) + 'px';
+        dropdown.style.left   = 'auto';
+        dropdown.style.width  = '290px';
+      }
       dropdown.classList.toggle('open');
     });
 
@@ -1350,6 +1360,22 @@
     window.resetPositions = () => { localStorage.removeItem('ft-positions'); location.reload(); };
   }
 
+  // ── Кнопка легенды (мобиль) ──────────────────────────────
+  function initLegendToggle() {
+    const btn = document.getElementById('btn-legend');
+    const legend = document.querySelector('.conn-legend');
+    if (!btn || !legend) return;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      legend.classList.toggle('visible');
+    });
+    document.addEventListener('click', (e) => {
+      if (!legend.contains(e.target) && e.target !== btn) {
+        legend.classList.remove('visible');
+      }
+    });
+  }
+
   // ── Мобильный backdrop для панели ────────────────────────
   function initBackdrop() {
     const backdrop = document.createElement('div');
@@ -1393,6 +1419,7 @@
     initToolbar();
     initDragDrop();
     initBackdrop();
+    initLegendToggle();
   }
 
   if (document.readyState === 'loading') {
