@@ -30,7 +30,7 @@ const PEOPLE = {
   'valentina_levkina': {
     name: 'Левкина Валентина Ивановна',
     born: '1925', died: '1985', gender: 'f',
-    photo: 'photos/valentina.jpg', maiden: 'Кучеренко'
+    photo: 'photos/valentina.jpg', maiden: 'Кучеренко', isMain: true
   },
   'fedor_levkin': {
     name: 'Левкин Фёдор Афанасьевич',

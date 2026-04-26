@@ -1748,7 +1748,8 @@
     focusMode = true;
     const fv = document.getElementById('focus-view');
     if (fv) fv.classList.remove('hidden');
-    viewport.style.display = 'none';
+    const vp = viewport || document.getElementById('tree-viewport');
+    if (vp) vp.style.display = 'none';
     const btnTree  = document.getElementById('btn-tree-mode');
     const btnFocus = document.getElementById('btn-focus-mode');
     if (btnTree)  btnTree.classList.remove('active');
@@ -1765,7 +1766,8 @@
     focusMode = false;
     const fv = document.getElementById('focus-view');
     if (fv) fv.classList.add('hidden');
-    viewport.style.display = '';
+    const vp = viewport || document.getElementById('tree-viewport');
+    if (vp) vp.style.display = '';
     const btnTree  = document.getElementById('btn-tree-mode');
     const btnFocus = document.getElementById('btn-focus-mode');
     if (btnTree)  btnTree.classList.add('active');
