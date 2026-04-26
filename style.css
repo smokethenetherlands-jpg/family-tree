@@ -214,10 +214,12 @@ html, body {
   box-shadow: 0 0 0 0 var(--accent-glow);
   transition: box-shadow 0.25s, border-color 0.25s, transform 0.2s;
 }
-.person-node:hover .node-photo-wrap {
-  box-shadow: 0 0 18px 4px var(--accent-glow), 0 0 0 3px var(--accent-dim);
-  border-color: var(--accent);
-  transform: scale(1.07);
+@media (hover: hover) and (pointer: fine) {
+  .person-node:hover .node-photo-wrap {
+    box-shadow: 0 0 18px 4px var(--accent-glow), 0 0 0 3px var(--accent-dim);
+    border-color: var(--accent);
+    transform: scale(1.07);
+  }
 }
 
 .node-photo {
@@ -577,10 +579,12 @@ html, body {
   box-shadow: 0 2px 16px rgba(0,0,0,0.60), inset 0 1px 0 rgba(255,255,255,0.04);
   transition: border-color 0.25s, box-shadow 0.25s, transform 0.22s;
 }
-.person-node:hover .node-card {
-  transform: translateY(-5px);
-  border-color: rgba(212,168,75,0.50);
-  box-shadow: 0 14px 38px rgba(0,0,0,0.55), 0 0 22px rgba(212,168,75,0.14), inset 0 1px 0 rgba(255,255,255,0.07);
+@media (hover: hover) and (pointer: fine) {
+  .person-node:hover .node-card {
+    transform: translateY(-5px);
+    border-color: rgba(212,168,75,0.50);
+    box-shadow: 0 14px 38px rgba(0,0,0,0.55), 0 0 22px rgba(212,168,75,0.14), inset 0 1px 0 rgba(255,255,255,0.07);
+  }
 }
 .person-node.deceased .node-card {
   border-color: rgba(80, 90, 110, 0.30);

@@ -1232,6 +1232,7 @@
     const style = document.createElement('style');
     style.textContent = [
       '.person-node{cursor:grab;touch-action:none}',
+      '@media(pointer:coarse){.person-node{touch-action:auto;cursor:pointer}}',
       '.person-node.dragging{cursor:grabbing;opacity:.85;z-index:1000}',
       '.person-node.selected .node-card{border-color:rgba(100,165,255,0.65)!important;box-shadow:0 0 0 2px rgba(80,145,240,0.25),0 4px 18px rgba(0,0,0,0.55)!important}',
       '.person-node.selected .node-photo-wrap{border-color:rgba(100,165,255,0.70)!important}'
@@ -1312,14 +1313,11 @@
     nodesLayer.addEventListener('mousedown', (e) => {
       const node = e.target.closest('.person-node');
       if (!node) return;
+      // Drag только с Ctrl/Cmd; без модификатора — обычный клик, D3 pan проходит
+      if (!(e.ctrlKey || e.metaKey)) return;
       e.stopPropagation();
       const id = node.dataset.id;
-      if (e.ctrlKey || e.metaKey) {
-        toggleSelect(id);
-        return;
-      }
-      // Обычный клик: если узел не выбран — снять выделение и тащить только его
-      if (!selectedIds.has(id)) clearSelection();
+      toggleSelect(id);
       startDrag(id, e.clientX, e.clientY);
     });
 
@@ -1335,23 +1333,6 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') clearSelection();
     });
-
-    nodesLayer.addEventListener('touchstart', (e) => {
-      const node = e.target.closest('.person-node');
-      if (!node) return;
-      e.stopPropagation();
-      const id = node.dataset.id;
-      if (!selectedIds.has(id)) clearSelection();
-      const t = e.touches[0];
-      startDrag(id, t.clientX, t.clientY);
-    }, { passive: false });
-    document.addEventListener('touchmove', (e) => {
-      if (!dragging) return;
-      e.preventDefault();
-      const t = e.touches[0];
-      moveDrag(t.clientX, t.clientY);
-    }, { passive: false });
-    document.addEventListener('touchend', endDrag);
 
     nodesLayer.addEventListener('click', (e) => {
       if (suppressNextClick) { e.stopPropagation(); suppressNextClick = false; }
