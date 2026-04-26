@@ -681,22 +681,6 @@
     d3.select(viewport)
       .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
 
-    // Кнопки навигации
-    document.getElementById('btn-roots').addEventListener('click', () => {
-      const rootPerson = PEOPLE['ivan_kucherenko'];
-      const pos = positions['ivan_kucherenko'] || positions['valentina_levkina'];
-      if (!pos) return;
-      zoomTo(pos.x, pos.y, 1.2, zoom);
-    });
-
-    document.getElementById('btn-latest').addEventListener('click', () => {
-      const latestY = Math.max(...Object.values(positions).map(p => p.y));
-      const latestNodes = Object.entries(positions).filter(([, p]) => p.y === latestY);
-      if (latestNodes.length === 0) return;
-      const avgX = latestNodes.reduce((s, [, p]) => s + p.x, 0) / latestNodes.length;
-      zoomTo(avgX, latestY, 1.2, zoom);
-    });
-
     // Двойной клик на фон — сброс
     viewport.addEventListener('dblclick', (e) => {
       if (e.target === viewport || e.target === svg || e.target.tagName === 'path') {
@@ -1138,20 +1122,6 @@
         .catch(() => showToast('Не удалось скопировать'));
     });
 
-    document.getElementById('btn-suggest').addEventListener('click', () => {
-      if (!YANDEX_FORM_URL || YANDEX_FORM_URL.endsWith('/u/')) {
-        showToast('Форма для правок ещё не настроена');
-        return;
-      }
-      window.open(YANDEX_FORM_URL, '_blank', 'noopener,noreferrer');
-    });
-
-    document.getElementById('btn-reset').addEventListener('click', () => {
-      if (confirm('Сбросить позиции всех узлов к исходным?')) {
-        localStorage.removeItem('ft-positions');
-        location.reload();
-      }
-    });
   }
 
   function downloadPNG() {
