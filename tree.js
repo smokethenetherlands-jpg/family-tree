@@ -6,12 +6,12 @@
 
   // ── Константы ─────────────────────────────────────────────
   const IS_MOBILE = window.innerWidth < 640;
-  const NODE_W   = IS_MOBILE ? 92  : 110;
-  const NODE_H   = IS_MOBILE ? 120 : 150;
-  const PAIR_GAP = IS_MOBILE ? 14  : 20;
-  const H_GAP    = IS_MOBILE ? 28  : 40;
-  const GEN_H    = IS_MOBILE ? 220 : 300;
-  const PHOTO_R  = IS_MOBILE ? 26  : 32;
+  const NODE_W   = IS_MOBILE ? 110 : 130;
+  const NODE_H   = IS_MOBILE ? 140 : 170;
+  const PAIR_GAP = IS_MOBILE ? 16  : 20;
+  const H_GAP    = IS_MOBILE ? 40  : 50;
+  const GEN_H    = IS_MOBILE ? 280 : 340;
+  const PHOTO_R  = IS_MOBILE ? 37  : 46;
 
   // ── Состояние ─────────────────────────────────────────────
   let transform = { x: 0, y: 0, k: 1 };
@@ -291,13 +291,13 @@
         img.className = 'node-photo';
         img.src = person.photo;
         img.alt = person.name;
-        const placeholder = makePlaceholderSvg();
+        const placeholder = makePlaceholderSvg(person.name);
         placeholder.style.display = 'none';
         img.onerror = () => { img.style.display = 'none'; placeholder.style.display = 'flex'; };
         photoWrap.appendChild(img);
         photoWrap.appendChild(placeholder);
       } else {
-        photoWrap.appendChild(makePlaceholderSvg());
+        photoWrap.appendChild(makePlaceholderSvg(person.name));
       }
 
       // Имя
@@ -352,10 +352,18 @@
     return svgEl;
   }
 
-  function makePlaceholderSvg() {
+  function makePlaceholderSvg(name) {
     const wrap = document.createElement('div');
     wrap.className = 'node-photo-placeholder';
-    wrap.appendChild(makePlaceholderIcon());
+    if (name) {
+      const parts = name.trim().split(' ');
+      const initials = parts.length >= 2
+        ? (parts[0][0] + parts[1][0]).toUpperCase()
+        : parts[0].slice(0, 2).toUpperCase();
+      wrap.textContent = initials;
+    } else {
+      wrap.appendChild(makePlaceholderIcon());
+    }
     return wrap;
   }
 
@@ -895,19 +903,23 @@
     if (activeNode) activeNode.classList.add('active');
 
     applyFocus(personId);
+    // В фокус-режиме скрываем focus-view чтобы панель не перекрывалась
+    if (IS_MOBILE && focusMode) {
+      const fv = document.getElementById('focus-view');
+      if (fv) fv.classList.add('hidden');
+    }
     panel.classList.add('open');
 
-    // Mobile: открываем в peek-режиме и центрируем на человеке
-    if (IS_MOBILE) {
-      panel.classList.add('peek');
-      fillPeekBar(personId, person);
+    // Mobile: панель занимает весь экран под тулбаром
+    if (IS_MOBILE && !focusMode) {
+      // в режиме дерева — центрируем на человеке
       const pos = positions[personId];
       if (pos && _zoom) {
         const vpW = viewport.clientWidth;
         const vpH = viewport.clientHeight;
         const k = transform.k;
         const tx = vpW / 2 - pos.x * k;
-        const ty = (vpH - 110) / 2 - pos.y * k;
+        const ty = vpH / 2 - pos.y * k;
         d3.select(viewport).transition().duration(400)
           .call(_zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
       }
@@ -1054,6 +1066,11 @@
     activePersonId = null;
     nodesLayer.querySelectorAll('.person-node.active').forEach(n => n.classList.remove('active'));
     clearFocus();
+    // На мобиле возвращаемся в focus-view
+    if (IS_MOBILE && focusMode) {
+      const fv = document.getElementById('focus-view');
+      if (fv) fv.classList.remove('hidden');
+    }
   }
 
   panelClose.addEventListener('click', closePanelState);
@@ -1486,6 +1503,9 @@
         item.appendChild(nameEl);
         item.addEventListener('click', () => {
           closeOverlay();
+          if (IS_MOBILE && focusMode) enterTreeMode();
+          const pos = positions[id];
+          if (pos && _zoom) zoomTo(pos.x, pos.y, 1.4);
           openPanel(id);
         });
         overlayResults.appendChild(item);
@@ -1521,12 +1541,7 @@
     panel.addEventListener('pointermove', (e) => {
       if (startY === null) return;
       const dy = e.clientY - startY;
-      if (panel.classList.contains('peek') && dy < -40) {
-        // Свайп вверх → раскрыть полностью
-        panel.classList.remove('peek');
-        startY = null;
-      } else if (!panel.classList.contains('peek') && dy > 80) {
-        // Свайп вниз в полном режиме → закрыть
+      if (dy > 80) {
         closePanelState();
         startY = null;
       }
@@ -1570,6 +1585,215 @@
     observer.observe(panel, { attributes: true, attributeFilter: ['class'] });
   }
 
+  // ── Режим «Фокус» ────────────────────────────────────────
+  let focusHistory = [];
+  let focusMode    = false;
+
+  function makeFocusInitials(name, cls) {
+    const parts = name.trim().split(' ');
+    const initials = parts.length >= 2
+      ? (parts[0][0] + parts[1][0]).toUpperCase()
+      : parts[0].slice(0, 2).toUpperCase();
+    const div = document.createElement('div');
+    div.className = cls;
+    div.textContent = initials;
+    return div;
+  }
+
+  function makeFocusBubble(personId) {
+    const person = PEOPLE[personId];
+    if (!person) return null;
+
+    const bubble = document.createElement('div');
+    bubble.className = 'focus-bubble';
+    if (person.died) bubble.classList.add('deceased');
+
+    const photoWrap = document.createElement('div');
+    photoWrap.className = 'focus-bubble-photo';
+    if (person.photo) {
+      const img = document.createElement('img');
+      img.src = person.photo;
+      img.alt = person.name;
+      img.onerror = () => { img.remove(); photoWrap.appendChild(makeFocusInitials(person.name, 'focus-bubble-initials')); };
+      photoWrap.appendChild(img);
+    } else {
+      photoWrap.appendChild(makeFocusInitials(person.name, 'focus-bubble-initials'));
+    }
+
+    const parts = person.name.trim().split(' ');
+    const nameEl = document.createElement('div');
+    nameEl.className = 'focus-bubble-name';
+    nameEl.textContent = parts[1] || parts[0];
+
+    bubble.appendChild(photoWrap);
+    bubble.appendChild(nameEl);
+    bubble.addEventListener('click', () => navigateFocus(personId));
+    return bubble;
+  }
+
+  function makeFocusCenterCard(personId) {
+    const person = PEOPLE[personId];
+    const card = document.createElement('div');
+    card.className = 'focus-center-card';
+
+    const photoWrap = document.createElement('div');
+    photoWrap.className = 'focus-center-photo';
+    if (person.photo) {
+      const img = document.createElement('img');
+      img.src = person.photo;
+      img.alt = person.name;
+      img.onerror = () => { img.remove(); photoWrap.appendChild(makeFocusInitials(person.name, 'focus-center-initials')); };
+      photoWrap.appendChild(img);
+    } else {
+      photoWrap.appendChild(makeFocusInitials(person.name, 'focus-center-initials'));
+    }
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'focus-center-name';
+    nameEl.textContent = person.name.split(' ').slice(0, 2).join(' ');
+
+    card.appendChild(photoWrap);
+    card.appendChild(nameEl);
+
+    const dates = formatDates(person);
+    if (dates) {
+      const datesEl = document.createElement('div');
+      datesEl.className = 'focus-center-dates';
+      datesEl.textContent = dates;
+      card.appendChild(datesEl);
+    }
+
+    const hint = document.createElement('div');
+    hint.className = 'focus-center-hint';
+    hint.textContent = 'нажмите для подробностей';
+    card.appendChild(hint);
+
+    card.addEventListener('click', () => openPanel(personId));
+    return card;
+  }
+
+  function renderFocusView(personId) {
+    const person = PEOPLE[personId];
+    if (!person) return;
+
+    const parentsRow  = document.getElementById('focus-parents');
+    const centerWrap  = document.getElementById('focus-center');
+    const connector   = document.getElementById('focus-couple-connector');
+    const spouseWrap  = document.getElementById('focus-spouse');
+    const childrenRow = document.getElementById('focus-children');
+    if (!parentsRow || !centerWrap || !childrenRow) return;
+
+    parentsRow.innerHTML = '';
+    centerWrap.innerHTML = '';
+    spouseWrap.innerHTML = '';
+    childrenRow.innerHTML = '';
+
+    const rel = getRelatives(personId);
+
+    // Родители
+    const parentIds = [];
+    if (rel.parents && rel.parents.p1) parentIds.push(rel.parents.p1);
+    if (rel.parents && rel.parents.p2) parentIds.push(rel.parents.p2);
+    if (parentIds.length > 0) {
+      parentsRow.classList.remove('hidden');
+      parentIds.forEach(pid => {
+        const b = makeFocusBubble(pid);
+        if (b) parentsRow.appendChild(b);
+      });
+    } else {
+      parentsRow.classList.add('hidden');
+    }
+
+    // Центральная карточка
+    centerWrap.appendChild(makeFocusCenterCard(personId));
+
+    // Супруг
+    if (rel.spouse && !PEOPLE[rel.spouse]?.isEmpty) {
+      connector.style.display = '';
+      const b = makeFocusBubble(rel.spouse);
+      if (b) spouseWrap.appendChild(b);
+    } else {
+      connector.style.display = 'none';
+    }
+
+    // Дети
+    const children = rel.children.filter(id => !PEOPLE[id]?.isEmpty);
+    if (children.length > 0) {
+      childrenRow.classList.remove('hidden');
+      children.forEach(cid => {
+        const b = makeFocusBubble(cid);
+        if (b) childrenRow.appendChild(b);
+      });
+    } else {
+      childrenRow.classList.add('hidden');
+    }
+
+    // Back button visibility
+    const backBtn = document.getElementById('focus-back');
+    if (backBtn) backBtn.style.visibility = focusHistory.length > 1 ? 'visible' : 'hidden';
+  }
+
+  function navigateFocus(personId) {
+    focusHistory.push(personId);
+    renderFocusView(personId);
+  }
+
+  function focusBack() {
+    if (focusHistory.length <= 1) return;
+    focusHistory.pop();
+    renderFocusView(focusHistory[focusHistory.length - 1]);
+  }
+
+  function enterFocusMode() {
+    focusMode = true;
+    const fv = document.getElementById('focus-view');
+    if (fv) fv.classList.remove('hidden');
+    viewport.style.display = 'none';
+    const btnTree  = document.getElementById('btn-tree-mode');
+    const btnFocus = document.getElementById('btn-focus-mode');
+    if (btnTree)  btnTree.classList.remove('active');
+    if (btnFocus) btnFocus.classList.add('active');
+    if (focusHistory.length === 0) {
+      const mainEntry = Object.entries(PEOPLE).find(([, p]) => p.isMain);
+      if (mainEntry) navigateFocus(mainEntry[0]);
+    } else {
+      renderFocusView(focusHistory[focusHistory.length - 1]);
+    }
+  }
+
+  function enterTreeMode() {
+    focusMode = false;
+    const fv = document.getElementById('focus-view');
+    if (fv) fv.classList.add('hidden');
+    viewport.style.display = '';
+    const btnTree  = document.getElementById('btn-tree-mode');
+    const btnFocus = document.getElementById('btn-focus-mode');
+    if (btnTree)  btnTree.classList.add('active');
+    if (btnFocus) btnFocus.classList.remove('active');
+  }
+
+  function initFocusView() {
+    const backBtn   = document.getElementById('focus-back');
+    const treeBtn   = document.getElementById('focus-tree-btn');
+    const btnTree   = document.getElementById('btn-tree-mode');
+    const btnFocus  = document.getElementById('btn-focus-mode');
+    const centerBtn = document.getElementById('btn-center-mb');
+
+    if (backBtn)  backBtn.addEventListener('click', focusBack);
+    if (treeBtn)  treeBtn.addEventListener('click', enterTreeMode);
+    if (btnTree)  btnTree.addEventListener('click', enterTreeMode);
+    if (btnFocus) btnFocus.addEventListener('click', enterFocusMode);
+
+    // Убираем старую кнопку центрирования (была btn-center-mb) — теперь это btn-tree-mode
+    if (centerBtn) centerBtn.style.display = 'none';
+
+    if (IS_MOBILE) {
+      enterFocusMode();
+    } else {
+      enterTreeMode();
+    }
+  }
+
   // ── Инициализация ─────────────────────────────────────────
   function init() {
     validateData();
@@ -1588,6 +1812,7 @@
     initLegendToggle();
     initSearchOverlay();
     initPanelDrag();
+    initFocusView();
   }
 
   if (document.readyState === 'loading') {

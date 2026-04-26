@@ -62,6 +62,26 @@
     <div class="nodes-layer" id="nodes-layer"></div>
   </div>
 
+  <!-- Режим «Фокус» (мобиль) -->
+  <div id="focus-view" class="focus-view hidden">
+    <div class="focus-nav">
+      <button id="focus-back" class="focus-back-btn" aria-label="Назад">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Назад
+      </button>
+      <button id="focus-tree-btn" class="focus-tree-btn" aria-label="Всё дерево">
+        Всё дерево
+      </button>
+    </div>
+    <div id="focus-parents" class="focus-row focus-parents-row"></div>
+    <div class="focus-center-row">
+      <div id="focus-center" class="focus-center-wrap"></div>
+      <div id="focus-couple-connector" class="focus-couple-connector" style="display:none"></div>
+      <div id="focus-spouse" class="focus-spouse-wrap"></div>
+    </div>
+    <div id="focus-children" class="focus-row focus-children-row"></div>
+  </div>
+
   <!-- Боковая панель персонажа -->
   <aside class="person-panel" id="person-panel">
     <button class="panel-close" id="panel-close" aria-label="Закрыть">✕</button>
@@ -138,13 +158,16 @@
     </div>
   </div>
 
-  <!-- Mobile bottom bar (4 кнопки: поиск, центр, ДР, поделиться) -->
+  <!-- Mobile bottom bar (5 кнопок: поиск, дерево, фокус, ДР, поделиться) -->
   <nav class="mobile-bottom-bar" id="mobile-bottom-bar">
     <button class="mb-btn" id="btn-search-mb" title="Поиск">
       <svg viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
-    <button class="mb-btn" id="btn-center-mb" title="К главному">
-      <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <button class="mb-btn mb-btn-mode" id="btn-tree-mode" title="Всё дерево">
+      <svg viewBox="0 0 20 20" fill="none"><rect x="8" y="1" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="8" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="14" y="8" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="8" y="15" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.4"/><path d="M10 5v3M4 12v3M16 12v3M6 10h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </button>
+    <button class="mb-btn mb-btn-mode" id="btn-focus-mode" title="Фокус">
+      <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2" fill="currentColor"/><path d="M10 2v3M10 15v3M2 10h3M15 10h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <button class="mb-btn" id="btn-birthday-mb" title="Дни рождения">
       <svg viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="14" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 10V7M13 10V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="13" cy="6" r="1.5" fill="currentColor"/></svg>

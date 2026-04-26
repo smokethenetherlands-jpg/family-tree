@@ -4,27 +4,27 @@
    ============================================================ */
 
 :root {
-  --bg:          #0c0f1a;
-  --bg-card:     #131720;
-  --bg-card-hover: #1b2030;
-  --accent:      #d4a84b;
-  --accent-dim:  rgba(212, 168, 75, 0.35);
-  --accent-glow: rgba(212, 168, 75, 0.18);
-  --text:        #e4e8f2;
-  --text-muted:  #7d8490;
-  --border:      rgba(212, 168, 75, 0.22);
+  --bg:          #080b14;
+  --bg-card:     #101422;
+  --bg-card-hover: #181d30;
+  --accent:      #e8b84b;
+  --accent-dim:  rgba(232, 184, 75, 0.35);
+  --accent-glow: rgba(232, 184, 75, 0.18);
+  --text:        #f0f2f8;
+  --text-muted:  #8b93a8;
+  --border:      rgba(232, 184, 75, 0.22);
   --border-deceased: #3a3f52;
   --line:        rgba(180, 190, 210, 0.32);
   --panel-w:     320px;
   --toolbar-h:   52px;
-  --radius:      12px;
+  --radius:      16px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   width: 100%; height: 100%; overflow: hidden;
-  background: radial-gradient(ellipse at 28% 18%, #141c30 0%, #0c0f1a 52%, #060810 100%);
+  background: radial-gradient(ellipse at 28% 18%, #111829 0%, #080b14 52%, #040609 100%);
   color: var(--text);
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 14px;
@@ -180,7 +180,7 @@ html, body {
 /* ── Карточка узла ────────────────────────────────────────── */
 .person-node {
   position: absolute;
-  width: 110px;
+  width: 130px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -206,7 +206,7 @@ html, body {
 
 .node-photo-wrap {
   position: relative;
-  width: 64px; height: 64px;
+  width: 78px; height: 78px;
   border-radius: 50%;
   border: 2px solid var(--accent);
   overflow: hidden;
@@ -233,7 +233,10 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: var(--accent);
+  background: rgba(232, 184, 75, 0.07);
+  font-size: 22px;
+  font-weight: 600;
 }
 .node-photo-placeholder svg { width: 36px; height: 36px; }
 
@@ -266,14 +269,14 @@ html, body {
 
 /* Главный персонаж */
 .person-node.main-person .node-photo-wrap {
-  width: 78px; height: 78px;
+  width: 92px; height: 92px;
   border-width: 3px;
-  box-shadow: 0 0 0 5px rgba(212,168,75,0.13), 0 0 32px 8px rgba(212,168,75,0.32);
+  box-shadow: 0 0 0 5px rgba(232,184,75,0.13), 0 0 32px 8px rgba(232,184,75,0.32);
 }
 .person-node.main-person .node-card {
-  background: rgba(212,168,75,0.07);
-  border-color: rgba(212,168,75,0.55);
-  box-shadow: 0 6px 28px rgba(212,168,75,0.18), 0 2px 16px rgba(0,0,0,0.55), inset 0 1px 0 rgba(212,168,75,0.14);
+  background: rgba(232,184,75,0.07);
+  border-color: rgba(232,184,75,0.55);
+  box-shadow: 0 6px 28px rgba(232,184,75,0.18), 0 2px 16px rgba(0,0,0,0.55), inset 0 1px 0 rgba(232,184,75,0.14);
 }
 .person-node.main-person .node-name {
   color: var(--accent);
@@ -281,17 +284,17 @@ html, body {
 }
 
 .node-name {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text);
   text-align: center;
   line-height: 1.3;
-  max-width: 110px;
+  max-width: 130px;
   word-break: break-word;
 }
 
 .node-dates {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted);
   text-align: center;
 }
@@ -299,14 +302,14 @@ html, body {
 /* ── SVG линии ────────────────────────────────────────────── */
 .conn-line {
   fill: none;
-  stroke: rgba(120, 158, 210, 0.48);
-  stroke-width: 1.5px;
+  stroke: rgba(74, 127, 193, 0.55);
+  stroke-width: 2px;
   stroke-linecap: round;
   transition: opacity 0.2s;
 }
 .conn-line.couple-line {
-  stroke: rgba(212, 168, 75, 0.82);
-  stroke-width: 2.5px;
+  stroke: rgba(232, 184, 75, 0.85);
+  stroke-width: 3px;
 }
 .conn-line.step-line {
   stroke: rgba(185, 118, 225, 0.65);
@@ -570,13 +573,13 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  padding: 10px 8px 8px;
-  background: rgba(19, 23, 32, 0.80);
+  padding: 12px 8px 10px;
+  background: linear-gradient(160deg, rgba(24,28,44,0.90) 0%, rgba(16,20,34,0.88) 100%);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.60), inset 0 1px 0 rgba(255,255,255,0.04);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.60), inset 0 1px 0 rgba(255,255,255,0.05);
   transition: border-color 0.25s, box-shadow 0.25s, transform 0.22s;
 }
 @media (hover: hover) and (pointer: fine) {
@@ -687,6 +690,12 @@ html, body {
 .mb-btn:active {
   transform: scale(0.91);
   color: var(--accent);
+}
+.mb-btn-mode.active {
+  color: var(--accent);
+}
+.mb-btn-mode.active svg {
+  filter: drop-shadow(0 0 4px rgba(232,184,75,0.5));
 }
 
 /* ── Кнопка поиска в toolbar (только мобиль) ─────────────── */
@@ -862,54 +871,53 @@ html, body {
   }
 
   /* Карточки: компактные */
-  .person-node { width: 92px; }
-  .node-name { font-size: 10px; max-width: 92px; }
-  .node-dates { display: none; }
-  .node-card { padding: 8px 6px 6px; gap: 4px; }
-  .node-photo-wrap { width: 52px; height: 52px; }
-  .person-node.main-person .node-photo-wrap { width: 64px; height: 64px; }
+  .person-node { width: 110px; }
+  .node-name { font-size: 12px; max-width: 110px; }
+  .node-dates { font-size: 10px; }
+  .node-card { padding: 10px 6px 8px; gap: 5px; border-radius: 14px; }
+  .node-photo-wrap { width: 64px; height: 64px; }
+  .person-node.main-person .node-photo-wrap { width: 78px; height: 78px; }
+  .node-photo-placeholder { font-size: 18px; }
   .node-photo-placeholder svg { width: 28px; height: 28px; }
 
-  /* Bottom sheet панель: базовый вид (полный) */
+  /* Fullscreen панель на мобиле (slide-up снизу, перекрывает весь экран под тулбаром) */
   .person-panel {
     width: 100%;
     max-width: 100%;
-    top: auto;
-    bottom: calc(var(--bottom-bar-h) + env(safe-area-inset-bottom, 0px));
-    height: min(72vh, 560px);
+    top: var(--toolbar-h);
+    bottom: 0;
+    height: auto;
     border-left: none;
-    border-top: 1px solid var(--border);
-    border-radius: 18px 18px 0 0;
+    border-top: none;
+    border-radius: 0;
     transform: translateY(100%);
+    z-index: 300;
   }
   .person-panel.open { transform: translateY(0); }
+  .person-panel::before { display: none; }
 
-  /* Ручка drag-handle */
-  .person-panel::before {
-    content: '';
-    display: block;
-    width: 36px; height: 4px;
-    background: rgba(255, 255, 255, 0.18);
-    border-radius: 2px;
-    margin: 10px auto 4px;
-    flex-shrink: 0;
+  .panel-close {
+    top: 16px;
+    right: 16px;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    font-size: 14px;
   }
-
-  .panel-close { top: 20px; }
 
   .panel-photo-wrap {
-    width: 82px; height: 82px;
-    margin-top: 20px;
+    width: 100px; height: 100px;
+    margin-top: 56px;
   }
-  .panel-photo-placeholder svg { width: 44px; height: 44px; }
+  .panel-photo-placeholder svg { width: 56px; height: 56px; }
 
-  /* ── Peek state: 110px, показывает только peek-bar ──────── */
-  .person-panel.peek {
-    height: 110px;
-    overflow: hidden;
-  }
-  .person-panel.peek .panel-peek-bar { display: flex; }
-  .person-panel.peek .panel-full-content { display: none; }
+  /* Peek-bar скрыт — не используется в fullscreen */
+  .person-panel .panel-peek-bar { display: none !important; }
+  .person-panel .panel-full-content { display: block !important; }
+
+  .panel-name { font-size: 20px; }
+  .panel-body { padding: 0 20px 120px; }
 
   /* Peek bar layout */
   .panel-peek-bar {
@@ -1031,10 +1039,206 @@ html, body {
   .toast {
     bottom: calc(var(--bottom-bar-h) + env(safe-area-inset-bottom, 0px) + 12px);
   }
+
+  /* Focus-view: учитываем bottom bar */
+  .focus-view {
+    bottom: calc(var(--bottom-bar-h) + env(safe-area-inset-bottom, 0px));
+    padding-bottom: 8px;
+  }
 }
 
 @media (min-width: 641px) {
   .panel-backdrop { display: none !important; }
+  .focus-view { display: none !important; }
+}
+
+/* ── Focus-view (мобильный режим «Фокус на персоне») ─────── */
+.focus-view {
+  position: fixed;
+  inset: var(--toolbar-h) 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 12px 16px;
+  z-index: 2;
+  overflow: hidden;
+}
+.focus-view.hidden { display: none !important; }
+
+.focus-nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.focus-back-btn, .focus-tree-btn {
+  background: rgba(16, 20, 34, 0.85);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.focus-back-btn:active, .focus-tree-btn:active {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+  background: rgba(232, 184, 75, 0.07);
+}
+.focus-back-btn svg { width: 16px; height: 16px; }
+
+.focus-row {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  width: 100%;
+  padding: 4px 8px;
+  flex-shrink: 0;
+}
+.focus-row::-webkit-scrollbar { display: none; }
+.focus-row.hidden { display: none; }
+
+.focus-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  min-width: 66px;
+  max-width: 80px;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s;
+}
+.focus-bubble:active { opacity: 0.65; }
+
+.focus-bubble-photo {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: 2px solid rgba(232, 184, 75, 0.28);
+  overflow: hidden;
+  background: var(--bg-card);
+  transition: border-color 0.15s;
+}
+.focus-bubble-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.focus-bubble:active .focus-bubble-photo { border-color: var(--accent); }
+
+.focus-bubble-initials {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(232, 184, 75, 0.08);
+  font-size: 20px; font-weight: 600;
+  color: var(--accent);
+}
+
+.focus-bubble-name {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.3;
+  max-width: 80px;
+  word-break: break-word;
+}
+
+.focus-bubble.deceased .focus-bubble-photo {
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+/* Центральный ряд: карточка + супруг */
+.focus-center-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.focus-couple-connector {
+  width: 20px;
+  height: 2.5px;
+  background: linear-gradient(to right, var(--accent), rgba(232,184,75,0.4));
+  flex-shrink: 0;
+}
+
+.focus-center-card {
+  background: linear-gradient(160deg, rgba(24,28,46,0.95) 0%, rgba(16,20,36,0.92) 100%);
+  border: 1.5px solid rgba(232, 184, 75, 0.38);
+  border-radius: 22px;
+  padding: 22px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  min-width: 160px;
+  max-width: 230px;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.focus-center-card:active {
+  border-color: var(--accent);
+  box-shadow: 0 0 24px rgba(232, 184, 75, 0.18), 0 6px 32px rgba(0,0,0,0.55);
+}
+
+.focus-center-photo {
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  border: 2.5px solid var(--accent);
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 0 0 4px rgba(232,184,75,0.12);
+}
+.focus-center-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.focus-center-initials {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(232, 184, 75, 0.10);
+  font-size: 32px; font-weight: 600;
+  color: var(--accent);
+}
+
+.focus-center-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.focus-center-dates {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.focus-center-hint {
+  font-size: 10px;
+  color: rgba(232,184,75,0.55);
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+/* Супруг рядом с центром */
+.focus-spouse-wrap {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 /* ── Доступность: отключение анимаций ────────────────────── */
