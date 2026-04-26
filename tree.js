@@ -802,8 +802,8 @@
       panelPhotoPlaceholder.style.display = 'flex';
     }
 
-    // Имя с эффектом печатания (только при первом открытии)
-    if (!wasOpen) {
+    // Имя (typewriter только на desktop при первом открытии)
+    if (!wasOpen && !IS_MOBILE) {
       typewriterEffect(panelName, person.name);
     } else {
       panelName.textContent = person.name;
@@ -896,6 +896,86 @@
 
     applyFocus(personId);
     panel.classList.add('open');
+
+    // Mobile: открываем в peek-режиме и центрируем на человеке
+    if (IS_MOBILE) {
+      panel.classList.add('peek');
+      fillPeekBar(personId, person);
+      const pos = positions[personId];
+      if (pos && _zoom) {
+        const vpW = viewport.clientWidth;
+        const vpH = viewport.clientHeight;
+        const k = transform.k;
+        const tx = vpW / 2 - pos.x * k;
+        const ty = (vpH - 110) / 2 - pos.y * k;
+        d3.select(viewport).transition().duration(400)
+          .call(_zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
+      }
+    }
+  }
+
+  function fillPeekBar(personId, person) {
+    const peekImg = document.getElementById('panel-peek-img');
+    const peekPh  = document.getElementById('panel-peek-ph');
+    const peekName = document.getElementById('panel-peek-name');
+    const quickRels = document.getElementById('panel-quick-rels');
+    if (!peekImg || !peekName || !quickRels) return;
+
+    if (person.photo) {
+      peekImg.src = person.photo;
+      peekImg.style.display = 'block';
+      if (peekPh) peekPh.style.display = 'none';
+      peekImg.onerror = () => {
+        peekImg.style.display = 'none';
+        if (peekPh) peekPh.style.display = 'flex';
+      };
+    } else {
+      peekImg.style.display = 'none';
+      if (peekPh) peekPh.style.display = 'flex';
+    }
+
+    peekName.textContent = person.name.split(' ').slice(0, 2).join(' ');
+
+    quickRels.innerHTML = '';
+    const rel = getRelatives(personId);
+    const relIds = [];
+    if (rel.parents) {
+      if (rel.parents.p1) relIds.push(rel.parents.p1);
+      if (rel.parents.p2) relIds.push(rel.parents.p2);
+    }
+    if (rel.spouse) relIds.push(rel.spouse);
+    rel.children.forEach(id => relIds.push(id));
+    rel.siblings.forEach(id => relIds.push(id));
+
+    relIds.forEach(relId => {
+      const rp = PEOPLE[relId];
+      if (!rp || rp.isEmpty) return;
+      const chip = document.createElement('div');
+      chip.className = 'quick-rel-chip';
+
+      const photoWrap = document.createElement('div');
+      photoWrap.className = 'quick-rel-chip-photo';
+      if (rp.photo) {
+        const img = document.createElement('img');
+        img.src = rp.photo; img.alt = '';
+        img.onerror = () => { img.style.display = 'none'; photoWrap.appendChild(makePlaceholderIcon()); };
+        photoWrap.appendChild(img);
+      } else {
+        photoWrap.appendChild(makePlaceholderIcon());
+      }
+
+      const nameEl = document.createElement('span');
+      const nameParts = rp.name.split(' ');
+      nameEl.textContent = nameParts[1] || nameParts[0];
+
+      chip.appendChild(photoWrap);
+      chip.appendChild(nameEl);
+      chip.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openPanel(relId);
+      });
+      quickRels.appendChild(chip);
+    });
   }
 
   function makeMetaRow(label, value, extraClass) {
@@ -967,22 +1047,20 @@
     tick();
   }
 
-  panelClose.addEventListener('click', () => {
+  function closePanelState() {
     clearTimeout(typewriterTimer);
-    panel.classList.remove('open');
+    panel.classList.remove('open', 'peek');
     panelOpen = false;
     activePersonId = null;
     nodesLayer.querySelectorAll('.person-node.active').forEach(n => n.classList.remove('active'));
     clearFocus();
-  });
+  }
+
+  panelClose.addEventListener('click', closePanelState);
 
   viewport.addEventListener('click', (e) => {
     if (panelOpen && !panel.contains(e.target) && !e.target.closest('.person-node')) {
-      panel.classList.remove('open');
-      panelOpen = false;
-      activePersonId = null;
-      nodesLayer.querySelectorAll('.person-node.active').forEach(n => n.classList.remove('active'));
-      clearFocus();
+      closePanelState();
     }
   });
 
@@ -1150,20 +1228,20 @@
     document.getElementById('btn-share').addEventListener('click', shareHandler);
 
     // Mobile bottom bar
-    const mbPng = document.getElementById('btn-png-mb');
-    if (mbPng) mbPng.addEventListener('click', downloadPNG);
-
     const mbShare = document.getElementById('btn-share-mb');
     if (mbShare) mbShare.addEventListener('click', shareHandler);
 
-    const mbEdit = document.getElementById('btn-edit-mb');
-    if (mbEdit) mbEdit.addEventListener('click', () => showToast('Перетаскивание узлов — ПК (Ctrl+клик)'));
-
-    const mbReset = document.getElementById('btn-reset-mb');
-    if (mbReset) mbReset.addEventListener('click', () => {
-      localStorage.removeItem('ft-positions');
-      location.reload();
-    });
+    // Кнопка центрирования на главном персонаже
+    const mbCenter = document.getElementById('btn-center-mb');
+    if (mbCenter) {
+      mbCenter.addEventListener('click', () => {
+        const mainEntry = Object.entries(positions).find(([id]) => PEOPLE[id] && PEOPLE[id].isMain);
+        if (!mainEntry || !_zoom) return;
+        const [, mainPos] = mainEntry;
+        const k = IS_MOBILE ? 0.85 : 1.0;
+        zoomTo(mainPos.x, mainPos.y, k);
+      });
+    }
   }
 
   function downloadPNG() {
@@ -1199,6 +1277,7 @@
 
   // ── Звёздный фон ──────────────────────────────────────────
   function initStars() {
+    if (IS_MOBILE) return;
     const canvas = document.getElementById('stars-canvas');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -1353,6 +1432,110 @@
     window.resetPositions = () => { localStorage.removeItem('ft-positions'); location.reload(); };
   }
 
+  // ── Поисковый оверлей (мобиль) ───────────────────────────
+  function initSearchOverlay() {
+    const overlay      = document.getElementById('search-overlay');
+    const overlayInput = document.getElementById('search-overlay-input');
+    const overlayBack  = document.getElementById('search-overlay-back');
+    const overlayClear = document.getElementById('search-overlay-clear');
+    const overlayResults = document.getElementById('search-overlay-results');
+    if (!overlay) return;
+
+    function openOverlay() {
+      overlay.classList.add('open');
+      setTimeout(() => overlayInput && overlayInput.focus(), 60);
+    }
+
+    function closeOverlay() {
+      overlay.classList.remove('open');
+      if (overlayInput) overlayInput.value = '';
+      if (overlayClear) overlayClear.style.display = 'none';
+      if (overlayResults) overlayResults.innerHTML = '';
+      nodesLayer.querySelectorAll('.person-node').forEach(n => n.classList.remove('dimmed', 'highlighted'));
+    }
+
+    overlayBack.addEventListener('click', closeOverlay);
+
+    overlayInput.addEventListener('input', () => {
+      const q = overlayInput.value.trim().toLowerCase();
+      if (overlayClear) overlayClear.style.display = q ? 'block' : 'none';
+      overlayResults.innerHTML = '';
+      if (!q) return;
+
+      const matches = Object.entries(PEOPLE).filter(([, p]) => !p.isEmpty && p.name.toLowerCase().includes(q));
+      matches.forEach(([id, person]) => {
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+
+        const photoWrap = document.createElement('div');
+        photoWrap.className = 'search-result-photo';
+        if (person.photo) {
+          const img = document.createElement('img');
+          img.src = person.photo; img.alt = '';
+          img.onerror = () => { img.style.display = 'none'; photoWrap.appendChild(makePlaceholderIcon()); };
+          photoWrap.appendChild(img);
+        } else {
+          photoWrap.appendChild(makePlaceholderIcon());
+        }
+
+        const nameEl = document.createElement('div');
+        nameEl.className = 'search-result-name';
+        nameEl.textContent = person.name;
+
+        item.appendChild(photoWrap);
+        item.appendChild(nameEl);
+        item.addEventListener('click', () => {
+          closeOverlay();
+          openPanel(id);
+        });
+        overlayResults.appendChild(item);
+      });
+    });
+
+    if (overlayClear) {
+      overlayClear.addEventListener('click', () => {
+        overlayInput.value = '';
+        overlayClear.style.display = 'none';
+        overlayResults.innerHTML = '';
+      });
+    }
+
+    // Привязка кнопок открытия
+    const btnSearchMb  = document.getElementById('btn-search-mb');
+    const btnSearchTop = document.getElementById('btn-search-top');
+    if (btnSearchMb)  btnSearchMb.addEventListener('click', openOverlay);
+    if (btnSearchTop) btnSearchTop.addEventListener('click', openOverlay);
+  }
+
+  // ── Свайп панели: peek → full, full → закрыть ────────────
+  function initPanelDrag() {
+    if (!IS_MOBILE) return;
+    let startY = null;
+
+    panel.addEventListener('pointerdown', (e) => {
+      // Игнорируем клики по чипам и кнопке закрытия
+      if (e.target.closest('.quick-rel-chip') || e.target.closest('.panel-close')) return;
+      startY = e.clientY;
+    }, { passive: true });
+
+    panel.addEventListener('pointermove', (e) => {
+      if (startY === null) return;
+      const dy = e.clientY - startY;
+      if (panel.classList.contains('peek') && dy < -40) {
+        // Свайп вверх → раскрыть полностью
+        panel.classList.remove('peek');
+        startY = null;
+      } else if (!panel.classList.contains('peek') && dy > 80) {
+        // Свайп вниз в полном режиме → закрыть
+        closePanelState();
+        startY = null;
+      }
+    }, { passive: true });
+
+    panel.addEventListener('pointerup', () => { startY = null; });
+    panel.addEventListener('pointercancel', () => { startY = null; });
+  }
+
   // ── Кнопка легенды (мобиль) ──────────────────────────────
   function initLegendToggle() {
     const btn = document.getElementById('btn-legend');
@@ -1375,20 +1558,10 @@
     backdrop.className = 'panel-backdrop';
     document.body.appendChild(backdrop);
 
-    function closePanel() {
-      clearTimeout(typewriterTimer);
-      panel.classList.remove('open');
+    backdrop.addEventListener('click', () => {
       backdrop.classList.remove('active');
-      panelOpen = false;
-      activePersonId = null;
-      nodesLayer.querySelectorAll('.person-node.active').forEach(n => n.classList.remove('active'));
-      clearFocus();
-    }
-
-    backdrop.addEventListener('click', closePanel);
-
-    const _origOpen = panel.classList.add.bind(panel.classList);
-    const _origRemove = panel.classList.remove.bind(panel.classList);
+      closePanelState();
+    });
 
     const observer = new MutationObserver(() => {
       if (panel.classList.contains('open')) backdrop.classList.add('active');
@@ -1413,6 +1586,8 @@
     initDragDrop();
     initBackdrop();
     initLegendToggle();
+    initSearchOverlay();
+    initPanelDrag();
   }
 
   if (document.readyState === 'loading') {

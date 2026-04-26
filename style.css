@@ -689,23 +689,156 @@ html, body {
   color: var(--accent);
 }
 
+/* ── Кнопка поиска в toolbar (только мобиль) ─────────────── */
+.tb-search-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s;
+  margin-left: auto;
+}
+.tb-search-btn svg { width: 18px; height: 18px; }
+.tb-search-btn:hover { color: var(--accent); border-color: var(--accent-dim); }
+.tb-search-btn:active { transform: scale(0.93); color: var(--accent); }
+
+/* ── Поисковый оверлей (мобиль) ──────────────────────────── */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--bg);
+  transform: translateY(-100%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+.search-overlay.open {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.search-overlay-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.search-overlay-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 8px;
+  transition: color 0.15s;
+}
+.search-overlay-back svg { width: 20px; height: 20px; }
+.search-overlay-back:hover { color: var(--text); }
+
+.search-overlay-input {
+  flex: 1;
+  height: 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 36px 0 14px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-overlay-input::placeholder { color: var(--text-muted); }
+.search-overlay-input:focus { border-color: var(--accent); }
+
+.search-overlay-clear {
+  position: absolute;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 8px;
+  display: none;
+}
+
+.search-overlay-results {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.search-result-item:active { background: rgba(212, 168, 75, 0.07); }
+
+.search-result-photo {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+.search-result-photo img { width: 100%; height: 100%; object-fit: cover; }
+.search-result-photo svg { width: 22px; height: 22px; }
+
+.search-result-name {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+/* ── Панель: обёртка для полного контента ────────────────── */
+.panel-full-content { display: block; }
+
+/* ── Peek-bar: компактная шапка панели ───────────────────── */
+.panel-peek-bar { display: none; }
+
 /* ── Адаптив мобильный ────────────────────────────────────── */
 @media (max-width: 640px) {
 
-  :root { --toolbar-h: 88px; --bottom-bar-h: 56px; }
+  :root { --toolbar-h: 48px; --bottom-bar-h: 56px; }
 
-  /* Toolbar: 2 строки */
+  /* Toolbar: одна строка, только лого + поиск-иконка */
   .toolbar {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
     height: var(--toolbar-h);
-    padding: 10px 12px 8px;
-    gap: 6px;
+    padding: 0 12px;
+    gap: 8px;
   }
-  .toolbar-left { gap: 8px; }
   .toolbar-stats { display: none; }
-  .toolbar-center { max-width: none; flex: none; width: 100%; }
+  .toolbar-center { display: none; }
   .toolbar-right { display: none; }
+  .tb-search-btn { display: flex; }
 
   /* Mobile bottom bar */
   .mobile-bottom-bar {
@@ -718,7 +851,7 @@ html, body {
     -webkit-backdrop-filter: blur(16px);
     border-top: 1px solid var(--border);
     padding: 6px 8px env(safe-area-inset-bottom, 6px);
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     z-index: 100;
   }
@@ -737,7 +870,7 @@ html, body {
   .person-node.main-person .node-photo-wrap { width: 64px; height: 64px; }
   .node-photo-placeholder svg { width: 28px; height: 28px; }
 
-  /* Bottom sheet панель (выше bottom bar) */
+  /* Bottom sheet панель: базовый вид (полный) */
   .person-panel {
     width: 100%;
     max-width: 100%;
@@ -751,13 +884,15 @@ html, body {
   }
   .person-panel.open { transform: translateY(0); }
 
+  /* Ручка drag-handle */
   .person-panel::before {
     content: '';
     display: block;
     width: 36px; height: 4px;
     background: rgba(255, 255, 255, 0.18);
     border-radius: 2px;
-    margin: 10px auto 0;
+    margin: 10px auto 4px;
+    flex-shrink: 0;
   }
 
   .panel-close { top: 20px; }
@@ -767,6 +902,117 @@ html, body {
     margin-top: 20px;
   }
   .panel-photo-placeholder svg { width: 44px; height: 44px; }
+
+  /* ── Peek state: 110px, показывает только peek-bar ──────── */
+  .person-panel.peek {
+    height: 110px;
+    overflow: hidden;
+  }
+  .person-panel.peek .panel-peek-bar { display: flex; }
+  .person-panel.peek .panel-full-content { display: none; }
+
+  /* Peek bar layout */
+  .panel-peek-bar {
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 52px 0 16px; /* правый отступ под кнопку закрытия */
+  }
+
+  .panel-peek-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 44px;
+  }
+
+  .panel-peek-photo-wrap {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    overflow: hidden;
+    background: var(--bg-card);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .panel-peek-photo {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .panel-peek-ph {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    position: absolute;
+    inset: 0;
+  }
+  .panel-peek-ph svg { width: 20px; height: 20px; }
+
+  .panel-peek-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Quick relatives: горизонтальный скроллируемый ряд */
+  .panel-quick-rels {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+  .panel-quick-rels::-webkit-scrollbar { display: none; }
+
+  .quick-rel-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px 4px 5px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .quick-rel-chip:active {
+    background: var(--bg-card-hover);
+    border-color: var(--accent-dim);
+    color: var(--accent);
+  }
+  .quick-rel-chip-photo {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--bg);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+  }
+  .quick-rel-chip-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .quick-rel-chip-photo svg { width: 12px; height: 12px; }
+
+  /* Подсказка к свайпу (виден только в peek, пульсирует один раз) */
+  .panel-peek-hint {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 36px; height: 14px;
+    cursor: ns-resize;
+  }
 
   /* Легенда */
   .conn-legend {
