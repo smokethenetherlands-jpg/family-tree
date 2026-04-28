@@ -459,7 +459,7 @@ function buildBirthdays() {
       const pillClass = diff === 0 ? 'today' : diff <= 7 ? 'week' : diff <= 30 ? 'month' : 'far';
       const pillText  = diff === 0 ? 'сегодня' : diff === 1 ? 'завтра' : `через ${diff} дн.`;
       return `
-      <div class="birthday-item">
+      <div class="birthday-item birthday-item--${pillClass}">
         <div class="birthday-info">
           <span class="birthday-name">${m.name}</span>
           <span class="birthday-date">${day} ${MONTHS[month]}</span>
