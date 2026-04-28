@@ -83,16 +83,21 @@ function zoomToCard(id, callback) {
   const scroller = document.getElementById('tree-scroll');
   if (!m || !scroller) { callback?.(); return; }
 
-  const vpW     = scroller.clientWidth  || window.innerWidth;
-  const vpH     = scroller.clientHeight || (window.innerHeight - 88);
-  const toScale = Math.max(state.treeScale, 0.8);
-  const { w, h } = canvasSize();
-  const cardCX  = PAD_L + m.col * COL_W + CARD_W / 2;
-  const cardCY  = PAD_T + m.row * ROW_H + CARD_H / 2;
-  const toLeft  = Math.max(0, VIRTUAL_PAD + cardCX * toScale - vpW / 2);
-  const toTop   = Math.max(0, VIRTUAL_PAD + cardCY * toScale - vpH / 2);
-  const fromLeft = scroller.scrollLeft;
-  const fromTop  = scroller.scrollTop;
+  const vpW      = scroller.clientWidth  || window.innerWidth;
+  const vpH      = scroller.clientHeight || (window.innerHeight - 88);
+  const fromScale = state.treeScale;
+  const toScale   = Math.max(state.treeScale, 0.8);
+  const { w, h }  = canvasSize();
+  const cardCX    = PAD_L + m.col * COL_W + CARD_W / 2;
+  const cardCY    = PAD_T + m.row * ROW_H + CARD_H / 2;
+  const fromLeft  = scroller.scrollLeft;
+  const fromTop   = scroller.scrollTop;
+  const toLeft    = Math.max(0, VIRTUAL_PAD + cardCX * toScale - vpW / 2);
+  const toTop     = Math.max(0, VIRTUAL_PAD + cardCY * toScale - vpH / 2);
+  const fromSW    = w * fromScale + VIRTUAL_PAD * 2;
+  const fromSH    = h * fromScale + VIRTUAL_PAD * 2;
+  const toSW      = w * toScale   + VIRTUAL_PAD * 2;
+  const toSH      = h * toScale   + VIRTUAL_PAD * 2;
 
   state.treeScale      = toScale;
   state.treeScrollLeft = toLeft;
@@ -101,22 +106,21 @@ function zoomToCard(id, callback) {
   const inner  = document.getElementById('tree-scale-inner');
   const spacer = document.querySelector('.tree-scale-spacer');
 
-  // Scale via CSS transition (GPU-accelerated, works on all platforms)
   if (inner) {
     inner.style.transition = 'transform 0.38s cubic-bezier(0.4,0,0.2,1)';
     inner.style.transform  = `scale(${toScale})`;
   }
-  if (spacer) {
-    spacer.style.width  = (w * toScale + VIRTUAL_PAD * 2) + 'px';
-    spacer.style.height = (h * toScale + VIRTUAL_PAD * 2) + 'px';
-  }
 
-  // Scroll via rAF lerp
+  // Spacer and scroll animated together — prevents viewport jerk
   const DURATION = 380;
   const start    = performance.now();
   function scrollFrame(now) {
     const t = Math.min((now - start) / DURATION, 1);
     const e = t < 0.5 ? 2*t*t : -1 + (4-2*t)*t;
+    if (spacer) {
+      spacer.style.width  = (fromSW + (toSW - fromSW) * e) + 'px';
+      spacer.style.height = (fromSH + (toSH - fromSH) * e) + 'px';
+    }
     scroller.scrollLeft = fromLeft + (toLeft - fromLeft) * e;
     scroller.scrollTop  = fromTop  + (toTop  - fromTop)  * e;
     if (t < 1) {
