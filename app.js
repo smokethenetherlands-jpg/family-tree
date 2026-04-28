@@ -680,7 +680,8 @@ function bindTreeDrag() {
       const d  = touchDist(e.touches);
       const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
       const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-      applyScale(state.treeScale * d / lastDist, cx, cy);
+      const ratio = Math.max(0.85, Math.min(1.18, d / lastDist));
+      applyScale(state.treeScale * ratio, cx, cy);
       lastDist = d;
       moved = true;
     } else if (e.touches.length === 1 && touchPan) {
@@ -695,11 +696,18 @@ function bindTreeDrag() {
   }, { passive: false });
 
   scroller.addEventListener('touchend', e => {
+    const wasMoved = moved;
     if (e.touches.length === 0) { touchPan = null; lastDist = null; }
     else if (e.touches.length === 1) {
       lastDist = null;
       touchPan = { x: e.touches[0].clientX, y: e.touches[0].clientY,
                    sl: scroller.scrollLeft, st: scroller.scrollTop };
+    }
+    if (!wasMoved && e.changedTouches.length === 1) {
+      const t = e.changedTouches[0];
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const card = el?.closest('.card');
+      if (card) openPopup(card.dataset.id);
     }
   }, { passive: false });
 
