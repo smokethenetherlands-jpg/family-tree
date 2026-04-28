@@ -252,6 +252,11 @@ function buildSearch() {
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
         <input class="search-input" id="search-input" type="search" dir="ltr" placeholder="Поиск по имени…" value="${q}">
+        <button class="search-close-btn" id="search-close-btn" aria-label="Закрыть">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
       </div>
       ${recentHtml}
       ${resultsHtml}
@@ -472,7 +477,14 @@ function buildBirthdays() {
     <div class="backdrop" id="backdrop"></div>
     <div class="bottom-sheet">
       <div class="sheet-handle"></div>
-      <h3 style="font-size:17px;font-weight:700;margin-bottom:16px">Дни рождения</h3>
+      <div class="sheet-header">
+        <h3 style="font-size:17px;font-weight:700">Дни рождения</h3>
+        <button class="sheet-close-btn" id="sheet-close-btn" aria-label="Закрыть">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
       <div class="birthday-list">${items || '<p class="no-results">Нет дат рождения</p>'}</div>
     </div>`;
 }
@@ -580,6 +592,8 @@ function bindEvents() {
 
   document.getElementById('backdrop')?.addEventListener('click', closeAll);
   document.getElementById('close-legend-btn')?.addEventListener('click', closeAll);
+  document.getElementById('sheet-close-btn')?.addEventListener('click', closeAll);
+  document.getElementById('search-close-btn')?.addEventListener('click', () => navigate('tree'));
 
   document.querySelectorAll('.birthday-item[data-id]').forEach(el =>
     el.addEventListener('click', () => openPopup(el.dataset.id))
