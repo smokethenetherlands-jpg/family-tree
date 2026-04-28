@@ -643,81 +643,106 @@ function bindEvents() {
   bindTreeDrag();
 }
 
-// ── Tree drag / pan ───────────────────────────────────────────────
+// ── Tree drag / pan / pinch-zoom ─────────────────────────────────
 
 function bindTreeDrag() {
   const scroller = document.getElementById('tree-scroll');
-
   if (!scroller) return;
 
   scroller.style.cursor = 'grab';
   scroller.style.touchAction = 'none';
 
-  let isDown = false;
-  let startX = 0;
-  let startY = 0;
-  let startScrollLeft = 0;
-  let startScrollTop = 0;
+  const pointers = new Map(); // pointerId → {x, y}
+  let lastPinchDist = null;
+  let panStart = null;
   let moved = false;
 
+  function pinchDist() {
+    const pts = [...pointers.values()];
+    return Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+  }
+
+  function pinchCenter() {
+    const pts = [...pointers.values()];
+    return { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
+  }
+
+  function applyScale(newScale, centerX, centerY) {
+    const contentX = (scroller.scrollLeft + centerX) / state.treeScale;
+    const contentY = (scroller.scrollTop  + centerY) / state.treeScale;
+    state.treeScale = Math.max(0.12, Math.min(3, newScale));
+    const { w, h } = canvasSize();
+    const inner   = document.getElementById('tree-scale-inner');
+    const spacer  = document.querySelector('.tree-scale-spacer');
+    if (inner)  inner.style.transform = `scale(${state.treeScale})`;
+    if (spacer) { spacer.style.width = (w * state.treeScale) + 'px'; spacer.style.height = (h * state.treeScale) + 'px'; }
+    scroller.scrollLeft = contentX * state.treeScale - centerX;
+    scroller.scrollTop  = contentY * state.treeScale - centerY;
+    state.treeScrollLeft = scroller.scrollLeft;
+    state.treeScrollTop  = scroller.scrollTop;
+  }
+
   scroller.addEventListener('pointerdown', e => {
-    if (e.target.closest('.card') || e.target.closest('.tree-zoom')) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    try { scroller.setPointerCapture(e.pointerId); } catch (_) {}
 
-    isDown = true;
-    moved = false;
-
-    scroller.setPointerCapture(e.pointerId);
-    scroller.style.cursor = 'grabbing';
-
-    startX = e.clientX;
-    startY = e.clientY;
-    startScrollLeft = scroller.scrollLeft;
-    startScrollTop = scroller.scrollTop;
+    if (pointers.size === 1) {
+      moved = false;
+      panStart = { x: e.clientX, y: e.clientY, sl: scroller.scrollLeft, st: scroller.scrollTop };
+      scroller.style.cursor = 'grabbing';
+    }
+    if (pointers.size === 2) {
+      lastPinchDist = pinchDist();
+      panStart = null;
+    }
   });
 
   scroller.addEventListener('pointermove', e => {
-    if (!isDown) return;
+    if (!pointers.has(e.pointerId)) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-
-    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+    if (pointers.size === 2 && lastPinchDist) {
+      const dist = pinchDist();
+      const c = pinchCenter();
+      applyScale(state.treeScale * dist / lastPinchDist, c.x, c.y);
+      lastPinchDist = dist;
       moved = true;
+      return;
     }
 
-    scroller.scrollLeft = startScrollLeft - dx;
-    scroller.scrollTop = startScrollTop - dy;
-
-    state.treeScrollLeft = scroller.scrollLeft;
-    state.treeScrollTop = scroller.scrollTop;
-  });
-
-  scroller.addEventListener('pointerup', e => {
-    isDown = false;
-    scroller.style.cursor = 'grab';
-
-    try {
-      scroller.releasePointerCapture(e.pointerId);
-    } catch (_) {}
-
-    if (moved) {
-      e.preventDefault();
-      e.stopPropagation();
+    if (pointers.size === 1 && panStart) {
+      const dx = e.clientX - panStart.x;
+      const dy = e.clientY - panStart.y;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+      scroller.scrollLeft = panStart.sl - dx;
+      scroller.scrollTop  = panStart.st - dy;
+      state.treeScrollLeft = scroller.scrollLeft;
+      state.treeScrollTop  = scroller.scrollTop;
     }
   });
 
-  scroller.addEventListener('pointercancel', e => {
-    isDown = false;
-    scroller.style.cursor = 'grab';
+  function onUp(e) {
+    pointers.delete(e.pointerId);
+    try { scroller.releasePointerCapture(e.pointerId); } catch (_) {}
 
-    try {
-      scroller.releasePointerCapture(e.pointerId);
-    } catch (_) {}
-  });
+    if (pointers.size < 2) lastPinchDist = null;
+    if (pointers.size === 0) { scroller.style.cursor = 'grab'; panStart = null; }
+    if (pointers.size === 1) {
+      const [, pos] = [...pointers.entries()][0];
+      panStart = { x: pos.x, y: pos.y, sl: scroller.scrollLeft, st: scroller.scrollTop };
+    }
+  }
+
+  scroller.addEventListener('pointerup',     onUp);
+  scroller.addEventListener('pointercancel', onUp);
+
+  scroller.addEventListener('click', e => {
+    if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
+  }, true);
 
   scroller.addEventListener('scroll', () => {
     state.treeScrollLeft = scroller.scrollLeft;
-    state.treeScrollTop = scroller.scrollTop;
+    state.treeScrollTop  = scroller.scrollTop;
   });
 }
 
