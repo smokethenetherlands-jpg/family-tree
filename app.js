@@ -183,12 +183,6 @@ function buildTree() {
           </div>
         </div>
       </div>
-
-      <div class="tree-zoom">
-        <button class="zoom-btn" id="tree-zoom-in">+</button>
-        <button class="zoom-btn" id="tree-zoom-out">−</button>
-        <button class="zoom-btn small" id="tree-zoom-reset">◎</button>
-      </div>
     </div>`;
 }
 
@@ -622,24 +616,6 @@ function bindEvents() {
     applyOverviewScale();
   });
 
-  document.getElementById('tree-zoom-in')?.addEventListener('click', () => {
-    state.treeScale = Math.min(state.treeScale + 0.1, 2);
-    keepTreeCenterAfterZoom();
-    render();
-  });
-
-  document.getElementById('tree-zoom-out')?.addEventListener('click', () => {
-    state.treeScale = Math.max(state.treeScale - 0.1, 0.35);
-    keepTreeCenterAfterZoom();
-    render();
-  });
-
-  document.getElementById('tree-zoom-reset')?.addEventListener('click', () => {
-    state.treeScale = 1;
-    keepTreeCenterAfterZoom();
-    render();
-  });
-
   bindTreeDrag();
 }
 
@@ -722,14 +698,7 @@ function bindTreeDrag() {
   // ── Mouse (desktop) ──────────────────────────────────────────
   let mousePan = null;
 
-  scroller.addEventListener('mousedown', e => {
-    if (e.target.closest('.card') || e.target.closest('.tree-zoom')) return;
-    moved = false;
-    mousePan = { x: e.clientX, y: e.clientY, sl: scroller.scrollLeft, st: scroller.scrollTop };
-    scroller.style.cursor = 'grabbing';
-  });
-
-  window.addEventListener('mousemove', e => {
+  function onMouseMove(e) {
     if (!mousePan) return;
     const dx = e.clientX - mousePan.x;
     const dy = e.clientY - mousePan.y;
@@ -738,12 +707,34 @@ function bindTreeDrag() {
     scroller.scrollTop  = mousePan.st - dy;
     state.treeScrollLeft = scroller.scrollLeft;
     state.treeScrollTop  = scroller.scrollTop;
-  });
+  }
 
-  window.addEventListener('mouseup', () => {
+  function onMouseUp() {
+    if (!mousePan) return;
     mousePan = null;
     scroller.style.cursor = 'grab';
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  }
+
+  scroller.addEventListener('mousedown', e => {
+    if (e.target.closest('.card')) return;
+    moved = false;
+    mousePan = { x: e.clientX, y: e.clientY, sl: scroller.scrollLeft, st: scroller.scrollTop };
+    scroller.style.cursor = 'grabbing';
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   });
+
+  // ── Wheel (desktop zoom) ─────────────────────────────────────
+  scroller.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect = scroller.getBoundingClientRect();
+    const cx = e.clientX - rect.left;
+    const cy = e.clientY - rect.top;
+    const factor = e.deltaY > 0 ? 0.92 : 1.08;
+    applyScale(state.treeScale * factor, cx, cy);
+  }, { passive: false });
 
   scroller.addEventListener('click', e => {
     if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
