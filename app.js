@@ -68,30 +68,17 @@ function zoomToCard(id, callback) {
   const scroller = document.getElementById('tree-scroll');
   if (!m || !scroller) { callback?.(); return; }
 
+  const vpW = scroller.clientWidth  || window.innerWidth;
+  const vpH = scroller.clientHeight || (window.innerHeight - 88);
   const targetScale = Math.max(state.treeScale, 0.8);
-  const { w, h } = canvasSize();
   const cardCX = PAD_L + m.col * COL_W + CARD_W / 2;
   const cardCY = PAD_T + m.row * ROW_H + CARD_H / 2;
-  const targetLeft = VIRTUAL_PAD + cardCX * targetScale - scroller.clientWidth  / 2;
-  const targetTop  = VIRTUAL_PAD + cardCY * targetScale - scroller.clientHeight / 2;
 
   state.treeScale      = targetScale;
-  state.treeScrollLeft = Math.max(0, targetLeft);
-  state.treeScrollTop  = Math.max(0, targetTop);
+  state.treeScrollLeft = Math.max(0, VIRTUAL_PAD + cardCX * targetScale - vpW / 2);
+  state.treeScrollTop  = Math.max(0, VIRTUAL_PAD + cardCY * targetScale - vpH / 2);
 
-  const inner  = document.getElementById('tree-scale-inner');
-  const spacer = document.querySelector('.tree-scale-spacer');
-  if (inner) {
-    inner.style.transition = 'transform 0.32s ease';
-    inner.style.transform  = `scale(${targetScale})`;
-    setTimeout(() => { const el = document.getElementById('tree-scale-inner'); if (el) el.style.transition = ''; }, 400);
-  }
-  if (spacer) {
-    spacer.style.width  = (w * targetScale + VIRTUAL_PAD * 2) + 'px';
-    spacer.style.height = (h * targetScale + VIRTUAL_PAD * 2) + 'px';
-  }
-  scroller.scrollTo({ left: state.treeScrollLeft, top: state.treeScrollTop, behavior: 'smooth' });
-  setTimeout(callback, 380);
+  callback?.();
 }
 
 // ── Main render ───────────────────────────────────────────────────
@@ -720,6 +707,8 @@ function bindTreeDrag() {
   scroller.addEventListener('touchstart', e => {
     e.preventDefault();
     moved = false;
+    const inner = document.getElementById('tree-scale-inner');
+    if (inner) inner.style.transition = 'none';
     if (e.touches.length === 1) {
       touchPan = { x: e.touches[0].clientX, y: e.touches[0].clientY,
                    sl: scroller.scrollLeft, st: scroller.scrollTop };
@@ -792,6 +781,8 @@ function bindTreeDrag() {
   scroller.addEventListener('mousedown', e => {
     if (e.target.closest('.card')) return;
     moved = false;
+    const inner = document.getElementById('tree-scale-inner');
+    if (inner) inner.style.transition = 'none';
     mousePan = { x: e.clientX, y: e.clientY, sl: scroller.scrollLeft, st: scroller.scrollTop };
     scroller.style.cursor = 'grabbing';
     document.addEventListener('mousemove', onMouseMove);

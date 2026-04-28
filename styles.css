@@ -888,6 +888,7 @@ html, body {
 
 #tree-scale-inner {
   position: relative;
+  transition: transform 0.3s ease;
 }
 
 .tree-zoom {
