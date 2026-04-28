@@ -267,26 +267,50 @@ function buildProfile(id) {
   }
 
   const byId = Object.fromEntries(DATA.members.map(x => [x.id, x]));
-  const related = new Set();
+
+  function gender(mem) {
+    const parts = mem.name.trim().split(' ');
+    const last = parts[0];
+    return (last.endsWith('а') || last.endsWith('я')) ? 'f' : 'm';
+  }
+
+  const relMap = new Map(); // id → {m, label, order}
 
   DATA.families.forEach(f => {
-    const inParents = f.parents.includes(id);
+    const inParents  = f.parents.includes(id);
     const inChildren = f.children.includes(id);
 
     if (inParents) {
-      f.children.forEach(c => related.add(c));
-      f.parents.forEach(p => related.add(p));
+      f.parents.forEach(pid => {
+        if (pid === id || relMap.has(pid)) return;
+        const rel = byId[pid]; if (!rel) return;
+        const g = gender(rel);
+        const isDiv = f.coupleType === 'divorced';
+        relMap.set(pid, { m: rel, order: isDiv ? 1 : 0, label: isDiv ? (g === 'f' ? 'Бывшая супруга' : 'Бывший супруг') : (g === 'f' ? 'Супруга' : 'Супруг') });
+      });
+      f.children.forEach(cid => {
+        if (relMap.has(cid)) return;
+        const rel = byId[cid]; if (!rel) return;
+        relMap.set(cid, { m: rel, order: 2, label: gender(rel) === 'f' ? 'Дочь' : 'Сын' });
+      });
     }
 
     if (inChildren) {
-      f.parents.forEach(p => related.add(p));
-      f.children.forEach(s => related.add(s));
+      f.parents.forEach(pid => {
+        if (relMap.has(pid)) return;
+        const rel = byId[pid]; if (!rel) return;
+        relMap.set(pid, { m: rel, order: 3, label: gender(rel) === 'f' ? 'Мать' : 'Отец' });
+      });
+      f.children.forEach(sid => {
+        if (sid === id || relMap.has(sid)) return;
+        const rel = byId[sid]; if (!rel) return;
+        relMap.set(sid, { m: rel, order: 4, label: gender(rel) === 'f' ? 'Сестра' : 'Брат' });
+      });
     }
   });
 
-  related.delete(id);
+  const relSorted = [...relMap.values()].sort((a, b) => a.order - b.order);
 
-  const relMembers = [...related].map(rid => byId[rid]).filter(Boolean);
   const photo = m.photo ? `<img src="${m.photo}" alt="${m.name}">` : '<div class="photo-placeholder" style="width:100%;height:100%"></div>';
 
   const timelineHtml = m.timeline && m.timeline.length
@@ -297,12 +321,13 @@ function buildProfile(id) {
         </div>`).join('')
     : '<p class="timeline-placeholder">Хронология будет добавлена позже</p>';
 
-  const relativesHtml = relMembers.length ? `
+  const relativesHtml = relSorted.length ? `
     <div class="profile-section">
       <div class="profile-section-title">Родственники</div>
       <div class="relatives-grid">
-        ${relMembers.map(r => `
+        ${relSorted.map(({ m: r, label }) => `
           <button class="relative-card" data-id="${r.id}">
+            <span class="relative-rel">${label}</span>
             <div class="relative-photo">${r.photo ? `<img src="${r.photo}">` : '<div class="photo-placeholder" style="width:100%;height:100%"></div>'}</div>
             <div class="relative-name">${r.name.split(' ').slice(0, 2).join(' ')}</div>
           </button>`).join('')}
@@ -534,8 +559,11 @@ function bindEvents() {
 
   document.getElementById('nav-search')?.addEventListener('click', () => navigate('search'));
   document.getElementById('nav-home')?.addEventListener('click', () => {
-    state.treeScale = 1;
-    state.treeScrollLeft = null;
+    const { w, h } = canvasSize();
+    const vpW = window.innerWidth;
+    const vpH = window.innerHeight - 88;
+    state.treeScale = Math.min(vpW / w, vpH / h);
+    state.treeScrollLeft = 0;
     state.treeScrollTop = 0;
     navigate('tree');
   });
