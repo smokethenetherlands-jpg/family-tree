@@ -728,17 +728,20 @@ function bindTreeDrag() {
   }
 
   // ── Touch (mobile) ───────────────────────────────────────────
-  let touchPan = null;
-  let lastDist  = null;
+  let touchPan       = null;
+  let lastDist       = null;
+  let touchStartCard = null; // card element under finger at touchstart
 
   scroller.addEventListener('touchstart', e => {
     e.preventDefault();
     moved = false;
     if (e.touches.length === 1) {
+      touchStartCard = e.target?.closest('.card') ?? null;
       touchPan = { x: e.touches[0].clientX, y: e.touches[0].clientY,
                    sl: scroller.scrollLeft, st: scroller.scrollTop };
       lastDist = null;
     } else if (e.touches.length === 2) {
+      touchStartCard = null;
       lastDist = touchDist(e.touches);
       touchPan = null;
     }
@@ -757,7 +760,7 @@ function bindTreeDrag() {
     } else if (e.touches.length === 1 && touchPan) {
       const dx = e.touches[0].clientX - touchPan.x;
       const dy = e.touches[0].clientY - touchPan.y;
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+      if (Math.abs(dx) > 10 || Math.abs(dy) > 10) moved = true;
       scroller.scrollLeft = touchPan.sl - dx;
       scroller.scrollTop  = touchPan.st - dy;
       state.treeScrollLeft = scroller.scrollLeft;
@@ -767,17 +770,16 @@ function bindTreeDrag() {
 
   scroller.addEventListener('touchend', e => {
     const wasMoved = moved;
+    const tapCard  = touchStartCard;
+    touchStartCard = null;
     if (e.touches.length === 0) { touchPan = null; lastDist = null; }
     else if (e.touches.length === 1) {
       lastDist = null;
       touchPan = { x: e.touches[0].clientX, y: e.touches[0].clientY,
                    sl: scroller.scrollLeft, st: scroller.scrollTop };
     }
-    if (!wasMoved && e.changedTouches.length === 1) {
-      const t = e.changedTouches[0];
-      const el = document.elementFromPoint(t.clientX, t.clientY);
-      const card = el?.closest('.card');
-      if (card) zoomToCard(card.dataset.id, () => openPopup(card.dataset.id));
+    if (!wasMoved && tapCard) {
+      zoomToCard(tapCard.dataset.id, () => openPopup(tapCard.dataset.id));
     }
   }, { passive: false });
 
