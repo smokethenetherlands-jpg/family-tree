@@ -3,10 +3,11 @@ const CARD_W   = 130;
 const CARD_H   = 180;
 const COL_W    = 120;
 const ROW_H    = 260;
-const PAD_L    = 88;   // left padding - space for generation labels
-const PAD_T    = 40;
-const PAD_B    = 60;
+const PAD_L    = 300;  // left padding - space for generation labels
+const PAD_T    = 300;
+const PAD_B    = 300;
 const PHOTO_CY = 45;   // photo circle center Y from card top
+const VIRTUAL_PAD = 2000; // empty scrollable space around the tree on each side
 
 let DATA = null;
 
@@ -108,7 +109,7 @@ function canvasSize() {
   const maxRow = Math.max(...DATA.members.map(m => m.row));
 
   return {
-    w: PAD_L + (maxCol + 1) * COL_W + 40,
+    w: PAD_L + (maxCol + 1) * COL_W + 300,
     h: PAD_T + (maxRow + 1) * ROW_H + PAD_B,
     maxRow,
   };
@@ -174,10 +175,10 @@ function buildTree() {
   return `
     <div class="tree-view-wrap">
       <div class="tree-scroll" id="tree-scroll">
-        <div class="tree-scale-spacer" style="width:${scaledW}px;height:${scaledH}px">
+        <div class="tree-scale-spacer" style="width:${scaledW + VIRTUAL_PAD * 2}px;height:${scaledH + VIRTUAL_PAD * 2}px;position:relative">
           <div
             id="tree-scale-inner"
-            style="width:${w}px;height:${h}px;transform:scale(${state.treeScale});transform-origin:top left"
+            style="position:absolute;left:${VIRTUAL_PAD}px;top:${VIRTUAL_PAD}px;width:${w}px;height:${h}px;transform:scale(${state.treeScale});transform-origin:top left"
           >
             ${buildCanvasInner(w, h, maxRow)}
           </div>
@@ -557,8 +558,10 @@ function bindEvents() {
     const vpW = window.innerWidth;
     const vpH = window.innerHeight - 88;
     state.treeScale = Math.min(vpW / w, vpH / h);
-    state.treeScrollLeft = 0;
-    state.treeScrollTop = 0;
+    const scaledW = w * state.treeScale;
+    const scaledH = h * state.treeScale;
+    state.treeScrollLeft = VIRTUAL_PAD + (scaledW - vpW) / 2;
+    state.treeScrollTop  = VIRTUAL_PAD + (scaledH - vpH) / 2;
     navigate('tree');
   });
   document.getElementById('nav-bday')?.addEventListener('click', () => openOverlay('birthdays'));
@@ -632,19 +635,20 @@ function bindTreeDrag() {
 
   function applyScale(newScale, centerX, centerY) {
     const prev = state.treeScale;
-    const contentX = (scroller.scrollLeft + centerX) / prev;
-    const contentY = (scroller.scrollTop  + centerY) / prev;
+    // subtract VIRTUAL_PAD to get position within the tree content
+    const contentX = (scroller.scrollLeft - VIRTUAL_PAD + centerX) / prev;
+    const contentY = (scroller.scrollTop  - VIRTUAL_PAD + centerY) / prev;
     state.treeScale = Math.max(0.12, Math.min(3, newScale));
     const { w, h } = canvasSize();
     const inner  = document.getElementById('tree-scale-inner');
     const spacer = document.querySelector('.tree-scale-spacer');
     if (inner)  inner.style.transform = `scale(${state.treeScale})`;
     if (spacer) {
-      spacer.style.width  = (w * state.treeScale) + 'px';
-      spacer.style.height = (h * state.treeScale) + 'px';
+      spacer.style.width  = (w * state.treeScale + VIRTUAL_PAD * 2) + 'px';
+      spacer.style.height = (h * state.treeScale + VIRTUAL_PAD * 2) + 'px';
     }
-    scroller.scrollLeft = contentX * state.treeScale - centerX;
-    scroller.scrollTop  = contentY * state.treeScale - centerY;
+    scroller.scrollLeft = contentX * state.treeScale + VIRTUAL_PAD - centerX;
+    scroller.scrollTop  = contentY * state.treeScale + VIRTUAL_PAD - centerY;
     state.treeScrollLeft = scroller.scrollLeft;
     state.treeScrollTop  = scroller.scrollTop;
   }
@@ -765,8 +769,8 @@ function restoreTreeScroll() {
     const centerCol = (minCol + maxCol) / 2;
     const centerX = (PAD_L + centerCol * COL_W + CARD_W / 2) * state.treeScale;
 
-    state.treeScrollLeft = Math.max(0, centerX - scroller.clientWidth / 2);
-    state.treeScrollTop = 0;
+    state.treeScrollLeft = VIRTUAL_PAD + centerX - scroller.clientWidth / 2;
+    state.treeScrollTop  = VIRTUAL_PAD;
   }
 
   scroller.scrollLeft = state.treeScrollLeft;
