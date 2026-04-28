@@ -51,6 +51,21 @@ function openPopup(id) {
   render();
 }
 
+function openPopupDirect(id) {
+  state.popup = id;
+  state.overlay = null;
+  const root = document.getElementById('overlay-root');
+  const nav  = document.getElementById('nav');
+  if (!root) { render(); return; }
+  root.innerHTML = buildPopup(id);
+  nav.innerHTML  = buildNav();
+  document.getElementById('backdrop')?.addEventListener('click', closeAll);
+  document.getElementById('popup-profile-btn')?.addEventListener('click', e => {
+    state.popup = null;
+    navigate('profile:' + e.currentTarget.dataset.id);
+  });
+}
+
 function openOverlay(name) {
   state.overlay = name;
   state.popup = null;
@@ -68,44 +83,50 @@ function zoomToCard(id, callback) {
   const scroller = document.getElementById('tree-scroll');
   if (!m || !scroller) { callback?.(); return; }
 
-  const vpW      = scroller.clientWidth  || window.innerWidth;
-  const vpH      = scroller.clientHeight || (window.innerHeight - 88);
-  const fromScale = state.treeScale;
-  const toScale   = Math.max(state.treeScale, 0.8);
-  const cardCX   = PAD_L + m.col * COL_W + CARD_W / 2;
-  const cardCY   = PAD_T + m.row * ROW_H + CARD_H / 2;
+  const vpW     = scroller.clientWidth  || window.innerWidth;
+  const vpH     = scroller.clientHeight || (window.innerHeight - 88);
+  const toScale = Math.max(state.treeScale, 0.8);
+  const { w, h } = canvasSize();
+  const cardCX  = PAD_L + m.col * COL_W + CARD_W / 2;
+  const cardCY  = PAD_T + m.row * ROW_H + CARD_H / 2;
+  const toLeft  = Math.max(0, VIRTUAL_PAD + cardCX * toScale - vpW / 2);
+  const toTop   = Math.max(0, VIRTUAL_PAD + cardCY * toScale - vpH / 2);
   const fromLeft = scroller.scrollLeft;
   const fromTop  = scroller.scrollTop;
-  const toLeft   = Math.max(0, VIRTUAL_PAD + cardCX * toScale - vpW / 2);
-  const toTop    = Math.max(0, VIRTUAL_PAD + cardCY * toScale - vpH / 2);
 
-  const { w, h } = canvasSize();
+  state.treeScale      = toScale;
+  state.treeScrollLeft = toLeft;
+  state.treeScrollTop  = toTop;
+
   const inner  = document.getElementById('tree-scale-inner');
   const spacer = document.querySelector('.tree-scale-spacer');
+
+  // Scale via CSS transition (GPU-accelerated, works on all platforms)
+  if (inner) {
+    inner.style.transition = 'transform 0.38s cubic-bezier(0.4,0,0.2,1)';
+    inner.style.transform  = `scale(${toScale})`;
+  }
+  if (spacer) {
+    spacer.style.width  = (w * toScale + VIRTUAL_PAD * 2) + 'px';
+    spacer.style.height = (h * toScale + VIRTUAL_PAD * 2) + 'px';
+  }
+
+  // Scroll via rAF lerp
   const DURATION = 380;
   const start    = performance.now();
-
-  function frame(now) {
+  function scrollFrame(now) {
     const t = Math.min((now - start) / DURATION, 1);
-    const e = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // ease-in-out
-    const scale = fromScale + (toScale - fromScale) * e;
-    if (inner)  inner.style.transform = `scale(${scale})`;
-    if (spacer) {
-      spacer.style.width  = (w * scale + VIRTUAL_PAD * 2) + 'px';
-      spacer.style.height = (h * scale + VIRTUAL_PAD * 2) + 'px';
-    }
+    const e = t < 0.5 ? 2*t*t : -1 + (4-2*t)*t;
     scroller.scrollLeft = fromLeft + (toLeft - fromLeft) * e;
     scroller.scrollTop  = fromTop  + (toTop  - fromTop)  * e;
     if (t < 1) {
-      requestAnimationFrame(frame);
+      requestAnimationFrame(scrollFrame);
     } else {
-      state.treeScale      = toScale;
-      state.treeScrollLeft = toLeft;
-      state.treeScrollTop  = toTop;
+      if (inner) inner.style.transition = '';
       callback?.();
     }
   }
-  requestAnimationFrame(frame);
+  requestAnimationFrame(scrollFrame);
 }
 
 // ── Main render ───────────────────────────────────────────────────
@@ -617,7 +638,7 @@ function drawLines() {
 
 function bindEvents() {
   document.querySelectorAll('.card').forEach(el =>
-    el.addEventListener('click', () => zoomToCard(el.dataset.id, () => openPopup(el.dataset.id)))
+    el.addEventListener('click', () => zoomToCard(el.dataset.id, () => openPopupDirect(el.dataset.id)))
   );
 
   document.getElementById('nav-search')?.addEventListener('click', () => navigate('search'));
@@ -779,7 +800,7 @@ function bindTreeDrag() {
                    sl: scroller.scrollLeft, st: scroller.scrollTop };
     }
     if (!wasMoved && tapCard) {
-      zoomToCard(tapCard.dataset.id, () => openPopup(tapCard.dataset.id));
+      zoomToCard(tapCard.dataset.id, () => openPopupDirect(tapCard.dataset.id));
     }
   }, { passive: false });
 
