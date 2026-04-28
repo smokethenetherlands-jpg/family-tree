@@ -3,9 +3,9 @@ const CARD_W   = 130;
 const CARD_H   = 180;
 const COL_W    = 120;
 const ROW_H    = 260;
-const PAD_L    = 300;  // left padding - space for generation labels
-const PAD_T    = 300;
-const PAD_B    = 300;
+const PAD_L    = 88;   // left padding - space for generation labels
+const PAD_T    = 40;
+const PAD_B    = 60;
 const PHOTO_CY = 45;   // photo circle center Y from card top
 const VIRTUAL_PAD = 2000; // empty scrollable space around the tree on each side
 
@@ -109,7 +109,7 @@ function canvasSize() {
   const maxRow = Math.max(...DATA.members.map(m => m.row));
 
   return {
-    w: PAD_L + (maxCol + 1) * COL_W + 300,
+    w: PAD_L + (maxCol + 1) * COL_W + 40,
     h: PAD_T + (maxRow + 1) * ROW_H + PAD_B,
     maxRow,
   };
@@ -763,14 +763,21 @@ function restoreTreeScroll() {
   if (!scroller) return;
 
   if (state.treeScrollLeft === null) {
-    const cols = DATA.members.map(m => m.col);
-    const minCol = Math.min(...cols);
-    const maxCol = Math.max(...cols);
-    const centerCol = (minCol + maxCol) / 2;
-    const centerX = (PAD_L + centerCol * COL_W + CARD_W / 2) * state.treeScale;
-
-    state.treeScrollLeft = VIRTUAL_PAD + centerX - scroller.clientWidth / 2;
-    state.treeScrollTop  = VIRTUAL_PAD;
+    const { w, h } = canvasSize();
+    const vpW = scroller.clientWidth;
+    const vpH = scroller.clientHeight;
+    state.treeScale = Math.min(vpW / w, vpH / h);
+    const inner  = document.getElementById('tree-scale-inner');
+    const spacer = document.querySelector('.tree-scale-spacer');
+    if (inner)  inner.style.transform = `scale(${state.treeScale})`;
+    if (inner)  inner.style.left = VIRTUAL_PAD + 'px';
+    if (inner)  inner.style.top  = VIRTUAL_PAD + 'px';
+    if (spacer) spacer.style.width  = (w * state.treeScale + VIRTUAL_PAD * 2) + 'px';
+    if (spacer) spacer.style.height = (h * state.treeScale + VIRTUAL_PAD * 2) + 'px';
+    const scaledW = w * state.treeScale;
+    const scaledH = h * state.treeScale;
+    state.treeScrollLeft = VIRTUAL_PAD + (scaledW - vpW) / 2;
+    state.treeScrollTop  = VIRTUAL_PAD + (scaledH - vpH) / 2;
   }
 
   scroller.scrollLeft = state.treeScrollLeft;
