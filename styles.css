@@ -66,6 +66,13 @@ html, body {
 
 /* ── Tree ────────────────────────────────────────────────────── */
 
+.tree-view-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
 .tree-scroll {
   width: 100%;
   height: 100%;
@@ -74,6 +81,20 @@ html, body {
 }
 
 .tree-scroll::-webkit-scrollbar { display: none; }
+
+.tree-scale-spacer { position: relative; }
+
+.tree-zoom {
+  position: absolute;
+  right: 14px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 10;
+}
+
+.zoom-btn.small { font-size: 14px; }
 
 .tree-canvas {
   position: relative;
@@ -93,9 +114,12 @@ html, body {
 
 .card {
   position: absolute;
-  background: var(--surface);
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 18px;
-  box-shadow: 0 2px 14px rgba(59,42,42,0.09);
+  box-shadow: 0 2px 18px rgba(59,42,42,0.1), 0 0 24px rgba(255,248,242,0.6);
+  border: 1px solid rgba(255,255,255,0.7);
   padding: 14px 10px 12px;
   display: flex;
   flex-direction: column;
@@ -108,8 +132,17 @@ html, body {
 
 .card:active {
   transform: scale(0.96);
-  box-shadow: 0 1px 6px rgba(59,42,42,0.12);
+  box-shadow: 0 1px 8px rgba(59,42,42,0.12);
 }
+
+.card--deceased {
+  background: rgba(180,162,154,0.45);
+  border-color: rgba(180,162,154,0.5);
+  box-shadow: 0 2px 14px rgba(30,20,20,0.18), 0 0 20px rgba(140,120,112,0.2);
+}
+
+.card--deceased .card-name { color: #5a4040; }
+.card--deceased .card-dates { color: #7a5a52; }
 
 .card-photo {
   width: 62px;
@@ -127,10 +160,25 @@ html, body {
   object-fit: cover;
 }
 
+.card-photo--dashed {
+  overflow: visible;
+  background: transparent;
+  position: relative;
+}
+
+.card-photo--dashed .photo-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  outline: 2.5px dashed var(--muted);
+  outline-offset: 2px;
+}
+
 .photo-placeholder {
   width: 100%;
   height: 100%;
   background: linear-gradient(135deg, #D9CFC9 0%, #C4AFA8 100%);
+  border-radius: 50%;
 }
 
 .card-name {
@@ -412,6 +460,64 @@ html, body {
   margin-bottom: 22px;
 }
 
+.profile-info {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 4px 16px;
+  margin-bottom: 14px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(196,175,168,0.3);
+  gap: 12px;
+}
+
+.info-row:last-child { border-bottom: none; }
+
+.info-label {
+  font-size: 13px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.info-val {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  text-align: right;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.stat-item {
+  flex: 1;
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 14px 12px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
 .profile-section {
   margin-bottom: 26px;
 }
@@ -649,8 +755,23 @@ html, body {
 
 .legend-line.solid    { background: var(--line); }
 .legend-line.dashed   { background: repeating-linear-gradient(90deg, var(--line) 0, var(--line) 7px, transparent 7px, transparent 13px); }
-.legend-line.dotted   { height: 1.5px; background: repeating-linear-gradient(90deg, var(--line) 0, var(--line) 2px, transparent 2px, transparent 6px); }
-.legend-line.teal     { background: #5B9B8A; }
+.legend-line.marriage {
+  background: var(--line);
+  position: relative;
+  overflow: visible;
+}
+.legend-line.marriage::after {
+  content: '♡';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: var(--accent);
+  background: var(--surface);
+  padding: 0 3px;
+  line-height: 1;
+}
 
 .legend-label { font-size: 14px; }
 
@@ -665,4 +786,33 @@ html, body {
   font-size: 15px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+}
+.tree-view-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.tree-scale-spacer {
+  position: relative;
+}
+
+#tree-scale-inner {
+  position: relative;
+}
+
+.tree-zoom {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 90;
+}
+
+.zoom-btn.small {
+  font-size: 15px;
 }

@@ -2,112 +2,744 @@
   "title": "Архив Кучеренко",
   "members": [
     {
-      "id": "grigoriy",
-      "name": "Григорий Кучеренко",
-      "birthDate": "1892-05-10",
-      "deathDate": "1964-11-03",
+      "id": "kucherenko_ivan_nikiforovich",
+      "name": "Кучеренко Иван Никифорович",
+      "birthDate": "1897",
+      "deathDate": "?",
       "photo": null,
-      "bio": "Основатель ветви рода Кучеренко. Родился в семье потомственных агрономов. В 1920-х годах заложил первый камень родового поместья и высадил знаменитую дубовую аллею.",
-      "role": "Патриарх",
+      "bio": "",
+      "role": "родоначальник ветви",
       "row": 0,
-      "col": 2,
-      "timeline": [
-        { "year": "1892", "text": "Родился в Полтавской губернии." },
-        { "year": "1920", "text": "Заложил родовое поместье." }
-      ]
-    },
-    {
-      "id": "ivan",
-      "name": "Иван Кучеренко",
-      "birthDate": "1924-03-15",
-      "deathDate": "1998-07-22",
-      "photo": null,
-      "bio": "Сын Григория. Работал инженером на заводе. Участник Великой Отечественной войны, награждён орденом Красной Звезды.",
-      "row": 1,
-      "col": 1,
-      "timeline": [
-        { "year": "1942", "text": "Призван на фронт." },
-        { "year": "1946", "text": "Вернулся домой, поступил в технический институт." }
-      ]
-    },
-    {
-      "id": "mariya",
-      "name": "Мария Кучеренко",
-      "birthDate": "1928-06-20",
-      "deathDate": "2005-02-14",
-      "photo": null,
-      "bio": "Жена Ивана. Работала учительницей в школе. Сохранила семейный фотоархив военного времени.",
-      "row": 1,
-      "col": 3,
+      "col": 15,
       "timeline": []
     },
     {
-      "id": "gennadiy",
-      "name": "Геннадий Кучеренко",
-      "birthDate": "1956-09-08",
+      "id": "kucherenko_praskovya_ivanovna",
+      "name": "Кучеренко Прасковья Ивановна",
+      "birthDate": null,
+      "deathDate": "?",
+      "photo": null,
+      "bio": "",
+      "role": "жена Ивана",
+      "row": 0,
+      "col": 17,
+      "timeline": []
+    },
+    {
+      "id": "levkina_valentina_ivanovna",
+      "name": "Левкина Валентина Ивановна",
+      "birthDate": "1925",
+      "deathDate": "1985",
+      "photo": null,
+      "bio": "",
+      "role": "центральная фигура",
+      "row": 1,
+      "col": 15,
+      "timeline": []
+    },
+    {
+      "id": "levkin_fedor_afanasyevich",
+      "name": "Левкин Фёдор Афанасьевич",
+      "birthDate": "1920",
+      "deathDate": "1974",
+      "photo": null,
+      "bio": "",
+      "role": "муж Валентины",
+      "row": 1,
+      "col": 17,
+      "timeline": []
+    },
+    {
+      "id": "levkin_vladimir_nikolaevich",
+      "name": "Левкин Владимир Николаевич",
+      "birthDate": null,
       "deathDate": null,
       "photo": null,
-      "bio": "Сын Ивана и Марии. Хранитель семейного архива. Занимается документированием истории рода уже более 30 лет.",
-      "role": "Хранитель",
+      "bio": "",
+      "role": "сын Валентины",
       "row": 2,
-      "col": 1,
-      "timeline": [
-        { "year": "1978", "text": "Окончил исторический факультет." },
-        { "year": "1995", "text": "Начал оцифровку семейного фотоархива." }
-      ]
-    },
-    {
-      "id": "aleksey",
-      "name": "Алексей Кучеренко",
-      "birthDate": "1984-01-12",
-      "deathDate": null,
-      "photo": null,
-      "bio": "Сын Геннадия. Программист, живёт в Москве.",
-      "row": 3,
-      "col": 1,
+      "col": 5,
       "timeline": []
     },
     {
-      "id": "anna",
-      "name": "Анна Кучеренко",
-      "birthDate": "1986-11-30",
+      "id": "levkina_natalya_fedorovna",
+      "name": "Левкина Наталья Фёдоровна",
+      "birthDate": "1956-03-01",
       "deathDate": null,
       "photo": null,
-      "bio": "Дочь Геннадия. Дизайнер интерьеров.",
-      "row": 3,
-      "col": 2,
+      "bio": "",
+      "role": "дочь Валентины",
+      "row": 2,
+      "col": 15,
       "timeline": []
     },
     {
-      "id": "svetlana",
-      "name": "Светлана Кучеренко",
-      "birthDate": "1990-04-05",
+      "id": "zinchenko_viktor_mikhailovich",
+      "name": "Зинченко Виктор Михайлович",
+      "birthDate": "1954-09-24",
       "deathDate": null,
       "photo": null,
-      "bio": "Дочь Геннадия. Врач-педиатр.",
+      "bio": "",
+      "role": "муж Натальи",
+      "row": 2,
+      "col": 13,
+      "timeline": []
+    },
+    {
+      "id": "zinchenko_mikhail_mikhailovich",
+      "name": "Зинченко Михаил Михайлович",
+      "birthDate": "1963-07-13",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "брат Виктора",
+      "row": 2,
+      "col": 8,
+      "timeline": []
+    },
+    {
+      "id": "zinchenko_mikhail_father",
+      "name": "Зинченко Михаил",
+      "birthDate": null,
+      "deathDate": "?",
+      "photo": null,
+      "bio": "",
+      "role": "отец Виктора и Михаила",
+      "row": 1,
+      "col": 10,
+      "timeline": []
+    },
+    {
+      "id": "ivlev_gennadiy_nikolaevich",
+      "name": "Ивлев Геннадий Николаевич",
+      "birthDate": "1964-03-31",
+      "deathDate": "1998-09-18",
+      "photo": null,
+      "bio": "",
+      "role": "муж Ирины",
+      "row": 2,
+      "col": 21,
+      "timeline": []
+    },
+    {
+      "id": "levkina_irina_fedorovna",
+      "name": "Левкина Ирина Фёдоровна",
+      "birthDate": "1965-04-09",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "дочь Валентины",
+      "row": 2,
+      "col": 19,
+      "timeline": []
+    },
+    {
+      "id": "boronin_vladimir_vladimirovich",
+      "name": "Боронин Владимир Владимирович",
+      "birthDate": "1973-04-13",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "отчим детей Ирины",
+      "row": 2,
+      "col": 17,
+      "timeline": []
+    },
+    {
+      "id": "zhurbin_vladimir_ivanovich",
+      "name": "Журбин Владимир Иванович",
+      "birthDate": null,
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "отец Сергея",
+      "row": 2,
+      "col": 23,
+      "timeline": []
+    },
+    {
+      "id": "zhurbina_tatyana_vladimirovna",
+      "name": "Журбина Татьяна Владимировна",
+      "birthDate": "1957-12-27",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "мать Сергея",
+      "row": 2,
+      "col": 25,
+      "timeline": []
+    },
+    {
+      "id": "rudichev_gennadiy_vasilyevich",
+      "name": "Рудичев Геннадий Васильевич",
+      "birthDate": "1964-04-06",
+      "deathDate": "2021-11-09",
+      "photo": null,
+      "bio": "",
+      "role": "отец Никиты",
+      "row": 2,
+      "col": 27,
+      "timeline": []
+    },
+    {
+      "id": "rudicheva_galina_borisovna",
+      "name": "Рудичева Галина Борисовна",
+      "birthDate": "1961-08-24",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "мать Никиты",
+      "row": 2,
+      "col": 29,
+      "timeline": []
+    },
+    {
+      "id": "bondarenko_vladimir_nikolaevich",
+      "name": "Бондаренко Владимир Николаевич",
+      "birthDate": null,
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "отец Михаила",
+      "row": 2,
+      "col": 31,
+      "timeline": []
+    },
+    {
+      "id": "bondarenko_natalya_mikhailovna",
+      "name": "Бондаренко Наталья Михайловна",
+      "birthDate": "1955-01-01",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "мать Михаила",
+      "row": 2,
+      "col": 33,
+      "timeline": []
+    },
+    {
+      "id": "kalentyeva_marina_viktorovna",
+      "name": "Калентьева Марина Викторовна",
+      "birthDate": "1976-02-07",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "внучка Валентины, дочь Натальи",
+      "row": 3,
+      "col": 11,
+      "timeline": []
+    },
+    {
+      "id": "kalentyev_petr_nikolaevich",
+      "name": "Калентьев Пётр Николаевич",
+      "birthDate": "1977-09-06",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "муж Марины",
+      "row": 3,
+      "col": 13,
+      "timeline": []
+    },
+    {
+      "id": "zhurbina_oksana_viktorovna",
+      "name": "Журбина Оксана Викторовна",
+      "birthDate": "1981-03-07",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "внучка Валентины, дочь Натальи",
+      "row": 3,
+      "col": 23,
+      "timeline": []
+    },
+    {
+      "id": "zhurbin_sergey",
+      "name": "Журбин Сергей",
+      "birthDate": "1980-01-21",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "муж Оксаны",
+      "row": 3,
+      "col": 25,
+      "timeline": []
+    },
+    {
+      "id": "bondarenko_valentina_gennadievna",
+      "name": "Бондаренко Валентина Геннадиевна",
+      "birthDate": "1986-04-03",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "внучка Валентины, дочь Ирины",
+      "row": 3,
+      "col": 31,
+      "timeline": []
+    },
+    {
+      "id": "bondarenko_mikhail_vladimirovich",
+      "name": "Бондаренко Михаил Владимирович",
+      "birthDate": "1981-12-04",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "муж Валентины Б.",
+      "row": 3,
+      "col": 33,
+      "timeline": []
+    },
+    {
+      "id": "rudicheva_olga_gennadievna",
+      "name": "Рудичева Ольга Геннадиевна",
+      "birthDate": "1988-05-31",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "внучка Валентины, дочь Ирины",
+      "row": 3,
+      "col": 27,
+      "timeline": []
+    },
+    {
+      "id": "rudichev_nikita_gennadyevich",
+      "name": "Рудичев Никита Геннадьевич",
+      "birthDate": "1990-01-11",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "муж Ольги",
+      "row": 3,
+      "col": 29,
+      "timeline": []
+    },
+    {
+      "id": "kiseleva_elena_nikolaevna",
+      "name": "Киселева Елена Николаевна",
+      "birthDate": "1974-11-18",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "сестра Петра",
+      "row": 3,
+      "col": 9,
+      "timeline": []
+    },
+    {
+      "id": "kiselev_dmitriy_viktorovich",
+      "name": "Киселев Дмитрий Викторович",
+      "birthDate": "1972-11-10",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "бывший муж Елены",
+      "row": 3,
+      "col": 7,
+      "timeline": []
+    },
+    {
+      "id": "zhuravlev_andrey_anatolyevich",
+      "name": "Журавлёв Андрей Анатольевич",
+      "birthDate": "1980-04-30",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "отец Марины Журавлёвой",
       "row": 3,
       "col": 3,
+      "timeline": []
+    },
+    {
+      "id": "gun_natalya_aleksandrovna",
+      "name": "Гунь Наталья Александровна",
+      "birthDate": "1979-09-09",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "мать Марины Журавлёвой",
+      "row": 3,
+      "col": 5,
+      "timeline": []
+    },
+    {
+      "id": "gun_marina_aleksandrovna",
+      "name": "Гунь Марина Александровна",
+      "birthDate": "1973-06-12",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "тётя Марины Журавлёвой",
+      "row": 3,
+      "col": 1,
+      "timeline": []
+    },
+    {
+      "id": "kalentyev_timofey_petrovich",
+      "name": "Калентьев Тимофей Петрович",
+      "birthDate": "2002-05-24",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "сын Марины и Петра",
+      "row": 4,
+      "col": 12,
+      "timeline": []
+    },
+    {
+      "id": "zhurbina_yana_sergeevna",
+      "name": "Журбина Яна Сергеевна",
+      "birthDate": "2015-12-12",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "дочь Оксаны и Сергея",
+      "row": 4,
+      "col": 23,
+      "timeline": []
+    },
+    {
+      "id": "zhurbina_inna_sergeevna",
+      "name": "Журбина Инна Сергеевна",
+      "birthDate": "2018-09-03",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "дочь Оксаны и Сергея",
+      "row": 4,
+      "col": 25,
+      "timeline": []
+    },
+    {
+      "id": "bondarenko_anna_mikhailovna",
+      "name": "Бондаренко Анна Михайловна",
+      "birthDate": "2004-08-24",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "дочь Валентины Б. и Михаила",
+      "row": 4,
+      "col": 32,
+      "timeline": []
+    },
+    {
+      "id": "kosminik",
+      "name": "Косьминик",
+      "birthDate": null,
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "муж Анны Бондаренко",
+      "row": 4,
+      "col": 34,
+      "timeline": []
+    },
+    {
+      "id": "krutkin_roman_antonovich",
+      "name": "Круткин Роман Антонович",
+      "birthDate": "2012-09-06",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "сын Ольги",
+      "row": 4,
+      "col": 27,
+      "timeline": []
+    },
+    {
+      "id": "rudichev_fedor_nikitich",
+      "name": "Рудичев Фёдор Никитич",
+      "birthDate": "2021-03-18",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "сын Ольги и Никиты",
+      "row": 4,
+      "col": 29,
+      "timeline": []
+    },
+    {
+      "id": "kalentyev_evgeniy",
+      "name": "Калентьев Евгений",
+      "birthDate": "1993-05-08",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "сын Елены",
+      "row": 4,
+      "col": 9,
+      "timeline": []
+    },
+    {
+      "id": "kiselev_egor",
+      "name": "Киселев Егор",
+      "birthDate": "2001-10-11",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "сын Елены и Дмитрия",
+      "row": 4,
+      "col": 7,
+      "timeline": []
+    },
+    {
+      "id": "kiseleva_marina_andreevna",
+      "name": "Киселева Марина Андреевна",
+      "birthDate": "2002-11-21",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "жена Егора",
+      "row": 4,
+      "col": 5,
+      "timeline": []
+    },
+    {
+      "id": "zhuravlev_egor_andreevich",
+      "name": "Журавлёв Егор Андреевич",
+      "birthDate": "2010-05-24",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "брат Марины Журавлёвой",
+      "row": 4,
+      "col": 3,
+      "timeline": []
+    },
+    {
+      "id": "kalentyev_arseniy",
+      "name": "Калентьев Арсений",
+      "birthDate": "2013",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "сын Евгения",
+      "row": 5,
+      "col": 9,
+      "timeline": []
+    },
+    {
+      "id": "kiseleva_avrora_igorevna",
+      "name": "Киселева Аврора Игоревна",
+      "birthDate": "2024-06-15",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "дочь Егора и Марины",
+      "row": 5,
+      "col": 6,
       "timeline": []
     }
   ],
   "families": [
     {
-      "id": "f1",
-      "coupleType": "single",
-      "parents": ["grigoriy"],
-      "children": ["ivan"]
-    },
-    {
-      "id": "f2",
+      "id": "f_kucherenko_ivan_praskovya",
       "coupleType": "spouse",
-      "parents": ["ivan", "mariya"],
-      "children": ["gennadiy"]
+      "parents": [
+        "kucherenko_ivan_nikiforovich",
+        "kucherenko_praskovya_ivanovna"
+      ],
+      "children": [
+        "levkina_valentina_ivanovna"
+      ]
     },
     {
-      "id": "f3",
+      "id": "f_levkin_fedor_valentina",
+      "coupleType": "spouse",
+      "parents": [
+        "levkina_valentina_ivanovna",
+        "levkin_fedor_afanasyevich"
+      ],
+      "children": [
+        "levkin_vladimir_nikolaevich",
+        "levkina_natalya_fedorovna",
+        "levkina_irina_fedorovna"
+      ]
+    },
+    {
+      "id": "f_zinchenko_father",
       "coupleType": "single",
-      "parents": ["gennadiy"],
-      "children": ["aleksey", "anna", "svetlana"]
+      "parents": [
+        "zinchenko_mikhail_father"
+      ],
+      "children": [
+        "zinchenko_viktor_mikhailovich",
+        "zinchenko_mikhail_mikhailovich"
+      ]
+    },
+    {
+      "id": "f_zinchenko_viktor_natalya",
+      "coupleType": "spouse",
+      "parents": [
+        "levkina_natalya_fedorovna",
+        "zinchenko_viktor_mikhailovich"
+      ],
+      "children": [
+        "kalentyeva_marina_viktorovna",
+        "zhurbina_oksana_viktorovna"
+      ]
+    },
+    {
+      "id": "f_ivlev_gennadiy_irina",
+      "coupleType": "divorced",
+      "parents": [
+        "ivlev_gennadiy_nikolaevich",
+        "levkina_irina_fedorovna"
+      ],
+      "children": [
+        "bondarenko_valentina_gennadievna",
+        "rudicheva_olga_gennadievna"
+      ]
+    },
+    {
+      "id": "f_boronin_irina",
+      "coupleType": "spouse",
+      "parents": [
+        "boronin_vladimir_vladimirovich",
+        "levkina_irina_fedorovna"
+      ],
+      "children": []
+    },
+    {
+      "id": "f_zhurbin_vladimir_tatyana",
+      "coupleType": "spouse",
+      "parents": [
+        "zhurbin_vladimir_ivanovich",
+        "zhurbina_tatyana_vladimirovna"
+      ],
+      "children": [
+        "zhurbin_sergey"
+      ]
+    },
+    {
+      "id": "f_rudichev_gennadiy_galina",
+      "coupleType": "spouse",
+      "parents": [
+        "rudichev_gennadiy_vasilyevich",
+        "rudicheva_galina_borisovna"
+      ],
+      "children": [
+        "rudichev_nikita_gennadyevich"
+      ]
+    },
+    {
+      "id": "f_bondarenko_vladimir_natalya",
+      "coupleType": "spouse",
+      "parents": [
+        "bondarenko_vladimir_nikolaevich",
+        "bondarenko_natalya_mikhailovna"
+      ],
+      "children": [
+        "bondarenko_mikhail_vladimirovich"
+      ]
+    },
+    {
+      "id": "f_kalentyev_petr_marina",
+      "coupleType": "spouse",
+      "parents": [
+        "kalentyeva_marina_viktorovna",
+        "kalentyev_petr_nikolaevich"
+      ],
+      "children": [
+        "kalentyev_timofey_petrovich"
+      ]
+    },
+    {
+      "id": "f_zhurbin_sergey_oksana",
+      "coupleType": "spouse",
+      "parents": [
+        "zhurbina_oksana_viktorovna",
+        "zhurbin_sergey"
+      ],
+      "children": [
+        "zhurbina_yana_sergeevna",
+        "zhurbina_inna_sergeevna"
+      ]
+    },
+    {
+      "id": "f_bondarenko_mikhail_valentina",
+      "coupleType": "spouse",
+      "parents": [
+        "bondarenko_valentina_gennadievna",
+        "bondarenko_mikhail_vladimirovich"
+      ],
+      "children": [
+        "bondarenko_anna_mikhailovna"
+      ]
+    },
+    {
+      "id": "f_rudicheva_olga_single",
+      "coupleType": "single",
+      "parents": [
+        "rudicheva_olga_gennadievna"
+      ],
+      "children": [
+        "krutkin_roman_antonovich"
+      ]
+    },
+    {
+      "id": "f_rudichev_nikita_olga",
+      "coupleType": "spouse",
+      "parents": [
+        "rudicheva_olga_gennadievna",
+        "rudichev_nikita_gennadyevich"
+      ],
+      "children": [
+        "rudichev_fedor_nikitich"
+      ]
+    },
+    {
+      "id": "f_kiselev_dmitriy_elena",
+      "coupleType": "divorced",
+      "parents": [
+        "kiseleva_elena_nikolaevna",
+        "kiselev_dmitriy_viktorovich"
+      ],
+      "children": [
+        "kiselev_egor"
+      ]
+    },
+    {
+      "id": "f_elena_evgeniy",
+      "coupleType": "single",
+      "parents": [
+        "kiseleva_elena_nikolaevna"
+      ],
+      "children": [
+        "kalentyev_evgeniy"
+      ]
+    },
+    {
+      "id": "f_evgeniy_arseniy",
+      "coupleType": "single",
+      "parents": [
+        "kalentyev_evgeniy"
+      ],
+      "children": [
+        "kalentyev_arseniy"
+      ]
+    },
+    {
+      "id": "f_egor_marina",
+      "coupleType": "spouse",
+      "parents": [
+        "kiselev_egor",
+        "kiseleva_marina_andreevna"
+      ],
+      "children": [
+        "kiseleva_avrora_igorevna"
+      ]
+    },
+    {
+      "id": "f_zhuravlev_andrey_natalya",
+      "coupleType": "spouse",
+      "parents": [
+        "zhuravlev_andrey_anatolyevich",
+        "gun_natalya_aleksandrovna"
+      ],
+      "children": [
+        "kiseleva_marina_andreevna",
+        "zhuravlev_egor_andreevich"
+      ]
     }
   ]
 }
