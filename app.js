@@ -106,31 +106,24 @@ function zoomToCard(id, callback) {
   const inner  = document.getElementById('tree-scale-inner');
   const spacer = document.querySelector('.tree-scale-spacer');
 
-  if (inner) {
-    inner.style.transition = 'transform 0.38s cubic-bezier(0.4,0,0.2,1)';
-    inner.style.transform  = `scale(${toScale})`;
-  }
-
-  // Spacer and scroll animated together — prevents viewport jerk
-  const DURATION = 380;
+  // Scale + spacer + scroll all in one rAF loop — perfectly in sync
+  const DURATION = 400;
   const start    = performance.now();
-  function scrollFrame(now) {
+  function frame(now) {
     const t = Math.min((now - start) / DURATION, 1);
     const e = t < 0.5 ? 2*t*t : -1 + (4-2*t)*t;
+    const sc = fromScale + (toScale - fromScale) * e;
+    if (inner)  inner.style.transform = `scale(${sc})`;
     if (spacer) {
       spacer.style.width  = (fromSW + (toSW - fromSW) * e) + 'px';
       spacer.style.height = (fromSH + (toSH - fromSH) * e) + 'px';
     }
     scroller.scrollLeft = fromLeft + (toLeft - fromLeft) * e;
     scroller.scrollTop  = fromTop  + (toTop  - fromTop)  * e;
-    if (t < 1) {
-      requestAnimationFrame(scrollFrame);
-    } else {
-      if (inner) inner.style.transition = '';
-      callback?.();
-    }
+    if (t < 1) requestAnimationFrame(frame);
+    else callback?.();
   }
-  requestAnimationFrame(scrollFrame);
+  requestAnimationFrame(frame);
 }
 
 // ── Main render ───────────────────────────────────────────────────
