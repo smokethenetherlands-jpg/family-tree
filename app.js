@@ -656,6 +656,8 @@ function bindTreeDrag() {
 
   function applyScale(newScale, centerX, centerY) {
     const prev = state.treeScale;
+    const contentX = (scroller.scrollLeft + centerX) / prev;
+    const contentY = (scroller.scrollTop  + centerY) / prev;
     state.treeScale = Math.max(0.12, Math.min(3, newScale));
     const { w, h } = canvasSize();
     const inner  = document.getElementById('tree-scale-inner');
@@ -665,12 +667,8 @@ function bindTreeDrag() {
       spacer.style.width  = (w * state.treeScale) + 'px';
       spacer.style.height = (h * state.treeScale) + 'px';
     }
-    scroller.scrollLeft += (centerX / prev - centerX / state.treeScale) * state.treeScale * prev / prev;
-    // simpler: keep content point under center fixed
-    const cx = (scroller.scrollLeft + centerX) / prev * state.treeScale - centerX;
-    const cy = (scroller.scrollTop  + centerY) / prev * state.treeScale - centerY;
-    scroller.scrollLeft = cx;
-    scroller.scrollTop  = cy;
+    scroller.scrollLeft = contentX * state.treeScale - centerX;
+    scroller.scrollTop  = contentY * state.treeScale - centerY;
     state.treeScrollLeft = scroller.scrollLeft;
     state.treeScrollTop  = scroller.scrollTop;
   }
