@@ -739,6 +739,8 @@ html, body {
   gap: 12px;
   padding: 11px 0;
   border-bottom: 1px solid rgba(196,175,168,0.3);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .birthday-info {

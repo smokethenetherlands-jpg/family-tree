@@ -459,7 +459,7 @@ function buildBirthdays() {
       const pillClass = diff === 0 ? 'today' : diff <= 7 ? 'week' : diff <= 30 ? 'month' : 'far';
       const pillText  = diff === 0 ? 'сегодня' : diff === 1 ? 'завтра' : `через ${diff} дн.`;
       return `
-      <div class="birthday-item birthday-item--${pillClass}">
+      <div class="birthday-item birthday-item--${pillClass}" data-id="${m.id}">
         <div class="birthday-info">
           <span class="birthday-name">${m.name}</span>
           <span class="birthday-date">${day} ${MONTHS[month]}</span>
@@ -580,6 +580,10 @@ function bindEvents() {
 
   document.getElementById('backdrop')?.addEventListener('click', closeAll);
   document.getElementById('close-legend-btn')?.addEventListener('click', closeAll);
+
+  document.querySelectorAll('.birthday-item[data-id]').forEach(el =>
+    el.addEventListener('click', () => openPopup(el.dataset.id))
+  );
 
   document.getElementById('popup-profile-btn')?.addEventListener('click', e => {
     const id = e.currentTarget.dataset.id;
