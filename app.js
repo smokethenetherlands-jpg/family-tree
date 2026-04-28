@@ -63,6 +63,37 @@ function closeAll() {
   render();
 }
 
+function zoomToCard(id, callback) {
+  const m = DATA.members.find(x => x.id === id);
+  const scroller = document.getElementById('tree-scroll');
+  if (!m || !scroller) { callback?.(); return; }
+
+  const targetScale = Math.max(state.treeScale, 0.8);
+  const { w, h } = canvasSize();
+  const cardCX = PAD_L + m.col * COL_W + CARD_W / 2;
+  const cardCY = PAD_T + m.row * ROW_H + CARD_H / 2;
+  const targetLeft = VIRTUAL_PAD + cardCX * targetScale - scroller.clientWidth  / 2;
+  const targetTop  = VIRTUAL_PAD + cardCY * targetScale - scroller.clientHeight / 2;
+
+  state.treeScale      = targetScale;
+  state.treeScrollLeft = Math.max(0, targetLeft);
+  state.treeScrollTop  = Math.max(0, targetTop);
+
+  const inner  = document.getElementById('tree-scale-inner');
+  const spacer = document.querySelector('.tree-scale-spacer');
+  if (inner) {
+    inner.style.transition = 'transform 0.32s ease';
+    inner.style.transform  = `scale(${targetScale})`;
+    setTimeout(() => { const el = document.getElementById('tree-scale-inner'); if (el) el.style.transition = ''; }, 400);
+  }
+  if (spacer) {
+    spacer.style.width  = (w * targetScale + VIRTUAL_PAD * 2) + 'px';
+    spacer.style.height = (h * targetScale + VIRTUAL_PAD * 2) + 'px';
+  }
+  scroller.scrollTo({ left: state.treeScrollLeft, top: state.treeScrollTop, behavior: 'smooth' });
+  setTimeout(callback, 380);
+}
+
 // ── Main render ───────────────────────────────────────────────────
 
 function render() {
@@ -572,7 +603,7 @@ function drawLines() {
 
 function bindEvents() {
   document.querySelectorAll('.card').forEach(el =>
-    el.addEventListener('click', () => openPopup(el.dataset.id))
+    el.addEventListener('click', () => zoomToCard(el.dataset.id, () => openPopup(el.dataset.id)))
   );
 
   document.getElementById('nav-search')?.addEventListener('click', () => navigate('search'));
@@ -732,7 +763,7 @@ function bindTreeDrag() {
       const t = e.changedTouches[0];
       const el = document.elementFromPoint(t.clientX, t.clientY);
       const card = el?.closest('.card');
-      if (card) openPopup(card.dataset.id);
+      if (card) zoomToCard(card.dataset.id, () => openPopup(card.dataset.id));
     }
   }, { passive: false });
 
