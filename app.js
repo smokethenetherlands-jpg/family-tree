@@ -71,6 +71,10 @@ function render() {
   const root = document.getElementById('overlay-root');
 
   if (state.view === 'tree') {
+    if (state.treeScrollLeft === null) {
+      const { w, h } = canvasSize();
+      state.treeScale = Math.min(window.innerWidth / w, (window.innerHeight - 88) / h);
+    }
     app.innerHTML = buildTree();
   } else if (state.view === 'overview') {
     app.innerHTML = buildOverview();
@@ -764,20 +768,10 @@ function restoreTreeScroll() {
 
   if (state.treeScrollLeft === null) {
     const { w, h } = canvasSize();
-    const vpW = scroller.clientWidth;
-    const vpH = scroller.clientHeight;
-    state.treeScale = Math.min(vpW / w, vpH / h);
-    const inner  = document.getElementById('tree-scale-inner');
-    const spacer = document.querySelector('.tree-scale-spacer');
-    if (inner)  inner.style.transform = `scale(${state.treeScale})`;
-    if (inner)  inner.style.left = VIRTUAL_PAD + 'px';
-    if (inner)  inner.style.top  = VIRTUAL_PAD + 'px';
-    if (spacer) spacer.style.width  = (w * state.treeScale + VIRTUAL_PAD * 2) + 'px';
-    if (spacer) spacer.style.height = (h * state.treeScale + VIRTUAL_PAD * 2) + 'px';
     const scaledW = w * state.treeScale;
     const scaledH = h * state.treeScale;
-    state.treeScrollLeft = VIRTUAL_PAD + (scaledW - vpW) / 2;
-    state.treeScrollTop  = VIRTUAL_PAD + (scaledH - vpH) / 2;
+    state.treeScrollLeft = VIRTUAL_PAD + (scaledW - scroller.clientWidth)  / 2;
+    state.treeScrollTop  = VIRTUAL_PAD + (scaledH - scroller.clientHeight) / 2;
   }
 
   scroller.scrollLeft = state.treeScrollLeft;
