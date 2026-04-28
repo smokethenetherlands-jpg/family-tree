@@ -735,19 +735,34 @@ html, body {
 .birthday-item {
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: space-between;
+  gap: 12px;
   padding: 11px 0;
   border-bottom: 1px solid rgba(196,175,168,0.3);
 }
 
-.birthday-item.soon .birthday-date,
-.birthday-item.soon .birthday-name {
-  color: var(--accent);
-  font-weight: 600;
+.birthday-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.birthday-date { font-size: 13px; min-width: 96px; }
-.birthday-name { font-size: 14.5px; }
+.birthday-name { font-size: 14.5px; font-weight: 600; color: var(--text); }
+.birthday-date { font-size: 12px; color: var(--muted); }
+
+.birthday-pill {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.birthday-pill--today { background: var(--accent); color: #fff; }
+.birthday-pill--week  { background: rgba(139,74,58,0.13); color: var(--accent); }
+.birthday-pill--month { background: rgba(180,140,80,0.15); color: #8B6A3A; }
+.birthday-pill--far   { background: rgba(196,175,168,0.25); color: var(--muted); }
 
 /* Legend */
 .legend-items {

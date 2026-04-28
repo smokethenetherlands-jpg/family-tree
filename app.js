@@ -455,11 +455,18 @@ function buildBirthdays() {
       };
     })
     .sort((a, b) => a.diff - b.diff)
-    .map(({ m, diff, month, day }) => `
-      <div class="birthday-item ${diff <= 30 ? 'soon' : ''}">
-        <span class="birthday-date">${day} ${MONTHS[month]}</span>
-        <span class="birthday-name">${m.name}</span>
-      </div>`).join('');
+    .map(({ m, diff, month, day }) => {
+      const pillClass = diff === 0 ? 'today' : diff <= 7 ? 'week' : diff <= 30 ? 'month' : 'far';
+      const pillText  = diff === 0 ? 'сегодня' : diff === 1 ? 'завтра' : `через ${diff} дн.`;
+      return `
+      <div class="birthday-item">
+        <div class="birthday-info">
+          <span class="birthday-name">${m.name}</span>
+          <span class="birthday-date">${day} ${MONTHS[month]}</span>
+        </div>
+        <span class="birthday-pill birthday-pill--${pillClass}">${pillText}</span>
+      </div>`;
+    }).join('');
 
   return `
     <div class="backdrop" id="backdrop"></div>
