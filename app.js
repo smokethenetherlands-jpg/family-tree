@@ -306,9 +306,13 @@ function buildTree() {
   const { w, h, maxRow } = canvasSize();
   const scaledW = w * state.treeScale;
   const scaledH = h * state.treeScale;
+  const people = DATA.members.length;
+  const gens   = maxRow + 1;
 
   return `
     <div class="tree-view-wrap">
+      <div class="tree-hud-left">Семейное дерево</div>
+      <div class="tree-hud-right">${people} чел. · ${gens} пок.</div>
       <div class="tree-scroll" id="tree-scroll">
         <div class="tree-scale-spacer" style="width:${scaledW + VIRTUAL_PAD * 2}px;height:${scaledH + VIRTUAL_PAD * 2}px;position:relative">
           <div
