@@ -80,7 +80,7 @@ function toggleTheme() {
 }
 
 async function init() {
-  if (localStorage.getItem('darkMode') === '1') {
+  if (localStorage.getItem('darkMode') !== '0') {
     document.documentElement.classList.add('dark');
   }
 
