@@ -75,12 +75,12 @@ function initParticles(canvas) {
 
 function toggleTheme() {
   const isDark = document.documentElement.classList.toggle('dark');
-  localStorage.setItem('darkMode', isDark ? '1' : '0');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
   render();
 }
 
 async function init() {
-  if (localStorage.getItem('darkMode') !== '0') {
+  if (localStorage.getItem('theme') !== 'light') {
     document.documentElement.classList.add('dark');
   }
 
