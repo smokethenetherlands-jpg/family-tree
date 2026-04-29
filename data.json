@@ -34,6 +34,7 @@
       "bio": "",
       "maiden": "Кучеренко",
       "role": "центральная фигура",
+      "memorialUrl": "https://memqr.ru/example/",
       "row": 1,
       "col": 15,
       "timeline": []
@@ -46,6 +47,7 @@
       "photo": null,
       "bio": "",
       "role": "муж Валентины",
+      "memorialUrl": "https://memqr.ru/example/1/",
       "row": 1,
       "col": 17,
       "timeline": []

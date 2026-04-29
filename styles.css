@@ -664,7 +664,36 @@ html, body {
   background: rgba(139,74,58,0.1);
   border-radius: 10px;
   padding: 3px 11px;
-  margin-bottom: 22px;
+  margin-bottom: 14px;
+}
+
+.memorial-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  padding: 15px 20px;
+  margin: 6px 0 18px;
+  background: linear-gradient(135deg, #A85A4F 0%, #C4706A 100%);
+  color: #fff;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 14px;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: opacity 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 4px 18px rgba(168,90,79,0.32);
+}
+.memorial-btn:active {
+  opacity: 0.88;
+  transform: scale(0.985);
+}
+:root.dark .memorial-btn {
+  background: linear-gradient(135deg, #6B7FCC 0%, #8898E8 100%);
+  box-shadow: 0 4px 18px rgba(136,152,232,0.28);
 }
 
 .profile-info {
