@@ -24,9 +24,75 @@ const state = {
 
 // ── Boot ─────────────────────────────────────────────────────────
 
+function initParticles(canvas) {
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COUNT = 228;
+  const particles = Array.from({ length: COUNT }, () => ({
+    x:     Math.random() * window.innerWidth,
+    y:     Math.random() * window.innerHeight,
+    r:     Math.random() * 1.4 + 0.4,
+    vx:    (Math.random() - 0.5) * 0.18,
+    vy:    -(Math.random() * 0.28 + 0.08),
+    alpha: Math.random() * 0.32 + 0.12,
+    phase: Math.random() * Math.PI * 2,
+    speed: Math.random() * 0.0004 + 0.0002,
+  }));
+
+  function frame(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const dark = document.documentElement.classList.contains('dark');
+
+    particles.forEach(p => {
+      p.x += p.vx + Math.sin(t * p.speed + p.phase) * 0.22;
+      p.y += p.vy;
+
+      if (p.y < -4)               { p.y = canvas.height + 4; p.x = Math.random() * canvas.width; }
+      if (p.x < -4)               p.x = canvas.width + 4;
+      if (p.x > canvas.width + 4) p.x = -4;
+
+      const pulse = 0.7 + 0.3 * Math.sin(t * p.speed * 3 + p.phase);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = dark
+        ? `rgba(136,152,232,${p.alpha * pulse})`
+        : `rgba(168,90,79,${p.alpha * pulse})`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('darkMode', isDark ? '1' : '0');
+  render();
+}
+
 async function init() {
+  if (localStorage.getItem('darkMode') === '1') {
+    document.documentElement.classList.add('dark');
+  }
+
+  if (!document.getElementById('bg-anim')) {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'bg-anim';
+    document.body.insertBefore(canvas, document.getElementById('app'));
+    initParticles(canvas);
+  }
+
   try {
-    const res = await fetch('data.json');
+    const res = await fetch('data.json?v=' + Date.now());
     DATA = await res.json();
   } catch (e) {
     document.getElementById('app').textContent = 'Ошибка загрузки data.json';
@@ -195,17 +261,19 @@ function cardPos(m) {
   };
 }
 
+const AVATAR_SVG = '<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%" overflow="hidden"><circle cx="20" cy="14" r="8" fill="rgba(255,255,255,0.55)"/><path d="M0 40 C0 24 40 24 40 40 Z" fill="rgba(255,255,255,0.55)"/></svg>';
+
 function buildCardHtml(m) {
   const { x, y } = cardPos(m);
 
-  const isDeceased  = !!m.deathDate;
-  const isDashed    = /отчим|мачеха/i.test(m.role || '');
-  const photoClass  = isDashed ? 'card-photo card-photo--dashed' : 'card-photo';
-  const cardClass   = isDeceased ? 'card card--deceased' : 'card';
+  const isDeceased = !!m.deathDate;
+  const isDashed   = /отчим|мачеха/i.test(m.role || '');
+  const photoClass = isDashed ? 'card-photo card-photo--dashed' : 'card-photo';
+  const cardClass  = isDeceased ? 'card card--deceased' : 'card';
 
   const photo = m.photo
     ? `<img src="${m.photo}" alt="${m.name}">`
-    : `<div class="photo-placeholder"></div>`;
+    : `<div class="photo-placeholder">${AVATAR_SVG}</div>`;
 
   return `
     <div class="${cardClass}" data-id="${m.id}" style="left:${x}px;top:${y}px;width:${CARD_W}px">
@@ -298,7 +366,7 @@ function buildSearch() {
       <div class="search-results">
         ${results.map(m => `
           <button class="result-item" data-id="${m.id}">
-            <div class="result-photo">${m.photo ? `<img src="${m.photo}">` : '<div class="photo-placeholder" style="width:100%;height:100%"></div>'}</div>
+            <div class="result-photo">${m.photo ? `<img src="${m.photo}">` : `<div class="photo-placeholder" style="width:100%;height:100%">${AVATAR_SVG}</div>`}</div>
             <div>
               <div class="result-name">${m.name}</div>
               <div class="result-dates">${fmtDates(m)}</div>
@@ -336,8 +404,11 @@ function buildProfile(id) {
   const byId = Object.fromEntries(DATA.members.map(x => [x.id, x]));
 
   function gender(mem) {
-    const parts = mem.name.trim().split(' ');
-    const last = parts[0];
+    const parts = mem.name.trim().split(/\s+/);
+    const patronymic = parts[2] ?? '';
+    if (/овна$|евна$|ична$|инична$/.test(patronymic)) return 'f';
+    if (/ович$|евич$/.test(patronymic)) return 'm';
+    const last = parts[0] ?? '';
     return (last.endsWith('а') || last.endsWith('я')) ? 'f' : 'm';
   }
 
@@ -378,7 +449,7 @@ function buildProfile(id) {
 
   const relSorted = [...relMap.values()].sort((a, b) => a.order - b.order);
 
-  const photo = m.photo ? `<img src="${m.photo}" alt="${m.name}">` : '<div class="photo-placeholder" style="width:100%;height:100%"></div>';
+  const photo = m.photo ? `<img src="${m.photo}" alt="${m.name}">` : `<div class="photo-placeholder" style="width:100%;height:100%">${AVATAR_SVG}</div>`;
 
   const timelineHtml = m.timeline && m.timeline.length
     ? m.timeline.map(t => `
@@ -395,15 +466,38 @@ function buildProfile(id) {
         ${relSorted.map(({ m: r, label }) => `
           <button class="relative-card" data-id="${r.id}">
             <span class="relative-rel">${label}</span>
-            <div class="relative-photo">${r.photo ? `<img src="${r.photo}">` : '<div class="photo-placeholder" style="width:100%;height:100%"></div>'}</div>
+            <div class="relative-photo">${r.photo ? `<img src="${r.photo}">` : `<div class="photo-placeholder" style="width:100%;height:100%">${AVATAR_SVG}</div>`}</div>
             <div class="relative-name">${r.name.split(' ').slice(0, 2).join(' ')}</div>
           </button>`).join('')}
       </div>
     </div>` : '';
 
+  const infoRows = [];
+  if (m.birthDate) infoRows.push(['Дата рождения', fmtFullDate(m.birthDate)]);
+  if (m.deathDate)  infoRows.push(['Дата смерти',   fmtFullDate(m.deathDate)]);
+  if (m.maiden)     infoRows.push(['Девичья фамилия', m.maiden]);
+  const age = calcAge(m);
+  if (age !== null) infoRows.push([m.deathDate ? 'Прожил(а)' : 'Возраст', `${age} лет`]);
+  const infoHtml = infoRows.length ? `
+    <div class="profile-info">
+      ${infoRows.map(([label, val]) => `
+        <div class="info-row">
+          <span class="info-label">${label}</span>
+          <span class="info-val">${val}</span>
+        </div>`).join('')}
+    </div>` : '';
+
+  const { avgLifespan, avgLivingAge } = calcFamilyStats();
+  const statItems = [];
+  if (avgLifespan !== null) statItems.push(`<div class="stat-item"><div class="stat-value">${avgLifespan} лет</div><div class="stat-label">Ср. продолжительность жизни</div></div>`);
+  if (avgLivingAge !== null) statItems.push(`<div class="stat-item"><div class="stat-value">${avgLivingAge} лет</div><div class="stat-label">Ср. возраст живых</div></div>`);
+  const statsHtml = statItems.length ? `<div class="profile-stats">${statItems.join('')}</div>` : '';
+
   return `
     <div class="profile-view">
       <div class="profile-cover">
+        ${m.photo ? `<div class="profile-cover-bg" style="background-image:url('${m.photo}')"></div>` : ''}
+        <div class="profile-cover-overlay"></div>
         <button class="back-btn" id="back-btn">←</button>
         <div class="profile-cover-photo">${photo}</div>
       </div>
@@ -411,44 +505,37 @@ function buildProfile(id) {
         <div class="profile-name">${m.name}</div>
         <div class="profile-dates">${fmtDates(m)}</div>
         ${m.role ? `<span class="profile-role-badge">${m.role.toUpperCase()}</span>` : ''}
-        ${(() => {
-          const rows = [];
-          if (m.birthDate) rows.push(['Дата рождения', fmtFullDate(m.birthDate)]);
-          if (m.deathDate)  rows.push(['Дата смерти',   fmtFullDate(m.deathDate)]);
-          if (m.maiden)     rows.push(['Девичья фамилия', m.maiden]);
-          const age = calcAge(m);
-          if (age !== null) rows.push([m.deathDate ? 'Прожил(а)' : 'Возраст', `${age} лет`]);
-          return rows.length ? `
-            <div class="profile-info">
-              ${rows.map(([label, val]) => `
-                <div class="info-row">
-                  <span class="info-label">${label}</span>
-                  <span class="info-val">${val}</span>
-                </div>`).join('')}
-            </div>` : '';
-        })()}
-        ${(() => {
-          const { avgLifespan, avgLivingAge } = calcFamilyStats();
-          const items = [];
-          if (avgLifespan !== null) items.push(`<div class="stat-item"><div class="stat-value">${avgLifespan} лет</div><div class="stat-label">Ср. продолжительность жизни</div></div>`);
-          if (avgLivingAge !== null) items.push(`<div class="stat-item"><div class="stat-value">${avgLivingAge} лет</div><div class="stat-label">Ср. возраст живых</div></div>`);
-          return items.length ? `<div class="profile-stats">${items.join('')}</div>` : '';
-        })()}
-        <div class="profile-section">
-          <div class="profile-section-title">Биография</div>
-          <div class="profile-bio">${m.bio || 'Биография не добавлена.'}</div>
+        <div class="profile-tabs">
+          <button class="profile-tab active" data-tab="bio">О человеке</button>
+          <button class="profile-tab" data-tab="timeline">Хронология</button>
+          ${relSorted.length ? '<button class="profile-tab" data-tab="relatives">Родственники</button>' : ''}
         </div>
-        <div class="profile-section">
-          <div class="profile-section-title">Хронология</div>
-          ${timelineHtml}
+        <div data-section="bio">
+          ${infoHtml}
+          ${statsHtml}
+          <div class="profile-section">
+            <div class="profile-section-title">Биография</div>
+            <div class="profile-bio">${m.bio || 'Биография не добавлена.'}</div>
+          </div>
         </div>
-        ${relativesHtml}
+        <div data-section="timeline" style="display:none">
+          <div class="profile-section">
+            <div class="profile-section-title">Хронология</div>
+            ${timelineHtml}
+          </div>
+        </div>
+        ${relSorted.length ? `<div data-section="relatives" style="display:none">${relativesHtml}</div>` : ''}
       </div>
     </div>`;
 }
 
 function buildNav() {
   const v = state.view;
+  const isDark = document.documentElement.classList.contains('dark');
+
+  const themeIcon = isDark
+    ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`
+    : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
 
   return `
     <button class="nav-btn ${v === 'search' ? 'active' : ''}" id="nav-search">
@@ -470,6 +557,9 @@ function buildNav() {
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
         <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
       </svg>
+    </button>
+    <button class="nav-btn" id="nav-theme">
+      ${themeIcon}
     </button>`;
 }
 
@@ -480,7 +570,7 @@ function buildPopup(id) {
 
   const photo = m.photo
     ? `<img src="${m.photo}" alt="${m.name}">`
-    : '<div class="photo-placeholder" style="width:100%;height:100%"></div>';
+    : `<div class="photo-placeholder" style="width:100%;height:100%">${AVATAR_SVG}</div>`;
 
   const bioShort = m.bio
     ? (m.bio.match(/[^.!?]+[.!?]+/g) || [m.bio]).slice(0, 2).join(' ')
@@ -494,6 +584,7 @@ function buildPopup(id) {
         <div class="popup-photo">${photo}</div>
         <div>
           <div class="popup-name">${m.name}</div>
+          ${m.maiden ? `<div class="popup-maiden">урожд. ${m.maiden}</div>` : ''}
           <div class="popup-dates">${fmtDates(m)}</div>
           ${m.role ? `<div class="popup-role">${m.role.toUpperCase()}</div>` : ''}
         </div>
@@ -596,11 +687,11 @@ function drawLines() {
 
       const dash = fam.coupleType === 'divorced' ? 'stroke-dasharray="8 5"' : '';
 
-      out += `<line x1="${lx}" y1="${ly}" x2="${rx}" y2="${ly}" stroke="var(--line)" stroke-width="2.5" stroke-linecap="round" ${dash}/>`;
+      out += `<line x1="${lx}" y1="${ly}" x2="${rx}" y2="${ly}" stroke="rgba(168,90,79,0.38)" stroke-width="2" stroke-linecap="round" ${dash}/>`;
 
       if (fam.coupleType === 'spouse') {
         const hx = (lx + rx) / 2;
-        out += `<text x="${hx}" y="${ly + 7}" text-anchor="middle" fill="var(--accent)" font-size="30">♡</text>`;
+        out += `<text x="${hx}" y="${ly + 6}" text-anchor="middle" fill="var(--accent)" font-size="16">♡</text>`;
       }
 
       dropX = (lx + rx) / 2;
@@ -617,14 +708,14 @@ function drawLines() {
     const firstChild = cardPos(children[0]);
     const stemEndY = dropY + (firstChild.top - dropY) * 0.4;
 
-    out += `<line x1="${dropX}" y1="${dropY}" x2="${dropX}" y2="${stemEndY}" stroke="var(--line)" stroke-width="1.8" stroke-linecap="round"/>`;
+    out += `<line x1="${dropX}" y1="${dropY}" x2="${dropX}" y2="${stemEndY}" stroke="rgba(168,90,79,0.25)" stroke-width="1.6" stroke-linecap="round"/>`;
 
     children.forEach(child => {
       const c = cardPos(child);
       const cp1Y = stemEndY + (c.top - stemEndY) * 0.45;
       const cp2Y = c.top - (c.top - stemEndY) * 0.3;
 
-      out += `<path d="M${dropX},${stemEndY} C${dropX},${cp1Y} ${c.cx},${cp2Y} ${c.cx},${c.top}" fill="none" stroke="var(--line)" stroke-width="1.8" stroke-linecap="round"/>`;
+      out += `<path d="M${dropX},${stemEndY} C${dropX},${cp1Y} ${c.cx},${cp2Y} ${c.cx},${c.top}" fill="none" stroke="rgba(168,90,79,0.25)" stroke-width="1.6" stroke-linecap="round"/>`;
     });
   });
 
@@ -674,6 +765,16 @@ function bindEvents() {
     el.addEventListener('click', () => navigate('profile:' + el.dataset.id))
   );
 
+  const profileTabs = document.querySelectorAll('.profile-tab');
+  profileTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      profileTabs.forEach(t => t.classList.toggle('active', t === tab));
+      document.querySelectorAll('[data-section]').forEach(s => {
+        s.style.display = s.dataset.section === tab.dataset.tab ? '' : 'none';
+      });
+    });
+  });
+
   const searchEl = document.getElementById('search-input');
 
   if (searchEl) {
@@ -700,6 +801,8 @@ function bindEvents() {
       render();
     })
   );
+
+  document.getElementById('nav-theme')?.addEventListener('click', toggleTheme);
 
   document.getElementById('zoom-in')?.addEventListener('click', () => {
     state.overviewScale = Math.min((state.overviewScale || 0.4) + 0.08, 1.4);
