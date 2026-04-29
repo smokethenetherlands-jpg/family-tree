@@ -279,7 +279,7 @@ function buildCardHtml(m) {
     <div class="${cardClass}" data-id="${m.id}" style="left:${x}px;top:${y}px;width:${CARD_W}px">
       <div class="${photoClass}">${photo}</div>
       <div class="card-name">${m.name}</div>
-      <div class="card-dates">${fmtDates(m)}</div>
+      <div class="card-dates">${fmtDates(m).replace('р. ', '')}</div>
       ${m.role ? `<div class="card-role">${m.role.toUpperCase()}</div>` : ''}
     </div>`;
 }
@@ -480,6 +480,9 @@ function buildProfile(id) {
   if (m.birthDate) infoRows.push(['Дата рождения', fmtFullDate(m.birthDate)]);
   if (m.deathDate)  infoRows.push(['Дата смерти',   fmtFullDate(m.deathDate)]);
   if (m.maiden)     infoRows.push(['Девичья фамилия', m.maiden]);
+  const weddingFamily = DATA.families.find(f => f.weddingDate && f.parents.includes(id) && (f.coupleType === 'spouse' || f.coupleType === 'divorced'));
+  if (weddingFamily) infoRows.push(['Дата свадьбы', fmtFullDate(weddingFamily.weddingDate)]);
+  if (weddingFamily?.divorceDate) infoRows.push(['Дата развода', fmtFullDate(weddingFamily.divorceDate)]);
   const age = calcAge(m);
   if (age !== null) infoRows.push([m.deathDate ? 'Прожил(а)' : 'Возраст', `${age} лет`]);
   const infoHtml = infoRows.length ? `

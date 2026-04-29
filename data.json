@@ -55,7 +55,7 @@
     {
       "id": "levkin_vladimir_nikolaevich",
       "name": "Левкин Владимир Николаевич",
-      "birthDate": null,
+      "birthDate": "1951-08-10",
       "deathDate": null,
       "photo": null,
       "bio": "",
@@ -152,7 +152,7 @@
     {
       "id": "zhurbin_vladimir_ivanovich",
       "name": "Журбин Владимир Иванович",
-      "birthDate": null,
+      "birthDate": "1954-02-23",
       "deathDate": null,
       "photo": null,
       "bio": "",
@@ -485,7 +485,7 @@
     },
     {
       "id": "kiselev_egor",
-      "name": "Киселев Егор",
+      "name": "Киселев Егор Дмитриевич",
       "birthDate": "2001-10-11",
       "deathDate": null,
       "photo": null,
@@ -660,6 +660,7 @@
     {
       "id": "f_zhurbin_sergey_oksana",
       "coupleType": "spouse",
+      "weddingDate": "2013-07-13",
       "parents": [
         "zhurbina_oksana_viktorovna",
         "zhurbin_sergey"
@@ -672,6 +673,7 @@
     {
       "id": "f_bondarenko_mikhail_valentina",
       "coupleType": "spouse",
+      "weddingDate": "2009-02-28",
       "parents": [
         "bondarenko_valentina_gennadievna",
         "bondarenko_mikhail_vladimirovich"
@@ -693,6 +695,7 @@
     {
       "id": "f_rudichev_nikita_olga",
       "coupleType": "spouse",
+      "weddingDate": "2019-10-26",
       "parents": [
         "rudicheva_olga_gennadievna",
         "rudichev_nikita_gennadyevich"
@@ -704,6 +707,8 @@
     {
       "id": "f_kiselev_dmitriy_elena",
       "coupleType": "divorced",
+      "weddingDate": "2001-06-02",
+      "divorceDate": "2005-10-24",
       "parents": [
         "kiseleva_elena_nikolaevna",
         "kiselev_dmitriy_viktorovich"
@@ -735,6 +740,7 @@
     {
       "id": "f_egor_marina",
       "coupleType": "spouse",
+      "weddingDate": "2023-11-29",
       "parents": [
         "kiselev_egor",
         "kiseleva_marina_andreevna"
