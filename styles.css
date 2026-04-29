@@ -210,6 +210,12 @@ html, body {
 :root.dark .card--deceased .card-name { color: #5060A0; }
 :root.dark .card--deceased .card-dates { color: #303870; }
 
+:root.dark .card-role {
+  background: rgba(136,152,232,0.10);
+  border-color: rgba(136,152,232,0.40);
+  color: var(--text);
+}
+
 :root.dark .photo-placeholder {
   background: linear-gradient(135deg, #0E1028 0%, #141838 100%);
 }
@@ -336,7 +342,8 @@ html, body {
   font-size: 9px;
   letter-spacing: 0.08em;
   color: var(--accent);
-  background: rgba(139,74,58,0.1);
+  background: rgba(139,90,80,0.10);
+  border: 1px solid rgba(139,90,80,0.35);
   border-radius: 8px;
   padding: 2px 9px;
 }
@@ -829,12 +836,19 @@ html, body {
   font-size: 8.5px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: #fff;
+  color: var(--accent);
   text-transform: uppercase;
   line-height: 1;
-  background: var(--accent);
+  background: rgba(139,90,80,0.10);
+  border: 1px solid rgba(139,90,80,0.35);
   border-radius: 20px;
   padding: 3px 7px;
+}
+
+:root.dark .relative-rel {
+  background: rgba(136,152,232,0.10);
+  border-color: rgba(136,152,232,0.40);
+  color: var(--text);
 }
 
 .relative-photo {
