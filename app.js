@@ -534,6 +534,15 @@ function buildProfile(id) {
           </div>
         </div>
         ${relSorted.length ? `<div data-section="relatives" style="display:none">${relativesHtml}</div>` : ''}
+        <div class="contribute-block">
+          <div class="contribute-title">Помогите сохранить историю</div>
+          <ul class="contribute-list">
+            <li>Написать биографию</li>
+            <li>Дополнить или исправить данные</li>
+            <li>Передать фото или документ</li>
+          </ul>
+          <a class="contribute-btn" href="https://forms.yandex.ru/u/69f2201184227c5fbae998b9" target="_blank" rel="noopener noreferrer">Заполнить форму →</a>
+        </div>
       </div>
     </div>`;
 }

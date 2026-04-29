@@ -696,6 +696,46 @@ html, body {
   box-shadow: 0 4px 18px rgba(136,152,232,0.28);
 }
 
+.contribute-block {
+  margin: 28px 0 8px;
+  padding: 18px 18px 16px;
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1.5px solid var(--line);
+}
+.contribute-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.contribute-list {
+  margin: 0 0 14px 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+.contribute-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: opacity 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.contribute-btn:active { opacity: 0.82; }
+:root.dark .contribute-block {
+  border-color: rgba(136,152,232,0.18);
+}
+:root.dark .contribute-btn {
+  color: #0F1020;
+}
+
 .profile-info {
   background: var(--surface);
   border-radius: 16px;

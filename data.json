@@ -8,7 +8,7 @@
       "deathDate": "?",
       "photo": null,
       "bio": "",
-      "role": "родоначальник ветви",
+      "role": null,
       "row": 0,
       "col": 15,
       "timeline": []
@@ -33,7 +33,7 @@
       "photo": null,
       "bio": "",
       "maiden": "Кучеренко",
-      "role": "центральная фигура",
+      "role": null,
       "memorialUrl": "https://memqr.ru/example/",
       "row": 1,
       "col": 15,
