@@ -1274,3 +1274,38 @@ html, body {
   color: var(--text);
   padding-top: 7px;
 }
+
+.onboarding-cta {
+  margin-top: 22px;
+  padding: 16px 18px;
+  background: rgba(168,90,79,0.08);
+  border: 1.5px solid rgba(168,90,79,0.25);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+:root.dark .onboarding-cta {
+  background: rgba(136,152,232,0.08);
+  border-color: rgba(136,152,232,0.22);
+}
+.onboarding-cta-text {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--text);
+}
+.onboarding-cta-btn {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 9px 18px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s;
+}
+.onboarding-cta-btn:active { opacity: 0.82; }
+:root.dark .onboarding-cta-btn { color: #08080F; }

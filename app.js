@@ -786,7 +786,11 @@ function buildOnboarding() {
       <h3 style="font-size:17px;font-weight:700;margin-bottom:4px">Как пользоваться</h3>
       <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Несколько подсказок для навигации</p>
       <div class="onboarding-tips">${rows}</div>
-      <button class="btn-primary" id="close-onboarding-btn" style="margin-top:20px">Понятно!</button>
+      <div class="onboarding-cta">
+        <div class="onboarding-cta-text">Помогите сохранить историю семьи — расскажите о себе и близких</div>
+        <a class="onboarding-cta-btn" href="https://forms.yandex.ru/u/69f2201184227c5fbae998b9" target="_blank" rel="noopener noreferrer">Заполнить карточку →</a>
+      </div>
+      <button class="btn-primary" id="close-onboarding-btn" style="margin-top:14px">Понятно!</button>
     </div>`;
 }
 
