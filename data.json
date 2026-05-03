@@ -2,14 +2,38 @@
   "title": "Эхо поколений",
   "members": [
     {
-      "id": "kucherenko_ivan_nikiforovich",
-      "name": "Кучеренко Иван Никифорович",
-      "birthDate": "1897",
+      "id": "kucherenko_nikifor_mitrofanovich",
+      "name": "Кучеренко Никифор Митрофанович",
+      "birthDate": null,
       "deathDate": "?",
       "photo": null,
       "bio": "",
       "role": null,
       "row": 0,
+      "col": 15,
+      "timeline": []
+    },
+    {
+      "id": "kucherenko_darya_andreevna",
+      "name": "Кучеренко Дарья Андреевна",
+      "birthDate": null,
+      "deathDate": "?",
+      "photo": null,
+      "bio": "",
+      "role": "жена Никифора",
+      "row": 0,
+      "col": 17,
+      "timeline": []
+    },
+    {
+      "id": "kucherenko_ivan_nikiforovich",
+      "name": "Кучеренко Иван Никифорович",
+      "birthDate": "1897-01-13",
+      "deathDate": "?",
+      "photo": null,
+      "bio": "",
+      "role": null,
+      "row": 1,
       "col": 15,
       "timeline": []
     },
@@ -21,7 +45,7 @@
       "photo": null,
       "bio": "",
       "role": "жена Ивана",
-      "row": 0,
+      "row": 1,
       "col": 17,
       "timeline": []
     },
@@ -35,7 +59,7 @@
       "maiden": "Кучеренко",
       "role": null,
       "memorialUrl": "https://memqr.ru/example/",
-      "row": 1,
+      "row": 2,
       "col": 15,
       "timeline": []
     },
@@ -48,7 +72,7 @@
       "bio": "",
       "role": "муж Валентины",
       "memorialUrl": "https://memqr.ru/example/1/",
-      "row": 1,
+      "row": 2,
       "col": 17,
       "timeline": []
     },
@@ -60,7 +84,7 @@
       "photo": null,
       "bio": "",
       "role": "сын Валентины",
-      "row": 2,
+      "row": 3,
       "col": 5,
       "timeline": []
     },
@@ -73,7 +97,7 @@
       "bio": "",
       "maiden": "Левкина",
       "role": "дочь Валентины",
-      "row": 2,
+      "row": 3,
       "col": 15,
       "timeline": []
     },
@@ -85,7 +109,7 @@
       "photo": null,
       "bio": "",
       "role": "муж Натальи",
-      "row": 2,
+      "row": 3,
       "col": 13,
       "timeline": []
     },
@@ -97,7 +121,7 @@
       "photo": null,
       "bio": "",
       "role": "брат Виктора",
-      "row": 2,
+      "row": 3,
       "col": 8,
       "timeline": []
     },
@@ -109,7 +133,7 @@
       "photo": null,
       "bio": "",
       "role": "отец Виктора и Михаила",
-      "row": 1,
+      "row": 2,
       "col": 10,
       "timeline": []
     },
@@ -121,7 +145,7 @@
       "photo": null,
       "bio": "",
       "role": "муж Ирины",
-      "row": 2,
+      "row": 3,
       "col": 21,
       "timeline": []
     },
@@ -133,7 +157,7 @@
       "photo": null,
       "bio": "",
       "role": "дочь Валентины",
-      "row": 2,
+      "row": 3,
       "col": 19,
       "timeline": []
     },
@@ -145,7 +169,7 @@
       "photo": null,
       "bio": "",
       "role": "отчим детей Ирины",
-      "row": 2,
+      "row": 3,
       "col": 17,
       "timeline": []
     },
@@ -157,7 +181,7 @@
       "photo": null,
       "bio": "",
       "role": "отец Сергея",
-      "row": 2,
+      "row": 3,
       "col": 23,
       "timeline": []
     },
@@ -170,7 +194,7 @@
       "bio": "",
       "maiden": "Журбина",
       "role": "мать Сергея",
-      "row": 2,
+      "row": 3,
       "col": 25,
       "timeline": []
     },
@@ -182,7 +206,7 @@
       "photo": null,
       "bio": "",
       "role": "отец Никиты",
-      "row": 2,
+      "row": 3,
       "col": 27,
       "timeline": []
     },
@@ -195,7 +219,7 @@
       "bio": "",
       "maiden": "Литвинова",
       "role": "мать Никиты",
-      "row": 2,
+      "row": 3,
       "col": 29,
       "timeline": []
     },
@@ -207,7 +231,7 @@
       "photo": null,
       "bio": "",
       "role": "отец Михаила",
-      "row": 2,
+      "row": 3,
       "col": 31,
       "timeline": []
     },
@@ -220,7 +244,7 @@
       "bio": "",
       "maiden": "Лапикова",
       "role": "мать Михаила",
-      "row": 2,
+      "row": 3,
       "col": 33,
       "timeline": []
     },
@@ -233,7 +257,7 @@
       "bio": "",
       "maiden": "Зинченко",
       "role": "внучка Валентины, дочь Натальи",
-      "row": 3,
+      "row": 4,
       "col": 11,
       "timeline": []
     },
@@ -245,7 +269,7 @@
       "photo": null,
       "bio": "",
       "role": "муж Марины",
-      "row": 3,
+      "row": 4,
       "col": 13,
       "timeline": []
     },
@@ -258,7 +282,7 @@
       "bio": "",
       "maiden": "Зинченко",
       "role": "внучка Валентины, дочь Натальи",
-      "row": 3,
+      "row": 4,
       "col": 23,
       "timeline": []
     },
@@ -270,7 +294,7 @@
       "photo": null,
       "bio": "",
       "role": "муж Оксаны",
-      "row": 3,
+      "row": 4,
       "col": 25,
       "timeline": []
     },
@@ -283,7 +307,7 @@
       "bio": "",
       "maiden": "Ивлева",
       "role": "внучка Валентины, дочь Ирины",
-      "row": 3,
+      "row": 4,
       "col": 31,
       "timeline": []
     },
@@ -295,7 +319,7 @@
       "photo": null,
       "bio": "",
       "role": "муж Валентины Б.",
-      "row": 3,
+      "row": 4,
       "col": 33,
       "timeline": []
     },
@@ -308,7 +332,7 @@
       "bio": "",
       "maiden": "Ивлева",
       "role": "внучка Валентины, дочь Ирины",
-      "row": 3,
+      "row": 4,
       "col": 27,
       "timeline": []
     },
@@ -320,7 +344,7 @@
       "photo": null,
       "bio": "",
       "role": "муж Ольги",
-      "row": 3,
+      "row": 4,
       "col": 29,
       "timeline": []
     },
@@ -333,7 +357,7 @@
       "bio": "",
       "maiden": "Калентьева",
       "role": "сестра Петра",
-      "row": 3,
+      "row": 4,
       "col": 9,
       "timeline": []
     },
@@ -345,7 +369,7 @@
       "photo": null,
       "bio": "",
       "role": "бывший муж Елены",
-      "row": 3,
+      "row": 4,
       "col": 7,
       "timeline": []
     },
@@ -357,7 +381,7 @@
       "photo": null,
       "bio": "",
       "role": "отец Марины Журавлёвой",
-      "row": 3,
+      "row": 4,
       "col": 3,
       "timeline": []
     },
@@ -370,7 +394,7 @@
       "bio": "",
       "maiden": "Гунь",
       "role": "мать Марины Журавлёвой",
-      "row": 3,
+      "row": 4,
       "col": 5,
       "timeline": []
     },
@@ -382,7 +406,7 @@
       "photo": null,
       "bio": "",
       "role": "сестра Натальи Журавлёвой",
-      "row": 3,
+      "row": 4,
       "col": 1,
       "timeline": []
     },
@@ -394,7 +418,7 @@
       "photo": null,
       "bio": "",
       "role": "сын Марины и Петра",
-      "row": 4,
+      "row": 5,
       "col": 12,
       "timeline": []
     },
@@ -406,7 +430,7 @@
       "photo": null,
       "bio": "",
       "role": "дочь Оксаны и Сергея",
-      "row": 4,
+      "row": 5,
       "col": 23,
       "timeline": []
     },
@@ -418,7 +442,7 @@
       "photo": null,
       "bio": "",
       "role": "дочь Оксаны и Сергея",
-      "row": 4,
+      "row": 5,
       "col": 25,
       "timeline": []
     },
@@ -431,7 +455,7 @@
       "bio": "",
       "maiden": "Бондаренко",
       "role": "дочь Валентины Б. и Михаила",
-      "row": 4,
+      "row": 5,
       "col": 32,
       "timeline": []
     },
@@ -443,7 +467,7 @@
       "photo": null,
       "bio": "",
       "role": "муж Анны Бондаренко",
-      "row": 4,
+      "row": 5,
       "col": 34,
       "timeline": []
     },
@@ -455,7 +479,7 @@
       "photo": null,
       "bio": "",
       "role": "сын Ольги",
-      "row": 4,
+      "row": 5,
       "col": 27,
       "timeline": []
     },
@@ -467,7 +491,7 @@
       "photo": null,
       "bio": "",
       "role": "сын Ольги и Никиты",
-      "row": 4,
+      "row": 5,
       "col": 29,
       "timeline": []
     },
@@ -479,7 +503,7 @@
       "photo": null,
       "bio": "",
       "role": "сын Елены",
-      "row": 4,
+      "row": 5,
       "col": 9,
       "timeline": []
     },
@@ -491,7 +515,7 @@
       "photo": null,
       "bio": "",
       "role": "сын Елены и Дмитрия",
-      "row": 4,
+      "row": 5,
       "col": 7,
       "timeline": []
     },
@@ -503,7 +527,7 @@
       "photo": null,
       "bio": "",
       "role": "жена Егора",
-      "row": 4,
+      "row": 5,
       "col": 5,
       "timeline": []
     },
@@ -515,7 +539,7 @@
       "photo": null,
       "bio": "",
       "role": "брат Марины Журавлёвой",
-      "row": 4,
+      "row": 5,
       "col": 3,
       "timeline": []
     },
@@ -527,7 +551,7 @@
       "photo": null,
       "bio": "",
       "role": "сын Евгения",
-      "row": 5,
+      "row": 6,
       "col": 9,
       "timeline": []
     },
@@ -539,12 +563,23 @@
       "photo": null,
       "bio": "",
       "role": "дочь Егора и Марины",
-      "row": 5,
+      "row": 6,
       "col": 6,
       "timeline": []
     }
   ],
   "families": [
+    {
+      "id": "f_kucherenko_nikifor_darya",
+      "coupleType": "spouse",
+      "parents": [
+        "kucherenko_nikifor_mitrofanovich",
+        "kucherenko_darya_andreevna"
+      ],
+      "children": [
+        "kucherenko_ivan_nikiforovich"
+      ]
+    },
     {
       "id": "f_kucherenko_ivan_praskovya",
       "coupleType": "spouse",
