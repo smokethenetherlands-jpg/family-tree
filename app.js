@@ -245,8 +245,9 @@ function render() {
   nav.innerHTML = buildNav();
 
   root.innerHTML = state.popup ? buildPopup(state.popup)
-    : state.overlay === 'birthdays' ? buildBirthdays()
-    : state.overlay === 'legend' ? buildLegend()
+    : state.overlay === 'birthdays' ? buildBirthdaySheet('birthdays')
+    : state.overlay === 'memorial'  ? buildBirthdaySheet('memorial')
+    : state.overlay === 'legend'    ? buildLegend()
     : state.overlay === 'onboarding' ? buildOnboarding()
     : '';
 
@@ -639,52 +640,93 @@ function buildPopup(id) {
     </div>`;
 }
 
-function buildBirthdays() {
+function buildBirthdaySheet(tab) {
   const now = new Date();
   const todayDoy = doy(now);
   const MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
 
-  const items = DATA.members
-    .filter(m => m.birthDate && !m.deathDate && /^\d{4}-\d{2}-\d{2}$/.test(m.birthDate))
-    .map(m => {
-      const d = new Date(m.birthDate);
-      const bd = new Date(now.getFullYear(), d.getMonth(), d.getDate());
-      const diff = (doy(bd) - todayDoy + 366) % 366;
+  let items = '';
 
-      return {
-        m,
-        diff,
-        month: d.getMonth(),
-        day: d.getDate()
-      };
-    })
-    .sort((a, b) => a.diff - b.diff)
-    .map(({ m, diff, month, day }) => {
-      const pillClass = diff === 0 ? 'today' : diff <= 7 ? 'week' : diff <= 30 ? 'month' : 'far';
-      const pillText  = diff === 0 ? 'сегодня' : diff === 1 ? 'завтра' : `через ${diff} дн.`;
-      return `
-      <div class="birthday-item birthday-item--${pillClass}" data-id="${m.id}">
-        <div class="birthday-info">
-          <span class="birthday-name">${m.name}</span>
-          <span class="birthday-date">${day} ${MONTHS[month]}</span>
-        </div>
-        <span class="birthday-pill birthday-pill--${pillClass}">${pillText}</span>
-      </div>`;
-    }).join('');
+  if (tab === 'birthdays') {
+    items = DATA.members
+      .filter(m => m.birthDate && !m.deathDate && /^\d{4}-\d{2}-\d{2}$/.test(m.birthDate))
+      .map(m => {
+        const d = new Date(m.birthDate);
+        const bd = new Date(now.getFullYear(), d.getMonth(), d.getDate());
+        const diff = (doy(bd) - todayDoy + 366) % 366;
+        return { m, diff, month: d.getMonth(), day: d.getDate() };
+      })
+      .sort((a, b) => a.diff - b.diff)
+      .map(({ m, diff, month, day }) => {
+        const pillClass = diff === 0 ? 'today' : diff <= 7 ? 'week' : diff <= 30 ? 'month' : 'far';
+        const pillText  = diff === 0 ? 'сегодня' : diff === 1 ? 'завтра' : `через ${diff} дн.`;
+        return `
+        <div class="birthday-item birthday-item--${pillClass}" data-id="${m.id}">
+          <div class="birthday-info">
+            <span class="birthday-name">${m.name}</span>
+            <span class="birthday-date">${day} ${MONTHS[month]}</span>
+          </div>
+          <span class="birthday-pill birthday-pill--${pillClass}">${pillText}</span>
+        </div>`;
+      }).join('');
+  } else {
+    const withDate = DATA.members
+      .filter(m => m.deathDate && /^\d{4}-\d{2}-\d{2}$/.test(m.deathDate))
+      .map(m => {
+        const d = new Date(m.deathDate);
+        const ann = new Date(now.getFullYear(), d.getMonth(), d.getDate());
+        const diff = (doy(ann) - todayDoy + 366) % 366;
+        return { m, diff, month: d.getMonth(), day: d.getDate() };
+      })
+      .sort((a, b) => a.diff - b.diff)
+      .map(({ m, diff, month, day }) => {
+        const pillClass = diff === 0 ? 'today' : diff <= 7 ? 'week' : diff <= 30 ? 'month' : 'far';
+        const pillText  = diff === 0 ? 'сегодня' : diff === 1 ? 'завтра' : `через ${diff} дн.`;
+        return `
+        <div class="birthday-item birthday-item--${pillClass}" data-id="${m.id}">
+          <div class="birthday-info">
+            <span class="birthday-name">${m.name}</span>
+            <span class="birthday-date">${day} ${MONTHS[month]}</span>
+          </div>
+          <span class="birthday-pill birthday-pill--${pillClass}">${pillText}</span>
+        </div>`;
+      }).join('');
+
+    const noDate = DATA.members
+      .filter(m => m.deathDate && !/^\d{4}-\d{2}-\d{2}$/.test(m.deathDate))
+      .map(m => `
+        <div class="birthday-item birthday-item--far" data-id="${m.id}">
+          <div class="birthday-info">
+            <span class="birthday-name">${m.name}</span>
+            <span class="birthday-date">${m.deathDate && m.deathDate !== '?' ? m.deathDate + ' г.' : 'дата неизвестна'}</span>
+          </div>
+        </div>`).join('');
+
+    const sep = withDate && noDate
+      ? `<p style="font-size:12px;color:var(--muted);margin:14px 0 6px">Точная дата неизвестна</p>`
+      : '';
+    items = withDate + sep + noDate;
+  }
+
+  const tabs = `
+    <div class="sheet-tabs">
+      <button class="sheet-tab ${tab === 'birthdays' ? 'active' : ''}" id="tab-bday">Дни рождения</button>
+      <button class="sheet-tab ${tab === 'memorial' ? 'active' : ''}" id="tab-memorial">Поминовение</button>
+    </div>`;
 
   return `
     <div class="backdrop" id="backdrop"></div>
     <div class="bottom-sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-header">
-        <h3 style="font-size:17px;font-weight:700">Дни рождения</h3>
+        ${tabs}
         <button class="sheet-close-btn" id="sheet-close-btn" aria-label="Закрыть">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M18 6 6 18M6 6l12 12"/>
           </svg>
         </button>
       </div>
-      <div class="birthday-list">${items || '<p class="no-results">Нет дат рождения</p>'}</div>
+      <div class="birthday-list">${items || '<p class="no-results">Нет данных</p>'}</div>
     </div>`;
 }
 
@@ -828,6 +870,8 @@ function bindEvents() {
     navigate('tree');
   });
   document.getElementById('nav-bday')?.addEventListener('click', () => openOverlay('birthdays'));
+  document.getElementById('tab-bday')?.addEventListener('click', () => openOverlay('birthdays'));
+  document.getElementById('tab-memorial')?.addEventListener('click', () => openOverlay('memorial'));
   document.getElementById('nav-legend')?.addEventListener('click', () => openOverlay('legend'));
 
   document.getElementById('backdrop')?.addEventListener('click', closeAll);

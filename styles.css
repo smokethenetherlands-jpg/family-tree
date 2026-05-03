@@ -483,6 +483,29 @@ html, body {
   margin-bottom: 16px;
 }
 
+.sheet-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.sheet-tab {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sheet-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
 .sheet-close-btn {
   display: flex;
   align-items: center;
