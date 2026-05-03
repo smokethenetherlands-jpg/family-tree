@@ -24,6 +24,23 @@ const state = {
 
 // ── Boot ─────────────────────────────────────────────────────────
 
+function handleBackButton() {
+  if (state.overlay) {
+    state.overlay = null;
+    render();
+  } else if (state.popup) {
+    state.popup = null;
+    render();
+  } else if (state.view !== 'tree') {
+    state.view = 'tree';
+    state.popup = null;
+    render();
+  }
+  if (state.overlay || state.popup || state.view !== 'tree') {
+    history.pushState({ isNav: true }, '');
+  }
+}
+
 function initParticles(canvas) {
   const ctx = canvas.getContext('2d');
 
@@ -80,6 +97,9 @@ function toggleTheme() {
 }
 
 async function init() {
+  history.replaceState({ isBase: true }, '');
+  window.addEventListener('popstate', handleBackButton);
+
   if (localStorage.getItem('theme') !== 'light') {
     document.documentElement.classList.add('dark');
   }
@@ -108,18 +128,21 @@ function navigate(view) {
   state.view = view;
   state.popup = null;
   state.overlay = null;
+  if (view !== 'tree') history.pushState({ isNav: true }, '');
   render();
 }
 
 function openPopup(id) {
   state.popup = id;
   state.overlay = null;
+  history.pushState({ isNav: true }, '');
   render();
 }
 
 function openPopupDirect(id) {
   state.popup = id;
   state.overlay = null;
+  history.pushState({ isNav: true }, '');
   const root = document.getElementById('overlay-root');
   const nav  = document.getElementById('nav');
   if (!root) { render(); return; }
@@ -135,6 +158,7 @@ function openPopupDirect(id) {
 function openOverlay(name) {
   state.overlay = name;
   state.popup = null;
+  history.pushState({ isNav: true }, '');
   render();
 }
 
