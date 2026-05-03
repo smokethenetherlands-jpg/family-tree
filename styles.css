@@ -1189,3 +1189,35 @@ html, body {
 .zoom-btn.small {
   font-size: 15px;
 }
+
+.onboarding-tips {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.onboarding-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.onboarding-tip-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
+.onboarding-tip-text {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text);
+  padding-top: 7px;
+}

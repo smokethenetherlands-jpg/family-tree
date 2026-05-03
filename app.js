@@ -119,6 +119,11 @@ async function init() {
     return;
   }
 
+  if (!localStorage.getItem('onboarded')) {
+    state.overlay = 'onboarding';
+    history.pushState({ isNav: true }, '');
+  }
+
   render();
 }
 
@@ -242,6 +247,7 @@ function render() {
   root.innerHTML = state.popup ? buildPopup(state.popup)
     : state.overlay === 'birthdays' ? buildBirthdays()
     : state.overlay === 'legend' ? buildLegend()
+    : state.overlay === 'onboarding' ? buildOnboarding()
     : '';
 
   bindEvents();
@@ -697,6 +703,43 @@ function buildLegend() {
     </div>`;
 }
 
+function buildOnboarding() {
+  const tips = [
+    {
+      icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11V6a2 2 0 1 1 4 0v5"/><path d="M13 11V9a2 2 0 1 1 4 0v3"/><path d="M17 12a2 2 0 1 1 4 0v3a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6v-1a2 2 0 1 1 4 0"/></svg>`,
+      text: 'Нажмите на карточку — откроется информация о человеке'
+    },
+    {
+      icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3"/></svg>`,
+      text: 'Листайте пальцем, чтобы перемещаться по дереву. Два пальца — масштаб'
+    },
+    {
+      icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`,
+      text: 'Кнопка поиска внизу — найти человека по имени'
+    },
+    {
+      icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>`,
+      text: 'Кнопка «Назад» на телефоне закрывает открытый раздел, не выходя со страницы'
+    },
+  ];
+
+  const rows = tips.map(t => `
+    <div class="onboarding-tip">
+      <div class="onboarding-tip-icon">${t.icon}</div>
+      <span class="onboarding-tip-text">${t.text}</span>
+    </div>`).join('');
+
+  return `
+    <div class="backdrop" id="backdrop"></div>
+    <div class="bottom-sheet">
+      <div class="sheet-handle"></div>
+      <h3 style="font-size:17px;font-weight:700;margin-bottom:4px">Как пользоваться</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Несколько подсказок для навигации</p>
+      <div class="onboarding-tips">${rows}</div>
+      <button class="btn-primary" id="close-onboarding-btn" style="margin-top:20px">Понятно!</button>
+    </div>`;
+}
+
 // ── SVG lines ─────────────────────────────────────────────────────
 
 function drawLines() {
@@ -786,6 +829,10 @@ function bindEvents() {
   document.getElementById('backdrop')?.addEventListener('click', closeAll);
   document.getElementById('close-legend-btn')?.addEventListener('click', closeAll);
   document.getElementById('sheet-close-btn')?.addEventListener('click', closeAll);
+  document.getElementById('close-onboarding-btn')?.addEventListener('click', () => {
+    localStorage.setItem('onboarded', '1');
+    closeAll();
+  });
   document.getElementById('search-close-btn')?.addEventListener('click', () => navigate('tree'));
 
   document.querySelectorAll('.birthday-item[data-id]').forEach(el =>
