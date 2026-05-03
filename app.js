@@ -548,6 +548,10 @@ function buildProfile(id) {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 2C9 5.5 7 8.5 7 11.5a5 5 0 0 0 10 0C17 8.5 15 5.5 12 2zm0 13.5a2.5 2.5 0 0 1-2.5-2.5c0-1.5.9-3.1 2.5-5.2 1.6 2.1 2.5 3.7 2.5 5.2a2.5 2.5 0 0 1-2.5 2.5z"/></svg>
           Страница памяти
         </a>` : ''}
+        <button class="find-in-tree-btn" id="goto-tree-btn" data-id="${m.id}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+          Место в дереве
+        </button>
         <div class="profile-tabs">
           <button class="profile-tab active" data-tab="bio">О человеке</button>
           <button class="profile-tab" data-tab="timeline">Хронология</button>
@@ -894,6 +898,18 @@ function bindEvents() {
   });
 
   document.getElementById('back-btn')?.addEventListener('click', () => navigate('tree'));
+
+  document.getElementById('goto-tree-btn')?.addEventListener('click', e => {
+    const id = e.currentTarget.dataset.id;
+    navigate('tree');
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      zoomToCard(id, () => {
+        const card = document.querySelector(`.card[data-id="${id}"]`);
+        card?.classList.add('card--highlight');
+        setTimeout(() => card?.classList.remove('card--highlight'), 2100);
+      });
+    }));
+  });
 
   document.querySelectorAll('.relative-card').forEach(el =>
     el.addEventListener('click', () => navigate('profile:' + el.dataset.id))

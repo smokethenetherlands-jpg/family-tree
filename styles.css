@@ -1178,6 +1178,40 @@ html, body {
   background: rgba(136,152,232,0.10);
   border-color: rgba(136,152,232,0.40);
 }
+
+.find-in-tree-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 11px 16px;
+  background: transparent;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 14px;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s;
+}
+.find-in-tree-btn:active {
+  background: rgba(139,90,80,0.08);
+}
+:root.dark .find-in-tree-btn {
+  border-color: rgba(136,152,232,0.25);
+}
+
+@keyframes card-pulse {
+  0%, 100% { box-shadow: 0 2px 20px rgba(59,42,42,0.10), 0 0 0 1px rgba(255,255,255,0.5), inset 0 0 20px rgba(255,255,255,0.12); }
+  50%       { box-shadow: 0 2px 20px rgba(59,42,42,0.10), 0 0 0 6px rgba(168,90,79,0.55), inset 0 0 20px rgba(255,255,255,0.12); }
+}
+.card--highlight {
+  animation: card-pulse 0.7s ease-in-out 3;
+}
+
 .tree-view-wrap {
   width: 100%;
   height: 100%;
