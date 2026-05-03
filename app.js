@@ -51,7 +51,7 @@ function initParticles(canvas) {
   resize();
   window.addEventListener('resize', resize);
 
-  const COUNT = 228;
+  const COUNT = 60;
   const particles = Array.from({ length: COUNT }, () => ({
     x:     Math.random() * window.innerWidth,
     y:     Math.random() * window.innerHeight,

@@ -101,9 +101,7 @@ html, body {
   position: absolute;
   top: 14px;
   z-index: 10;
-  background: rgba(45,26,26,0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(45,26,26,0.92);
   border: 1px solid rgba(255,255,255,0.10);
   border-radius: 20px;
   padding: 6px 14px;
@@ -128,6 +126,7 @@ html, body {
   height: 100%;
   overflow: auto;
   touch-action: none;
+  will-change: scroll-position;
 }
 
 .tree-scroll::-webkit-scrollbar { display: none; }
@@ -166,9 +165,7 @@ html, body {
 
 .card {
   position: absolute;
-  background: rgba(250,248,246,0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(250,248,246,0.97);
   border-radius: 18px;
   box-shadow: 0 2px 20px rgba(59,42,42,0.10), 0 0 0 1px rgba(255,255,255,0.5), inset 0 0 20px rgba(255,255,255,0.12);
   border: 1px solid rgba(255,255,255,0.7);
@@ -625,9 +622,7 @@ html, body {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.22);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0,0,0,0.35);
   border: 1px solid rgba(255,255,255,0.3);
   color: #fff;
   font-size: 20px;
@@ -1173,6 +1168,7 @@ html, body {
 
 #tree-scale-inner {
   position: relative;
+  will-change: transform;
 }
 
 .tree-zoom {
