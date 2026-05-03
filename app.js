@@ -924,9 +924,11 @@ function bindTreeDrag() {
 
   function applyScale(newScale, centerX, centerY) {
     const prev = state.treeScale;
-    // subtract VIRTUAL_PAD to get position within the tree content
-    const contentX = (scroller.scrollLeft - VIRTUAL_PAD + centerX) / prev;
-    const contentY = (scroller.scrollTop  - VIRTUAL_PAD + centerY) / prev;
+    // Use JS-tracked scroll position — DOM value may be stale on Android
+    const sl = state.treeScrollLeft ?? scroller.scrollLeft;
+    const st = state.treeScrollTop  ?? scroller.scrollTop;
+    const contentX = (sl - VIRTUAL_PAD + centerX) / prev;
+    const contentY = (st - VIRTUAL_PAD + centerY) / prev;
     state.treeScale = Math.max(0.12, Math.min(3, newScale));
     const { w, h } = canvasSize();
     const inner  = document.getElementById('tree-scale-inner');
@@ -936,16 +938,19 @@ function bindTreeDrag() {
       spacer.style.width  = (w * state.treeScale + VIRTUAL_PAD * 2) + 'px';
       spacer.style.height = (h * state.treeScale + VIRTUAL_PAD * 2) + 'px';
     }
-    scroller.scrollLeft = contentX * state.treeScale + VIRTUAL_PAD - centerX;
-    scroller.scrollTop  = contentY * state.treeScale + VIRTUAL_PAD - centerY;
-    state.treeScrollLeft = scroller.scrollLeft;
-    state.treeScrollTop  = scroller.scrollTop;
+    // Save intended value to state first — don't read back from DOM
+    state.treeScrollLeft = contentX * state.treeScale + VIRTUAL_PAD - centerX;
+    state.treeScrollTop  = contentY * state.treeScale + VIRTUAL_PAD - centerY;
+    scroller.scrollLeft  = state.treeScrollLeft;
+    scroller.scrollTop   = state.treeScrollTop;
   }
 
   // ── Touch (mobile) ───────────────────────────────────────────
   let touchPan       = null;
   let lastDist       = null;
   let touchStartCard = null; // card element under finger at touchstart
+  let pinchRafId     = null;
+  let pendingPinch   = null;
 
   scroller.addEventListener('touchstart', e => {
     e.preventDefault();
@@ -957,6 +962,9 @@ function bindTreeDrag() {
       lastDist = null;
     } else if (e.touches.length === 2) {
       touchStartCard = null;
+      // Sync state scroll with DOM before pinch starts
+      state.treeScrollLeft = scroller.scrollLeft;
+      state.treeScrollTop  = scroller.scrollTop;
       lastDist = touchDist(e.touches);
       touchPan = null;
     }
@@ -968,10 +976,17 @@ function bindTreeDrag() {
       const d  = touchDist(e.touches);
       const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
       const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-      const ratio = Math.max(0.85, Math.min(1.18, d / lastDist));
-      applyScale(state.treeScale * ratio, cx, cy);
+      // Update state immediately so next frame reads correct scale/center
+      pendingPinch = { newScale: state.treeScale * (d / lastDist), cx, cy };
       lastDist = d;
       moved = true;
+      if (!pinchRafId) {
+        pinchRafId = requestAnimationFrame(() => {
+          if (pendingPinch) applyScale(pendingPinch.newScale, pendingPinch.cx, pendingPinch.cy);
+          pendingPinch = null;
+          pinchRafId = null;
+        });
+      }
     } else if (e.touches.length === 1 && touchPan) {
       const dx = e.touches[0].clientX - touchPan.x;
       const dy = e.touches[0].clientY - touchPan.y;
