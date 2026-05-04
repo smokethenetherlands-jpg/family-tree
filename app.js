@@ -119,10 +119,8 @@ async function init() {
     return;
   }
 
-  if (!localStorage.getItem('onboarded')) {
-    state.overlay = 'onboarding';
-    history.pushState({ isNav: true }, '');
-  }
+  state.overlay = 'onboarding';
+  history.pushState({ isNav: true }, '');
 
   render();
 }
@@ -886,7 +884,6 @@ function bindEvents() {
   document.getElementById('close-legend-btn')?.addEventListener('click', closeAll);
   document.getElementById('sheet-close-btn')?.addEventListener('click', closeAll);
   document.getElementById('close-onboarding-btn')?.addEventListener('click', () => {
-    localStorage.setItem('onboarded', '1');
     closeAll();
   });
   document.getElementById('search-close-btn')?.addEventListener('click', () => navigate('tree'));
