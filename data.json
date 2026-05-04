@@ -102,6 +102,30 @@
       "timeline": []
     },
     {
+      "id": "kalentyev_nikolay",
+      "name": "Калентьев Николай",
+      "birthDate": null,
+      "deathDate": "2012-06-18",
+      "photo": null,
+      "bio": "",
+      "role": "отец Петра",
+      "row": 3,
+      "col": 9,
+      "timeline": []
+    },
+    {
+      "id": "kalentyeva_lyudmila_ivanovna",
+      "name": "Калентьева Людмила Ивановна",
+      "birthDate": "1953-04-10",
+      "deathDate": "2023-03-09",
+      "photo": null,
+      "bio": "",
+      "role": "мать Петра",
+      "row": 3,
+      "col": 11,
+      "timeline": []
+    },
+    {
       "id": "zinchenko_viktor_mikhailovich",
       "name": "Зинченко Виктор Михайлович",
       "birthDate": "1954-09-24",
@@ -127,14 +151,26 @@
     },
     {
       "id": "zinchenko_mikhail_father",
-      "name": "Зинченко Михаил",
-      "birthDate": null,
-      "deathDate": "?",
+      "name": "Зинченко Михаил Михайлович",
+      "birthDate": "1929-09-10",
+      "deathDate": "1995-10-04",
       "photo": null,
       "bio": "",
       "role": "отец Виктора и Михаила",
       "row": 2,
       "col": 10,
+      "timeline": []
+    },
+    {
+      "id": "zinchenko_alexandra_ivanovna",
+      "name": "Зинченко Александра Ивановна",
+      "birthDate": "1929-10-24",
+      "deathDate": "1992-10-16",
+      "photo": null,
+      "bio": "",
+      "role": "жена Михаила",
+      "row": 2,
+      "col": 12,
       "timeline": []
     },
     {
@@ -606,9 +642,10 @@
     },
     {
       "id": "f_zinchenko_father",
-      "coupleType": "single",
+      "coupleType": "spouse",
       "parents": [
-        "zinchenko_mikhail_father"
+        "zinchenko_mikhail_father",
+        "zinchenko_alexandra_ivanovna"
       ],
       "children": [
         "zinchenko_viktor_mikhailovich",
@@ -679,6 +716,17 @@
       ],
       "children": [
         "bondarenko_mikhail_vladimirovich"
+      ]
+    },
+    {
+      "id": "f_kalentyev_nikolay_lyudmila",
+      "coupleType": "spouse",
+      "parents": [
+        "kalentyev_nikolay",
+        "kalentyeva_lyudmila_ivanovna"
+      ],
+      "children": [
+        "kalentyev_petr_nikolaevich"
       ]
     },
     {
