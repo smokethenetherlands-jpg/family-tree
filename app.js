@@ -555,10 +555,15 @@ function buildProfile(id) {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M12 2C9 5.5 7 8.5 7 11.5a5 5 0 0 0 10 0C17 8.5 15 5.5 12 2zm0 13.5a2.5 2.5 0 0 1-2.5-2.5c0-1.5.9-3.1 2.5-5.2 1.6 2.1 2.5 3.7 2.5 5.2a2.5 2.5 0 0 1-2.5 2.5z"/></svg>
           Страница памяти
         </a>` : ''}
-        <button class="find-in-tree-btn" id="goto-tree-btn" data-id="${m.id}">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
-          Место в дереве
-        </button>
+        <div style="display:flex;gap:8px;margin-bottom:14px">
+          <button class="find-in-tree-btn" id="goto-tree-btn" data-id="${m.id}" style="margin-bottom:0;flex:1">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+            Место в дереве
+          </button>
+          <button class="find-in-tree-btn" id="copy-link-btn" data-id="${m.id}" style="margin-bottom:0;flex:0 0 auto;padding:11px 14px" title="Скопировать ссылку">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
         <div class="profile-tabs">
           <button class="profile-tab active" data-tab="bio">О человеке</button>
           <button class="profile-tab" data-tab="timeline">Хронология</button>
@@ -941,6 +946,18 @@ function bindEvents() {
         setTimeout(() => card?.classList.remove('card--highlight'), 2100);
       });
     }));
+  });
+
+  document.getElementById('copy-link-btn')?.addEventListener('click', e => {
+    const id = e.currentTarget.dataset.id;
+    const url = location.origin + location.pathname + '#' + id;
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = e.currentTarget;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+      setTimeout(() => {
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      }, 1500);
+    });
   });
 
   document.querySelectorAll('.relative-card').forEach(el =>
