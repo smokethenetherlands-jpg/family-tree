@@ -1309,3 +1309,29 @@ html, body {
 }
 .onboarding-cta-btn:active { opacity: 0.82; }
 :root.dark .onboarding-cta-btn { color: #08080F; }
+
+.onboarding-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.onboarding-stat {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 10px 6px;
+  text-align: center;
+}
+.onboarding-stat-value {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+}
+.onboarding-stat-label {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.3;
+}
+:root.dark .onboarding-stat { background: rgba(255,255,255,0.06); }

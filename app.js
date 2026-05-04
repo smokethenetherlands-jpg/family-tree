@@ -96,7 +96,10 @@ function toggleTheme() {
   render();
 }
 
+let pendingDeepLink = null;
+
 async function init() {
+  const hash = location.hash.slice(1);
   history.replaceState({ isBase: true }, '');
   window.addEventListener('popstate', handleBackButton);
 
@@ -119,6 +122,10 @@ async function init() {
     return;
   }
 
+  if (hash && DATA.members.find(m => m.id === hash)) {
+    pendingDeepLink = hash;
+  }
+
   state.overlay = 'onboarding';
   history.pushState({ isNav: true }, '');
 
@@ -139,6 +146,7 @@ function openPopup(id) {
   state.popup = id;
   state.overlay = null;
   history.pushState({ isNav: true }, '');
+  location.hash = id;
   render();
 }
 
@@ -168,6 +176,7 @@ function openOverlay(name) {
 function closeAll() {
   state.popup = null;
   state.overlay = null;
+  history.replaceState(null, '', location.pathname);
   render();
 }
 
@@ -777,12 +786,29 @@ function buildOnboarding() {
       <span class="onboarding-tip-text">${t.text}</span>
     </div>`).join('');
 
+  const stats = calcFamilyStats();
+  const statCards = [
+    { value: stats.total, label: 'человек в архиве' },
+    { value: stats.generations, label: 'поколений' },
+    stats.avgLivingAge ? { value: stats.avgLivingAge + ' лет', label: 'средний возраст' } : null,
+    stats.earliestYear ? { value: stats.earliestYear + ' г.', label: 'самая ранняя запись' } : null,
+  ].filter(Boolean);
+
+  const statsHtml = `<div class="onboarding-stats">${statCards.map(s => `
+    <div class="onboarding-stat">
+      <div class="onboarding-stat-value">${s.value}</div>
+      <div class="onboarding-stat-label">${s.label}</div>
+    </div>`).join('')}</div>`;
+
   return `
     <div class="backdrop" id="backdrop"></div>
     <div class="bottom-sheet">
       <div class="sheet-handle"></div>
-      <h3 style="font-size:17px;font-weight:700;margin-bottom:4px">Как пользоваться</h3>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Несколько подсказок для навигации</p>
+      <h3 style="font-size:17px;font-weight:700;margin-bottom:4px">Эхо поколений</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Семейный архив</p>
+      ${statsHtml}
+      <div style="height:1px;background:var(--line);margin:14px 0"></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Несколько подсказок для навигации</p>
       <div class="onboarding-tips">${rows}</div>
       <div class="onboarding-cta">
         <div class="onboarding-cta-text">Помогите сохранить историю семьи — расскажите о себе и близких</div>
@@ -885,6 +911,11 @@ function bindEvents() {
   document.getElementById('sheet-close-btn')?.addEventListener('click', closeAll);
   document.getElementById('close-onboarding-btn')?.addEventListener('click', () => {
     closeAll();
+    if (pendingDeepLink) {
+      const id = pendingDeepLink;
+      pendingDeepLink = null;
+      openPopup(id);
+    }
   });
   document.getElementById('search-close-btn')?.addEventListener('click', () => navigate('tree'));
 
@@ -1204,7 +1235,14 @@ function calcFamilyStats() {
     ? Math.round(living.reduce((s, m) => s + (currentYear - parseInt(m.birthDate)), 0) / living.length)
     : null;
 
-  return { avgLifespan, avgLivingAge };
+  const generations = new Set(DATA.members.map(m => m.row)).size;
+
+  const allYears = DATA.members
+    .map(m => m.birthDate ? parseInt(m.birthDate) : null)
+    .filter(y => y && y > 1800);
+  const earliestYear = allYears.length ? Math.min(...allYears) : null;
+
+  return { avgLifespan, avgLivingAge, generations, earliestYear, total: DATA.members.length };
 }
 
 function fmtShortDate(s) {
