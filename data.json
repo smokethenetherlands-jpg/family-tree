@@ -52,8 +52,8 @@
     {
       "id": "levkina_valentina_ivanovna",
       "name": "Левкина Валентина Ивановна",
-      "birthDate": "1925",
-      "deathDate": "1985",
+      "birthDate": "1925-01-19",
+      "deathDate": "1985-05-03",
       "photo": null,
       "bio": "",
       "maiden": "Кучеренко",
@@ -66,8 +66,8 @@
     {
       "id": "levkin_fedor_afanasyevich",
       "name": "Левкин Фёдор Афанасьевич",
-      "birthDate": "1920",
-      "deathDate": "1974",
+      "birthDate": "1920-10-19",
+      "deathDate": "1974-06-21",
       "photo": null,
       "bio": "",
       "role": "супруг Валентины",
