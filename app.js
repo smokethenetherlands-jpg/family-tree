@@ -911,16 +911,19 @@ function bindEvents() {
   document.getElementById('tab-memorial')?.addEventListener('click', () => openOverlay('memorial'));
   document.getElementById('nav-legend')?.addEventListener('click', () => openOverlay('legend'));
 
-  document.getElementById('backdrop')?.addEventListener('click', closeAll);
+  document.getElementById('backdrop')?.addEventListener('click', () => {
+    const id = pendingDeepLink;
+    pendingDeepLink = null;
+    closeAll();
+    if (id) navigate('profile:' + id);
+  });
   document.getElementById('close-legend-btn')?.addEventListener('click', closeAll);
   document.getElementById('sheet-close-btn')?.addEventListener('click', closeAll);
   document.getElementById('close-onboarding-btn')?.addEventListener('click', () => {
+    const id = pendingDeepLink;
+    pendingDeepLink = null;
     closeAll();
-    if (pendingDeepLink) {
-      const id = pendingDeepLink;
-      pendingDeepLink = null;
-      openPopup(id);
-    }
+    if (id) navigate('profile:' + id);
   });
   document.getElementById('search-close-btn')?.addEventListener('click', () => navigate('tree'));
 
@@ -950,14 +953,37 @@ function bindEvents() {
 
   document.getElementById('copy-link-btn')?.addEventListener('click', e => {
     const id = e.currentTarget.dataset.id;
+    const btn = e.currentTarget;
     const url = location.origin + location.pathname + '#' + id;
-    navigator.clipboard.writeText(url).then(() => {
-      const btn = e.currentTarget;
+    const showCheck = () => {
       btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
       setTimeout(() => {
         btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
       }, 1500);
-    });
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(showCheck).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showCheck();
+      });
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showCheck();
+    }
   });
 
   document.querySelectorAll('.relative-card').forEach(el =>
