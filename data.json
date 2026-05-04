@@ -8,7 +8,7 @@
       "deathDate": "?",
       "photo": null,
       "bio": "",
-      "role": null,
+      "role": "прапрапрадед",
       "row": 0,
       "col": 15,
       "timeline": []
@@ -20,7 +20,7 @@
       "deathDate": "?",
       "photo": null,
       "bio": "",
-      "role": "жена Никифора",
+      "role": "супруга Никифора",
       "row": 0,
       "col": 17,
       "timeline": []
@@ -32,7 +32,7 @@
       "deathDate": "?",
       "photo": null,
       "bio": "",
-      "role": null,
+      "role": "прапрадед",
       "row": 1,
       "col": 15,
       "timeline": []
@@ -44,7 +44,7 @@
       "deathDate": "?",
       "photo": null,
       "bio": "",
-      "role": "жена Ивана",
+      "role": "супруга Ивана",
       "row": 1,
       "col": 17,
       "timeline": []
@@ -57,7 +57,7 @@
       "photo": null,
       "bio": "",
       "maiden": "Кучеренко",
-      "role": null,
+      "role": "прабабушка",
       "memorialUrl": "https://memqr.ru/example/",
       "row": 2,
       "col": 15,
@@ -70,7 +70,7 @@
       "deathDate": "1974",
       "photo": null,
       "bio": "",
-      "role": "муж Валентины",
+      "role": "супруг Валентины",
       "memorialUrl": "https://memqr.ru/example/1/",
       "row": 2,
       "col": 17,
@@ -83,7 +83,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "сын Валентины",
+      "role": "сын Валентины и Фёдора",
       "row": 3,
       "col": 5,
       "timeline": []
@@ -96,7 +96,7 @@
       "photo": null,
       "bio": "",
       "maiden": "Левкина",
-      "role": "дочь Валентины",
+      "role": "дочь Валентины и Фёдора",
       "row": 3,
       "col": 15,
       "timeline": []
@@ -122,7 +122,7 @@
       "bio": "",
       "role": "мать Петра",
       "row": 3,
-      "col": 11,
+      "col": 7,
       "timeline": []
     },
     {
@@ -132,7 +132,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "муж Натальи",
+      "role": "супруг Натальи",
       "row": 3,
       "col": 13,
       "timeline": []
@@ -146,7 +146,7 @@
       "bio": "",
       "role": "брат Виктора",
       "row": 3,
-      "col": 8,
+      "col": 11,
       "timeline": []
     },
     {
@@ -168,7 +168,7 @@
       "deathDate": "1992-10-16",
       "photo": null,
       "bio": "",
-      "role": "жена Михаила",
+      "role": "супруга Михаила",
       "row": 2,
       "col": 12,
       "timeline": []
@@ -180,7 +180,7 @@
       "deathDate": "1998-09-18",
       "photo": null,
       "bio": "",
-      "role": "муж Ирины",
+      "role": "отец Валентины и Ольги",
       "row": 3,
       "col": 21,
       "timeline": []
@@ -192,7 +192,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "дочь Валентины",
+      "role": "дочь Валентины и Фёдора",
       "row": 3,
       "col": 19,
       "timeline": []
@@ -204,7 +204,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "отчим детей Ирины",
+      "role": "супруг Ирины",
       "row": 3,
       "col": 17,
       "timeline": []
@@ -292,9 +292,9 @@
       "photo": null,
       "bio": "",
       "maiden": "Зинченко",
-      "role": "внучка Валентины, дочь Натальи",
+      "role": "дочь Натальи и Виктора",
       "row": 4,
-      "col": 11,
+      "col": 13,
       "timeline": []
     },
     {
@@ -304,9 +304,9 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "муж Марины",
+      "role": "супруг Марины",
       "row": 4,
-      "col": 13,
+      "col": 11,
       "timeline": []
     },
     {
@@ -317,7 +317,7 @@
       "photo": null,
       "bio": "",
       "maiden": "Зинченко",
-      "role": "внучка Валентины, дочь Натальи",
+      "role": "дочь Натальи и Виктора",
       "row": 4,
       "col": 23,
       "timeline": []
@@ -329,7 +329,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "муж Оксаны",
+      "role": "супруг Оксаны",
       "row": 4,
       "col": 25,
       "timeline": []
@@ -342,7 +342,7 @@
       "photo": null,
       "bio": "",
       "maiden": "Ивлева",
-      "role": "внучка Валентины, дочь Ирины",
+      "role": "дочь Ирины",
       "row": 4,
       "col": 31,
       "timeline": []
@@ -354,7 +354,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "муж Валентины Б.",
+      "role": "супруг Валентины",
       "row": 4,
       "col": 33,
       "timeline": []
@@ -367,7 +367,7 @@
       "photo": null,
       "bio": "",
       "maiden": "Ивлева",
-      "role": "внучка Валентины, дочь Ирины",
+      "role": "дочь Ирины",
       "row": 4,
       "col": 27,
       "timeline": []
@@ -379,7 +379,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "муж Ольги",
+      "role": "супруг Ольги",
       "row": 4,
       "col": 29,
       "timeline": []
@@ -392,7 +392,7 @@
       "photo": null,
       "bio": "",
       "maiden": "Калентьева",
-      "role": "сестра Петра",
+      "role": "дочь Людмилы и Николая",
       "row": 4,
       "col": 9,
       "timeline": []
@@ -404,7 +404,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "бывший муж Елены",
+      "role": "отец Егора",
       "row": 4,
       "col": 7,
       "timeline": []
@@ -416,7 +416,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "отец Марины Журавлёвой",
+      "role": "супруг Натальи",
       "row": 4,
       "col": 3,
       "timeline": []
@@ -429,7 +429,7 @@
       "photo": null,
       "bio": "",
       "maiden": "Гунь",
-      "role": "мать Марины Журавлёвой",
+      "role": "супруга Андрея",
       "row": 4,
       "col": 5,
       "timeline": []
@@ -490,7 +490,7 @@
       "photo": null,
       "bio": "",
       "maiden": "Бондаренко",
-      "role": "дочь Валентины Б. и Михаила",
+      "role": "дочь Валентины и Михаила",
       "row": 5,
       "col": 32,
       "timeline": []
@@ -502,7 +502,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "муж Анны Бондаренко",
+      "role": "супруг Анны",
       "row": 5,
       "col": 34,
       "timeline": []
@@ -562,7 +562,7 @@
       "deathDate": null,
       "photo": null,
       "bio": "",
-      "role": "жена Егора",
+      "role": "супруга Егора",
       "row": 5,
       "col": 5,
       "timeline": []
@@ -726,7 +726,8 @@
         "kalentyeva_lyudmila_ivanovna"
       ],
       "children": [
-        "kalentyev_petr_nikolaevich"
+        "kalentyev_petr_nikolaevich",
+        "kiseleva_elena_nikolaevna"
       ]
     },
     {
