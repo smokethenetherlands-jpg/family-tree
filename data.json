@@ -10,7 +10,7 @@
       "bio": "",
       "role": "прапрапрадед",
       "row": 0,
-      "col": 15,
+      "col": 19,
       "timeline": []
     },
     {
@@ -22,7 +22,7 @@
       "bio": "",
       "role": "супруга Никифора",
       "row": 0,
-      "col": 17,
+      "col": 21,
       "timeline": []
     },
     {
@@ -34,7 +34,7 @@
       "bio": "",
       "role": "прапрадед",
       "row": 1,
-      "col": 15,
+      "col": 19,
       "timeline": []
     },
     {
@@ -46,7 +46,7 @@
       "bio": "",
       "role": "супруга Ивана",
       "row": 1,
-      "col": 17,
+      "col": 21,
       "timeline": []
     },
     {
@@ -60,7 +60,7 @@
       "role": "прабабушка",
       "memorialUrl": "https://memqr.ru/example/",
       "row": 2,
-      "col": 15,
+      "col": 19,
       "timeline": []
     },
     {
@@ -73,7 +73,7 @@
       "role": "супруг Валентины",
       "memorialUrl": "https://memqr.ru/example/1/",
       "row": 2,
-      "col": 17,
+      "col": 21,
       "timeline": []
     },
     {
@@ -85,7 +85,7 @@
       "bio": "",
       "role": "сын Валентины и Фёдора",
       "row": 3,
-      "col": 5,
+      "col": 9,
       "timeline": []
     },
     {
@@ -98,7 +98,7 @@
       "maiden": "Левкина",
       "role": "дочь Валентины и Фёдора",
       "row": 3,
-      "col": 15,
+      "col": 19,
       "timeline": []
     },
     {
@@ -110,7 +110,7 @@
       "bio": "",
       "role": "отец Петра",
       "row": 3,
-      "col": 9,
+      "col": 13,
       "timeline": []
     },
     {
@@ -122,7 +122,7 @@
       "bio": "",
       "role": "мать Петра",
       "row": 3,
-      "col": 7,
+      "col": 11,
       "timeline": []
     },
     {
@@ -134,7 +134,7 @@
       "bio": "",
       "role": "супруг Натальи",
       "row": 3,
-      "col": 13,
+      "col": 17,
       "timeline": []
     },
     {
@@ -146,7 +146,7 @@
       "bio": "",
       "role": "брат Виктора",
       "row": 3,
-      "col": 11,
+      "col": 15,
       "timeline": []
     },
     {
@@ -158,7 +158,7 @@
       "bio": "",
       "role": "отец Виктора и Михаила",
       "row": 2,
-      "col": 10,
+      "col": 14,
       "timeline": []
     },
     {
@@ -170,7 +170,7 @@
       "bio": "",
       "role": "супруга Михаила",
       "row": 2,
-      "col": 12,
+      "col": 16,
       "timeline": []
     },
     {
@@ -182,7 +182,7 @@
       "bio": "",
       "role": "отец Валентины и Ольги",
       "row": 3,
-      "col": 21,
+      "col": 25,
       "timeline": []
     },
     {
@@ -194,7 +194,7 @@
       "bio": "",
       "role": "дочь Валентины и Фёдора",
       "row": 3,
-      "col": 19,
+      "col": 23,
       "timeline": []
     },
     {
@@ -206,7 +206,7 @@
       "bio": "",
       "role": "супруг Ирины",
       "row": 3,
-      "col": 17,
+      "col": 21,
       "timeline": []
     },
     {
@@ -218,7 +218,7 @@
       "bio": "",
       "role": "отец Сергея",
       "row": 3,
-      "col": 23,
+      "col": 27,
       "timeline": []
     },
     {
@@ -231,7 +231,7 @@
       "maiden": "Кудакова",
       "role": "мать Сергея",
       "row": 3,
-      "col": 25,
+      "col": 29,
       "timeline": []
     },
     {
@@ -243,7 +243,7 @@
       "bio": "",
       "role": "отец Никиты",
       "row": 3,
-      "col": 27,
+      "col": 31,
       "timeline": []
     },
     {
@@ -256,7 +256,7 @@
       "maiden": "Литвинова",
       "role": "мать Никиты",
       "row": 3,
-      "col": 29,
+      "col": 33,
       "timeline": []
     },
     {
@@ -268,7 +268,7 @@
       "bio": "",
       "role": "отец Михаила",
       "row": 3,
-      "col": 31,
+      "col": 35,
       "timeline": []
     },
     {
@@ -281,7 +281,7 @@
       "maiden": "Лапикова",
       "role": "мать Михаила",
       "row": 3,
-      "col": 33,
+      "col": 37,
       "timeline": []
     },
     {
@@ -294,7 +294,7 @@
       "maiden": "Зинченко",
       "role": "дочь Натальи и Виктора",
       "row": 4,
-      "col": 13,
+      "col": 15,
       "timeline": []
     },
     {
@@ -306,7 +306,7 @@
       "bio": "",
       "role": "супруг Марины",
       "row": 4,
-      "col": 11,
+      "col": 13,
       "timeline": []
     },
     {
@@ -319,7 +319,7 @@
       "maiden": "Зинченко",
       "role": "дочь Натальи и Виктора",
       "row": 4,
-      "col": 23,
+      "col": 25,
       "timeline": []
     },
     {
@@ -331,7 +331,7 @@
       "bio": "",
       "role": "супруг Оксаны",
       "row": 4,
-      "col": 25,
+      "col": 27,
       "timeline": []
     },
     {
@@ -344,7 +344,7 @@
       "maiden": "Ивлева",
       "role": "дочь Ирины",
       "row": 4,
-      "col": 31,
+      "col": 33,
       "timeline": []
     },
     {
@@ -356,7 +356,7 @@
       "bio": "",
       "role": "супруг Валентины",
       "row": 4,
-      "col": 33,
+      "col": 35,
       "timeline": []
     },
     {
@@ -369,7 +369,7 @@
       "maiden": "Ивлева",
       "role": "дочь Ирины",
       "row": 4,
-      "col": 27,
+      "col": 29,
       "timeline": []
     },
     {
@@ -381,7 +381,7 @@
       "bio": "",
       "role": "супруг Ольги",
       "row": 4,
-      "col": 29,
+      "col": 31,
       "timeline": []
     },
     {
@@ -394,7 +394,7 @@
       "maiden": "Калентьева",
       "role": "дочь Людмилы и Николая",
       "row": 4,
-      "col": 9,
+      "col": 11,
       "timeline": []
     },
     {
@@ -406,7 +406,7 @@
       "bio": "",
       "role": "отец Егора",
       "row": 4,
-      "col": 7,
+      "col": 9,
       "timeline": []
     },
     {
@@ -418,7 +418,7 @@
       "bio": "",
       "role": "супруг Натальи",
       "row": 4,
-      "col": 3,
+      "col": 7,
       "timeline": []
     },
     {
@@ -443,7 +443,7 @@
       "bio": "",
       "role": "сестра Натальи Журавлёвой",
       "row": 4,
-      "col": 1,
+      "col": 3,
       "timeline": []
     },
     {
@@ -455,7 +455,7 @@
       "bio": "",
       "role": "сын Марины и Петра",
       "row": 5,
-      "col": 12,
+      "col": 14,
       "timeline": []
     },
     {
@@ -467,7 +467,7 @@
       "bio": "",
       "role": "дочь Оксаны и Сергея",
       "row": 5,
-      "col": 23,
+      "col": 25,
       "timeline": []
     },
     {
@@ -479,7 +479,7 @@
       "bio": "",
       "role": "дочь Оксаны и Сергея",
       "row": 5,
-      "col": 25,
+      "col": 27,
       "timeline": []
     },
     {
@@ -492,7 +492,7 @@
       "maiden": "Бондаренко",
       "role": "дочь Валентины и Михаила",
       "row": 5,
-      "col": 32,
+      "col": 34,
       "timeline": []
     },
     {
@@ -504,7 +504,7 @@
       "bio": "",
       "role": "супруг Анны",
       "row": 5,
-      "col": 34,
+      "col": 36,
       "timeline": []
     },
     {
@@ -516,7 +516,7 @@
       "bio": "",
       "role": "сын Ольги",
       "row": 5,
-      "col": 27,
+      "col": 29,
       "timeline": []
     },
     {
@@ -528,7 +528,7 @@
       "bio": "",
       "role": "сын Ольги и Никиты",
       "row": 5,
-      "col": 29,
+      "col": 31,
       "timeline": []
     },
     {
@@ -540,7 +540,7 @@
       "bio": "",
       "role": "сын Елены",
       "row": 5,
-      "col": 9,
+      "col": 11,
       "timeline": []
     },
     {
@@ -552,7 +552,7 @@
       "bio": "",
       "role": "сын Елены и Дмитрия",
       "row": 5,
-      "col": 7,
+      "col": 9,
       "timeline": []
     },
     {
@@ -564,7 +564,7 @@
       "bio": "",
       "role": "супруга Егора",
       "row": 5,
-      "col": 5,
+      "col": 7,
       "timeline": []
     },
     {
@@ -576,7 +576,7 @@
       "bio": "",
       "role": "брат Марины Журавлёвой",
       "row": 5,
-      "col": 3,
+      "col": 5,
       "timeline": []
     },
     {
@@ -588,7 +588,7 @@
       "bio": "",
       "role": "сын Евгения",
       "row": 6,
-      "col": 9,
+      "col": 11,
       "timeline": []
     },
     {
@@ -600,7 +600,55 @@
       "bio": "",
       "role": "дочь Егора и Марины",
       "row": 6,
-      "col": 6,
+      "col": 8,
+      "timeline": []
+    },
+    {
+      "id": "gun_aleksandr_afanasyevich",
+      "name": "Гунь Александр Афанасьевич",
+      "birthDate": "1950-10-14",
+      "deathDate": "2009-02-20",
+      "photo": null,
+      "bio": "",
+      "role": "отец Натальи и Марины",
+      "row": 3,
+      "col": 1,
+      "timeline": []
+    },
+    {
+      "id": "gun_olga_vasilyevna",
+      "name": "Гунь Ольга Васильевна",
+      "birthDate": "1951-05-13",
+      "deathDate": "2015-01-17",
+      "photo": null,
+      "bio": "",
+      "role": "мать Натальи и Марины",
+      "row": 3,
+      "col": 3,
+      "timeline": []
+    },
+    {
+      "id": "zhuravleva_irina_mikhailovna",
+      "name": "Журавлёва Ирина Михайловна",
+      "birthDate": "1956-06-12",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "мать Андрея",
+      "row": 3,
+      "col": 5,
+      "timeline": []
+    },
+    {
+      "id": "zhuravlev_anatoliy_aleksandrovich",
+      "name": "Журавлёв Анатолий Александрович",
+      "birthDate": "1951-08-07",
+      "deathDate": "2021-12-17",
+      "photo": null,
+      "bio": "",
+      "role": "отец Андрея",
+      "row": 3,
+      "col": 7,
       "timeline": []
     }
   ],
@@ -853,6 +901,29 @@
         "kosminik"
       ],
       "children": []
+    },
+    {
+      "id": "f_gun_aleksandr_olga",
+      "coupleType": "spouse",
+      "parents": [
+        "gun_aleksandr_afanasyevich",
+        "gun_olga_vasilyevna"
+      ],
+      "children": [
+        "gun_natalya_aleksandrovna",
+        "gun_marina_aleksandrovna"
+      ]
+    },
+    {
+      "id": "f_zhuravlev_anatoliy_irina",
+      "coupleType": "spouse",
+      "parents": [
+        "zhuravlev_anatoliy_aleksandrovich",
+        "zhuravleva_irina_mikhailovna"
+      ],
+      "children": [
+        "zhuravlev_andrey_anatolyevich"
+      ]
     }
   ]
 }

@@ -1275,7 +1275,7 @@ function calcFamilyStats() {
 
   const living = DATA.members.filter(m => m.birthDate && !m.deathDate);
   const avgLivingAge = living.length
-    ? Math.round(living.reduce((s, m) => s + (currentYear - parseInt(m.birthDate)), 0) / living.length)
+    ? Math.round(living.reduce((s, m) => s + (calcAge(m) ?? 0), 0) / living.length)
     : null;
 
   const generations = new Set(DATA.members.map(m => m.row)).size;
@@ -1314,15 +1314,20 @@ function fmtFullDate(dateStr) {
 }
 
 function calcAge(m) {
-  if (!m.birthDate) return null;
-  const birth = parseInt(m.birthDate);
-  if (isNaN(birth)) return null;
-  if (m.deathDate && m.deathDate !== '?') {
-    const end = parseInt(m.deathDate);
-    return isNaN(end) ? null : end - birth;
+  if (!m.birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(m.birthDate)) return null;
+  const [by, bm, bd] = m.birthDate.split('-').map(Number);
+  let ey, em, ed;
+  if (m.deathDate && m.deathDate !== '?' && /^\d{4}-\d{2}-\d{2}$/.test(m.deathDate)) {
+    [ey, em, ed] = m.deathDate.split('-').map(Number);
+  } else if (!m.deathDate) {
+    const now = new Date();
+    ey = now.getFullYear(); em = now.getMonth() + 1; ed = now.getDate();
+  } else {
+    return null;
   }
-  if (!m.deathDate) return new Date().getFullYear() - birth;
-  return null;
+  let age = ey - by;
+  if (em < bm || (em === bm && ed < bd)) age--;
+  return age;
 }
 
 function doy(d) {
