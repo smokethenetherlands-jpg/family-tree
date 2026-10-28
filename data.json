@@ -484,7 +484,7 @@
     },
     {
       "id": "bondarenko_anna_mikhailovna",
-      "name": "Восьмирик Анна Михайловна",
+      "name": "Восьмерик Анна Михайловна",
       "birthDate": "2004-08-24",
       "deathDate": null,
       "photo": null,
@@ -497,7 +497,7 @@
     },
     {
       "id": "kosminik",
-      "name": "Восьмирик Максим",
+      "name": "Восьмерик Максим",
       "birthDate": null,
       "deathDate": null,
       "photo": null,
@@ -505,6 +505,18 @@
       "role": "супруг Анны",
       "row": 5,
       "col": 36,
+      "timeline": []
+    },
+    {
+      "id": "vosmirik_nikita_maksimovich",
+      "name": "Восьмерик Никита Максимович",
+      "birthDate": "2026-04-25",
+      "deathDate": null,
+      "photo": null,
+      "bio": "",
+      "role": "сын Анны и Максима",
+      "row": 6,
+      "col": 35,
       "timeline": []
     },
     {
@@ -900,7 +912,9 @@
         "bondarenko_anna_mikhailovna",
         "kosminik"
       ],
-      "children": []
+      "children": [
+        "vosmirik_nikita_maksimovich"
+      ]
     },
     {
       "id": "f_gun_aleksandr_olga",
